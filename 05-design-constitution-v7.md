@@ -64,6 +64,23 @@ The boys' phones carry Fil la and the dispatch composer/inbox. Same tokens, same
 - No horizontal scroll anywhere; wide content scrolls inside its own container.
 - The panorama and battle stage remain PC-first; phones show the campaign strip, not the full panorama.
 
+## 12a. THE PERIOD CUT (v7.1 — owner directive 2026-07-10)
+
+**The game takes place in 18th-century Saint-Domingue; the design must show it.** Maps, battle plans, militia forms, geography. The re-grounding rule that makes this safe against every standing veto:
+
+> **Period through structure, never through distress.** Cartography, battle diagrams, document forms, insignia — executed in the existing tokens with hard edges. NO aged-paper textures, NO sepia, NO script faces, NO skeuomorphic wax and quills. Target read: modern war-room graphics of an 18th-century campaign — Hamilton-poster discipline, not museum gift shop. The three faces stay locked; period comes from layout and iconography, not fonts.
+
+New elements admitted to the surface inventory (each earns repeated touches or dies):
+
+1. **The campaign map** — stylized hard-edged Saint-Domingue in period conventions: hachure relief strokes for the ranges (« Dèyè mòn gen mòn » made visible), concentric coastal shading, dash-dot land border, dashed march route, numbered milestone sites with a **RENVOI** key (the period numbered-reference table). Compact variant embeds on the front page; the full map is a war-room screen. Place names: history-bible-verified Kreyòl forms; period French elsewhere (historical artifact); the map never coins.
+2. **The battle plan** — period diagram vocabulary for Mòn: filled unit blocks = the brothers (liy hues), outline blocks = the historical army, barbed arrows (solid = done, dashed = next), the objective marked in sun. The **retreat variant** replaces the sunset panorama's role on the battle screen: dashed withdrawal arrows into hachures — marronage drawn as the maneuver it was, never a defeat image.
+3. **The ORDRE form** — dispatch prompts, missions, and milestone cards carry the general-order header: "ORDRE · Nº _n_" over a thick-thin rule pair, with a small date line ("Campagne de 1791 …"). French header words only (historical artifact); body text obeys the language law. The thick-thin **proclamation rule pair** is hereby a sanctioned rule form (an amendment to the border budget).
+4. **The lambi** — flat line-drawn conch glyph on the record/send surfaces. The revolution's own signal instrument (secular, Nèg Mawon lineage) marking the game's core act: blow the signal, send the voice.
+5. **The cockade** — flat concentric bicolor roundel as the role/rank mark beside Majò roles. Complements the liy letter-discs (identity), never replaces them.
+6. **The vignette system** — the panorama's flat-paint language extended to scene illustrations (the ford, the ravine, the fort, the flag, the Citadelle): 2–4 unmixed hues, geometric, no outlines, no texture. Architecture (arcades, shutters, fort prows) lives INSIDE vignettes as content — never as chrome decoration.
+
+Guardrails carried from the vetoes: no vèvè or religious motifs (opt-in law unchanged); the flag appears whole and respectful (the tearing is told in Ch6's story, not used as a divider gimmick); coat-of-arms iconography (palm + liberty cap) is post-independence — reserved for the Ch8 capstone surfaces where it is chronologically honest; enemy blocks are outline-anonymous, never gory.
+
 ## 12. Why (the ten red-team cycles, compressed)
 
 1. **Teen veto** — killed decorative stamps/sepia; injected sport-poster energy (big numerals, league-table konbit strip). The boys should see "a hard-edged app that happens to be in our colors," not "a heritage experience."
