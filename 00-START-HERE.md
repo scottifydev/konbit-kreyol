@@ -109,6 +109,7 @@ Anything in `archive/` asserting the following is superseded:
 konbit-kreyol-app-v6-4.html   ← archived reference implementation (engine-normative)
 archive/                      ← superseded brainstorm docs (rationale only)
 web/                          ← the app (Next.js) — engine, lint, tests, screens
+mockups/                      ← design mockups (self-contained HTML; kod-la-mockup-v1)
 supabase/migrations/          ← schema + RLS, ready for the Supabase gate
 .github/workflows/ci.yml     ← law lint + tests + build on every push
 ```
