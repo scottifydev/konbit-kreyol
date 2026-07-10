@@ -1,0 +1,287 @@
+/* KÒD LA — design tokens, hex-for-hex from 05-design-constitution-v7.md §2.
+   No gradients, no tints, no radius, one value per hue, no black blur
+   shadows. Do not drift. */
+:root {
+  --paper: #f6f3ea;
+  --well: #ece8d9;
+  --hairline: #d8d2bf; /* pre-authorized darken: #cfc8b2 if it vanishes on the family monitor */
+  --ink: #181d2b;
+  --ink2: #5c5a4e;
+  --cobalt: #1a3fc4;
+  --cobalt-deep: #122d8f;
+  --red: #d02c22;
+  --red-deep: #9c1f18;
+  --sun: #f2b02c;
+  --sun-deep: #c78d1a;
+  --palm: #2e7d4f;
+  --slate: #22303a;
+  --slate-well: #2c3d49;
+  --chalk: #f6f3ea; /* = paper */
+  --chalk-dim: #93a7b4;
+  --shadow-overlay: 0 6px 18px rgba(24, 29, 43, 0.18); /* toast + long-press tooltip ONLY */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Instrument Sans", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+/* type roles (05 §3): display never sets Kreyòl body */
+.d1,
+.d2,
+.d3 {
+  font-family: "Archivo Black", "Arial Black", sans-serif;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+.d1 {
+  font-size: 48px;
+}
+.d2 {
+  font-size: 30px;
+}
+.d3 {
+  font-size: 22px;
+}
+.kreyol-body {
+  font-family: "Instrument Sans", system-ui, sans-serif;
+  font-size: 21px;
+  line-height: 1.6;
+}
+.oral {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-size: 19px;
+  border-left: 4px solid var(--sun);
+  padding-left: 14px;
+}
+.label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink2);
+}
+
+/* scoreboard header rhythm (05 §5): kicker · D1 · live stat · one 3px rule */
+.scoreboard {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 3px solid var(--ink);
+  padding: 18px 0 10px;
+  margin-bottom: 20px;
+}
+.scoreboard .stat {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: 22px;
+}
+
+.page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+
+/* CTA depth = press edge, :active translates down (05 §2) */
+.cta {
+  display: inline-block;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 12px 22px;
+  color: var(--paper);
+  background: var(--cobalt);
+  box-shadow: 0 4px 0 var(--cobalt-deep);
+}
+.cta:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--cobalt-deep);
+}
+.cta.sun {
+  background: var(--sun);
+  color: var(--ink);
+  box-shadow: 0 4px 0 var(--sun-deep);
+}
+.cta.red {
+  background: var(--red);
+  box-shadow: 0 4px 0 var(--red-deep);
+}
+.cta:disabled {
+  background: var(--well);
+  color: var(--ink2);
+  box-shadow: 0 4px 0 var(--hairline);
+  cursor: default;
+}
+
+/* profile doors: name + role ONLY (copy law 3) */
+.doors {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 26px 0;
+}
+.door {
+  display: block;
+  border: 1px solid var(--hairline);
+  background: var(--paper);
+  padding: 22px;
+  text-decoration: none;
+  color: var(--ink);
+}
+.door .liy {
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  font-family: "Archivo Black", "Arial Black", sans-serif;
+  color: var(--paper);
+  margin-bottom: 10px;
+}
+.liy.leo {
+  background: var(--cobalt);
+}
+.liy.isaac {
+  background: var(--red);
+}
+.liy.adult {
+  background: var(--slate);
+}
+.liy.k {
+  background: var(--sun);
+  color: var(--ink);
+}
+
+/* goldband: the genuinely collective number */
+.goldband {
+  background: var(--sun);
+  color: var(--ink);
+  padding: 12px 16px;
+  font-weight: 700;
+}
+
+/* 77-tick ruler (05 §5) */
+.ruler {
+  display: flex;
+  gap: 2px;
+  align-items: flex-end;
+  margin: 8px 0;
+}
+.ruler i {
+  width: 4px;
+  height: 16px;
+  background: var(--hairline);
+}
+.ruler i.solid {
+  background: var(--sun);
+}
+
+/* slate board — the teaching voice, constitutionally non-punitive */
+.slate {
+  background: var(--slate);
+  color: var(--chalk);
+  border: 2px solid var(--ink);
+  padding: 22px;
+}
+.slate .dim {
+  color: var(--chalk-dim);
+}
+
+/* gloss sweep (tap = content meaning) vs flipnew underline (new chrome) */
+.gloss {
+  background: var(--sun);
+  cursor: pointer;
+  padding: 0 2px;
+}
+.flip {
+  cursor: pointer;
+}
+.flipnew {
+  text-decoration: underline;
+  text-decoration-color: var(--sun);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+/* long-press tooltip (one of two --shadow-overlay surfaces) */
+.tooltip {
+  position: fixed;
+  background: var(--slate);
+  color: var(--chalk);
+  padding: 8px 12px;
+  font-size: 14px;
+  box-shadow: var(--shadow-overlay);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* hold-to-record: full-width bottom bar on phones (05 §11) */
+.hold-bar {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  width: 100%;
+  padding: 18px;
+  font: inherit;
+  font-weight: 700;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  cursor: pointer;
+}
+.hold-bar.recording {
+  background: var(--red);
+  color: var(--paper);
+}
+
+.hairline-row {
+  border-top: 1px solid var(--hairline);
+  padding: 12px 0;
+}
+
+.index a {
+  color: var(--cobalt);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+table.plain {
+  border-collapse: collapse;
+  width: 100%;
+}
+table.plain td,
+table.plain th {
+  text-align: left;
+  padding: 8px 10px;
+  border-top: 1px solid var(--hairline);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+@media (max-width: 640px) {
+  .d1 {
+    font-size: 30px;
+  } /* D2/D3 only on phone (05 §11) */
+  .doors {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  laws-and-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      # THE LAW LINT (04-laws.md §9) — not riggable: the whitelist is proper
+      # nouns only; any addition shows as a diff to web/lint/whitelist.json
+      # and requires a recorded amendment to 04-laws.md in the same PR.
+      - run: npm run lint:laws
+      - run: npm run test
+      - run: npm run build

@@ -58,7 +58,7 @@ The printable parent brief (from the Misyon issue) carries these plus Manman's w
 - Post bios ("gwo pale" → offered *voye monte*/*gwo koze*; "vwa fanmi" → offered *vwa fanmi an*/*vwa lakay*). Feed bios get one language policy (all-Kreyòl, glossed) once you can review them.
 - The scope-amendment batch (`04` §1.1) and the seven surface-name glosses entering scope.
 - Every campaign place/person spelling flagged in `01` §11: "Ravin Koulèv / Ravin-a-Kolèv"; "Sitadèl Laferyè" vs "Sitadèl Anri"; « An avan! » usage in scene copy.
-- **New with this corpus:** the voice-dispatch mechanic's Kreyòl name (vwadyo is currently unlawful); the Cipher Office's kid-facing name; the chat-register message batch (U4); anthem lyrics wherever a chorus is taught; "Ti misyon" for the micro-mission.
+- **New with this corpus:** **the game's title — "KÒD LA"** (Scott's pick, built from attested material; confirm the form, and whether *kòd* reads as "code" alongside "rope" — the double meaning is the point); the voice-dispatch mechanic's Kreyòl name (vwadyo is currently unlawful); the Cipher Office's kid-facing name; the chat-register message batch (U4); anthem lyrics wherever a chorus is taught; "Ti misyon" for the micro-mission.
 - Slang slots: native-curated only — you, cousins, family-vetted creators. The app authors zero slang, ever.
 
 **Your other hats:** the 45-minute family-idiolect lexicon pass over the item bank; the 90-minute audio session #1 (Misyon U1 doubles as this); voice replies to dispatches when you can — yours are the replies that matter most.

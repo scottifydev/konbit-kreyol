@@ -52,6 +52,8 @@ Owner decisions, in force. A build must not quietly contradict any row.
 | 2026-07-10 | **Chapter anthems:** one modern Haitian track per chapter — linked never hosted, boys nominate, family vets, chorus vocabulary pre-taught via song keys. |
 | 2026-07-10 | **GM layer:** Scott = command + enemy intelligence channel; Manman = Cipher Office; code names family-coined at kickoff; async-only GM agency; GM never touches mastery math; adults are never the enemy mechanically. |
 | 2026-07-10 | **Stack: Vercel + Supabase.** Phone + PC hybrid: the 30-min daily loop lives on the shared PC; each boy's phone carries the voice surface. Privacy copy: "stays in the family." |
+| 2026-07-10 | **Working title: KÒD LA** ("the rope / the code" — attested material, no coinage). Pending Manman like every Kreyòl string; the boys' build shows "THE ROPE" until she passes it. "Konbit Kreyòl" stays as the program/repo name. `kòd` added to the pending U2 scope batch (`04` §1.1). |
+| 2026-07-10 | **Build started** — `web/` (Next.js): engine port, law lint + tests, voice-dispatch pipeline, Cipher Office queue; Supabase schema staged in `supabase/migrations/`, `LocalStore` as the dev placeholder until the Supabase gate clears. |
 | 2026-07-10 | Copy law adopted (every kid-facing word inviting, never scary) and "Daylight Broadsheet" design re-cut adopted — carried into `04-laws.md` and `05-design-constitution-v7.md`. |
 | 2026-07-10 | **History brief is binding** (now `01-world-and-story.md`): facts, spellings, legend-vs-documented flags, sensitivity rulings. Capois' cry is « An avan! An avan! », never "the bullets are dust"; Catherine Flon is "the story goes." |
 | 2026-07-10 | **Do not "fix" Tier-A seeding** — the old HANDOFF delta row was a 0-vs-1-indexing misread; `box=2` (0-indexed) already equals the spec's box 3. See `06-engineering.md` §Traps. |
@@ -79,7 +81,7 @@ Anything in `archive/` asserting the following is superseded:
 - Every ht string in the review queue (`08-family-handbook.md` §Cipher Office carries the full escalation list).
 - The scope-amendment batch and the seven surface-name glosses entering scope.
 - Campaign spellings flagged in `01-world-and-story.md` (Ravin Koulèv; Sitadèl Laferyè vs Sitadèl Anri; « An avan! » usage in scene copy).
-- Naming: the voice-dispatch mechanic's Kreyòl name (vwadyo is currently unlawful — see `04-laws.md` §Lint), the Cipher Office's kid-facing name, the capstone event's name.
+- Naming: **the title itself — "KÒD LA"** (and whether *kòd* carries the "code" reading alongside "rope"); the voice-dispatch mechanic's Kreyòl name (vwadyo is currently unlawful — see `04-laws.md` §Lint); the Cipher Office's kid-facing name; the capstone event's name.
 - The chat-register message batch (U4) and anthem lyrics wherever choruses are taught.
 - 45-min family-idiolect lexicon pass; 90-min audio session #1.
 
@@ -106,4 +108,7 @@ Anything in `archive/` asserting the following is superseded:
 08-family-handbook.md         ← adult-facing: GM + Cipher Office + parent brief
 konbit-kreyol-app-v6-4.html   ← archived reference implementation (engine-normative)
 archive/                      ← superseded brainstorm docs (rationale only)
+web/                          ← the app (Next.js) — engine, lint, tests, screens
+supabase/migrations/          ← schema + RLS, ready for the Supabase gate
+.github/workflows/ci.yml     ← law lint + tests + build on every push
 ```

@@ -16,7 +16,8 @@ Text-and-voice video game set in the Haitian Revolution that teaches two teenage
 9. **Do not "fix" Tier-A seeding** — `06-engineering.md` §5.1 (the old delta row is an indexing misread; the code already matches spec).
 
 ## Engineering
-- Port the engine (gate helpers, two-ledger Leitner SRS, relay/konbit state) from `konbit-kreyol-app-v6-4.html` with the traps in `06-engineering.md` §5. That file is archived — never edit it.
+- The app lives in `web/` (working title KÒD LA — flagged for Manman like all Kreyòl). Run `npm run check` in `web/` before any commit: the law lint + test suite must pass.
+- The engine (gate helpers, two-ledger Leitner SRS, relay/konbit state) is ported in `web/src/lib/engine/` from `konbit-kreyol-app-v6-4.html` with the traps in `06-engineering.md` §5 annotated and tested. The reference HTML is archived — never edit it.
 - Stack: Next.js on Vercel; Supabase auth (family-only) + Postgres (RLS) + private Storage for audio; media linked, never hosted. Pointer events only; `touch-action:none` on hold-to-record.
 - Every PR passes checklists a–f (`04-laws.md` §8). The CI lint (`04-laws.md` §9) is not riggable: whitelist = proper nouns only, change-controlled.
 

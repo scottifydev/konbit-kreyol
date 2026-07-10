@@ -8,7 +8,7 @@
 
 1. **taught(tw) ⇔ `tw === 8 ? unit >= 8 : unit > tw`.** A string flips to Kreyòl only when the unit teaching its words is **finished**. Unit 8 is the sole exception: capstone immersion flips *at* 8. The `>=` bug (flipping when a unit *starts*) is the exact failure Scott caught on screenshot — never reintroduce it.
 2. **tw is computed, never assigned:** tw = the max taught-unit across every word in the ht string. Any string containing a never-taught word goes in the **tw 8 immersion bucket** (English until capstone).
-3. **No whitelist. No "product name" exemption.** Surface names (Fil la, Fokis, Mòn, Pwodiksyon, Misyon, Anrejistrè, Konbit, Padon, Kle 77) are vocabulary with real tw values. The **only** day-1 Kreyòl is the logo "KONBIT KREYÒL" — the app's proper name.
+3. **No whitelist. No "product name" exemption.** Surface names (Fil la, Fokis, Mòn, Pwodiksyon, Misyon, Anrejistrè, Konbit, Padon, Kle 77) are vocabulary with real tw values. The **only** day-1 Kreyòl is the logo — the app's proper name. *(Amended 2026-07-10: the working title is **KÒD LA** ("the rope / the code"), owner decision; it carries `needsReview:true` like every Kreyòl string and the boys' build renders the English mark "THE ROPE" until Manman passes it. "Konbit Kreyòl" remains the program's name.)*
 4. **Zero Kreyòl literals in templates.** All chrome text routes through the gate helpers (`T()`, `Tt()`, `tagT()`, `unitTitle()`, `gLbl()`). Kreyòl may otherwise exist only in content data: scope items, posts, scene dialogue, quiz banks, quoted oral literature, and lesson objects of study (e.g. `la · a · an` in the determiner lesson).
 5. **Unit titles are bilingual ("Manje · Food") until their unit is complete**, then solo Kreyòl.
 6. **Every rendered Kreyòl string carries `data-en`; long-press reveals English.** Content glosses use tap (`data-gloss`). Visual affordances are distinct: sun **sweep** = tappable content word; sun **underline** (`.flipnew`) = chrome newly flipped this unit.
@@ -19,7 +19,7 @@
 
 Earlier batch (ratified): U1 — wi, mwen, fini, semèn, kòmanse, konbit, padon · U2 — monte, konprann, fanmi, ann, pwovèb · U3 — kizin, lòd · U4 — reyaji.
 
-Surface-name batch (pending Manman): U1 — fil, fokis, misyon, pale, ekri, koute, gade, jodi a, demen, w, m · U2 — mòn, pwodiksyon, anrejistrè, kle · U3 — legim.
+Surface-name batch (pending Manman): U1 — fil, fokis, misyon, pale, ekri, koute, gade, jodi a, demen, w, m · U2 — mòn, pwodiksyon, anrejistrè, kle, **kòd** *(added 2026-07-10 with the title decision — needed by the title and by "Pase kòd la"; recomputes pass_rope to tw 3)* · U3 — legim.
 
 ### 1.2 Expression ruling (recorded)
 
@@ -106,7 +106,12 @@ f) **GM/voice laws** — §4–§5: no GM write path to ledgers; no machine judg
 
 ## 9. CI LINT (not riggable)
 
-- **Language lint:** tokenize all template literals; any diacritic-bearing or scope-listed token outside gate helpers/content data fails the build. Whitelist = proper nouns only (Revolution people and places, artists, VOA, IPN), **change-controlled: additions require a diff to this file.** The v6-4 runtime lint's undeclared homograph skip-list (`a, la, an, san, men, non, pa, ta, bay, band, plate`) is **not** inherited without a recorded amendment here. `lodyans`, `vwadyo`, `kapstòn` are not proper nouns and remain unlawful whitelist entries — resolve by scope-add or rename (Manman gate).
+- **Language lint:** tokenize all template literals; any diacritic-bearing or scope-listed token outside gate helpers/content data fails the build. Whitelist = proper nouns only (Revolution people and places, artists, VOA, IPN), **change-controlled: additions require a diff to this file.** `lodyans`, `vwadyo`, `kapstòn` are not proper nouns and remain unlawful — resolve by scope-add or rename (Manman gate).
+- **Recorded lint amendments (2026-07-10, implemented in `web/lint/`):**
+  1. **Ambiguous-token policy** — scope ids that are also common English words (declared openly in `web/lint/whitelist.json`, unlike v6-4's hidden skip-list) are exempt from per-token flagging in English chrome; they still flag when diacritic-bearing or inside a Kreyòl phrase. This is the sanctioned replacement for the undeclared v6-4 homograph list.
+  2. **Known-unlawful tokens** — `lodyans`/`vwadyo`/`kapstòn` carry no diacritic and sit outside scope, so wordlist rules cannot catch them; they are explicitly flagged (`flaggedTokens`) until resolved, and removing one requires recording the resolution here.
+  3. **Proper nouns match case-sensitively** (plus an ALL-CAPS display variant) — "Kreyòl" is a name; lowercase "kreyòl" in running chrome is a leak; the title entry cannot bless lowercase "kòd la" phrases.
+  4. **Renderable-text policy** — comments and `${…}` interpolations stripped; JSX text linted at full strictness; whitespace-free ASCII string literals (lookup keys/enums — the lawful chrome path itself) exempt. Hardening to full AST analysis is part of the CI issue.
 - **Copy lint:** flags `§`, "Real build", banned jargon (§2.1), fear words (§2.2), third-person-about-the-kid (§2.4) on kid surfaces — **covering toasts and `title=` attributes** (the v6-4 runtime lint walked only `#app`; toasts bypassed it).
 - **Scope-coverage lint:** any UI string whose words never appear in the scope is a build error (it would never flip).
 - **Review-gate lint:** a seeded `needsReview:true` string rendering in a boy-profile build is a test failure (`07` issue 6).
