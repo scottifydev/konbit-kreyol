@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Konbit Kreyòl</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo+Black&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f0e9d8; --bone:#e6dcc4; --rule:#c9bda0; --ink:#1b2030; --dim:#6b6555;
+    --cobalt:#1a3fc4; --cobalt-sh:#122d8f;
+    --red:#d02c22;    --red-sh:#9c1f18;
+    --sun:#f2b02c;    --sun-sh:#c78d1a;
+    --palm:#2e7d4f;
+    --slate:#22303a;  --chalk:#f0e9d8;
+    --disp:'Alfa Slab One','Archivo Black',serif;
+    --sans:'Instrument Sans',system-ui,sans-serif;
+    --serif:'Instrument Serif',serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;min-height:100vh}
+  body::before{content:"";position:fixed;top:0;left:0;right:0;height:5px;z-index:200;
+    background:linear-gradient(90deg,var(--cobalt) 0 33.4%,var(--sun) 33.4% 66.7%,var(--red) 66.7% 100%)}
+  button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
+  :focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+  ::selection{background:var(--sun)}
+  h1,h2,h3{font-weight:400}
+
+  .disp{font-family:var(--disp);font-weight:400;letter-spacing:.01em;line-height:1.12}
+  .d1{font-size:clamp(34px,5vw,44px)} .d2{font-size:28px} .d3{font-size:20px}
+  .lbl{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+  .dim{color:var(--dim)} .note{font-size:12.5px;color:var(--dim)}
+  .num{font-variant-numeric:tabular-nums;font-weight:700}
+  .heronum{font-family:var(--disp);font-size:34px;line-height:1}
+  .stripe{height:4px;border:none;margin:14px 0;
+    background:linear-gradient(90deg,var(--cobalt) 0 33.4%,var(--sun) 33.4% 66.7%,var(--red) 66.7% 100%)}
+
+  .paint{position:relative;color:var(--paper)}
+  .paint::after{content:"";position:absolute;inset:5px;border:1px solid var(--paper);pointer-events:none}
+  .paint.cobalt{background:var(--cobalt)} .paint.red{background:var(--red)}
+  .board{background:var(--slate);color:var(--chalk)}
+  .goldsheet{background:var(--sun);color:var(--ink);position:relative}
+  .goldsheet::after{content:"";position:absolute;inset:6px;border:1.5px solid var(--ink);pointer-events:none}
+  .stamp{display:inline-block;border:2.5px solid var(--ink);padding:3px 12px;font-size:11.5px;font-weight:800;
+    letter-spacing:.16em;text-transform:uppercase;transform:rotate(-1.5deg);background:var(--paper)}
+  .stamp.palm{border-color:var(--palm);color:var(--palm)}
+  .tike{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--ink);padding:4px 12px;
+    font-size:12px;font-weight:700;letter-spacing:.04em;background:var(--paper);white-space:nowrap}
+  .tike b{font-family:var(--disp);font-weight:400;font-size:15px}
+  .tike .perf{border-left:1.5px dashed var(--ink);padding-left:8px;margin-left:2px}
+  .tike.leo{border-color:var(--cobalt);color:var(--cobalt)} .tike.leo .perf{border-color:var(--cobalt)}
+  .tike.isaac{border-color:var(--red);color:var(--red)} .tike.isaac .perf{border-color:var(--red)}
+  .tike.sunb{background:var(--sun)}
+
+  /* LANGUAGE AFFORDANCES — de-conflated (audit fix)
+     .gloss  = tappable content word (feed & app-word chips): sun sweep, tap = meaning, long-press = same
+     .flipnew = chrome string newly flipped this unit: sun underline only, long-press = English */
+  .gloss{padding:0 4px;font:inherit;color:var(--ink);background:var(--sun);box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  .gloss:hover{background:var(--ink);color:var(--sun)}
+  .flipnew{border-bottom:3px solid var(--sun)}
+
+  .cta{display:inline-block;font-family:var(--disp);font-size:17px;letter-spacing:.03em;padding:13px 26px;
+    color:var(--paper);border:2px solid var(--ink)}
+  .cta.cobalt{background:var(--cobalt);box-shadow:5px 5px 0 var(--cobalt-sh)}
+  .cta.red{background:var(--red);box-shadow:5px 5px 0 var(--red-sh)}
+  .cta.sun{background:var(--sun);color:var(--ink);box-shadow:5px 5px 0 var(--sun-sh)}
+  .cta:active{transform:translate(3px,3px)}
+  .btn{display:inline-block;font-weight:700;font-size:13.5px;letter-spacing:.05em;text-transform:uppercase;
+    padding:9px 16px;border:2px solid var(--ink);background:var(--paper)}
+  .btn:hover{background:var(--ink);color:var(--paper)}
+  .btn.chalk{border-color:var(--chalk);background:transparent;color:var(--chalk)}
+  .btn.chalk:hover{background:var(--chalk);color:var(--slate)}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+
+  header{position:sticky;top:0;z-index:100;background:var(--paper);border-bottom:2px solid var(--ink)}
+  .mast{padding:14px 0 0}
+  .mast .in{max-width:980px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .plate{font-family:var(--disp);font-size:19px;color:var(--ink);padding:6px 18px 6px 14px;white-space:nowrap;
+    background:var(--paper);border:2px solid var(--ink);clip-path:polygon(0 0,100% 0,calc(100% - 12px) 100%,0 100%)}
+  .plate .k1{color:var(--cobalt)} .plate .k2{color:var(--red)}
+  .mast .who{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .gauge{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--dim)}
+  nav.tabs{max-width:980px;margin:6px auto 0;padding:0 24px;display:flex;gap:2px;flex-wrap:wrap}
+  .tab{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 12px;color:var(--dim)}
+  .tab:hover{color:var(--ink)}
+  .tab.on{color:var(--ink);background:var(--sun)}
+  .band{height:34px;display:flex;align-items:center;color:var(--paper)}
+  .band .in{max-width:980px;margin:0 auto;padding:0 24px;width:100%;display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+  .band.leo{background:var(--cobalt)} .band.isaac{background:var(--red)}
+  .band .flipnew{border-bottom-color:var(--paper)}
+
+  main{max-width:980px;margin:0 auto;padding:30px 24px 120px;animation:deal .2s ease both}
+  @keyframes deal{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @keyframes stampin{from{transform:scale(1.15) rotate(-1.5deg);opacity:0}to{transform:scale(1) rotate(-1.5deg);opacity:1}}
+  .stamp.new{animation:stampin .12s ease-out both}
+  @media (prefers-reduced-motion:reduce){main,.stamp.new,.receipt{animation:none!important}}
+
+  .ruled{position:relative;padding-left:34px}
+  .ruled::before{content:"";position:absolute;left:18px;top:4px;bottom:4px;width:1.5px;background:var(--red)}
+  .row{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:11px 0;border-bottom:1px solid var(--rule);font-size:14.5px;flex-wrap:wrap}
+  .row:last-child{border-bottom:none}
+  .panel{border:2px solid var(--ink);background:var(--paper)}
+  .panel.well{background:var(--bone)}
+
+  .lead{border:2.5px solid var(--ink);padding:26px 28px;background:var(--paper)}
+  .lead .kicker{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+  .steps{list-style:none;margin:16px 0 20px}
+  .steps li{display:flex;gap:14px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--rule);font-size:15px}
+  .steps li:last-child{border-bottom:none}
+  .steps .t{min-width:56px;font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--dim)}
+  .steps .ok{color:var(--palm);font-weight:700}
+  table.standings{width:100%;border-collapse:collapse;font-size:14px}
+  .standings th{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+    text-align:right;padding:8px 10px;border-bottom:2px solid var(--ink)}
+  .standings th:first-child{text-align:left}
+  .standings td{padding:10px;text-align:right;border-bottom:1px solid var(--rule);font-variant-numeric:tabular-nums}
+  .standings td:first-child{text-align:left;font-weight:700}
+  .standings .sw{display:inline-block;width:11px;height:11px;margin-right:8px;vertical-align:baseline}
+  .barcell{position:relative;height:10px;background:var(--bone);min-width:80px}
+  .barcell i{position:absolute;top:0;bottom:0;left:0}
+  .index{margin-top:26px}
+  details.drawer{border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);margin-top:26px}
+  details.drawer summary{cursor:pointer;padding:13px 2px;font-weight:800;font-size:12px;letter-spacing:.16em;text-transform:uppercase;list-style:none;display:flex;justify-content:space-between}
+  details.drawer summary::after{content:"+"}
+  details.drawer[open] summary::after{content:"–"}
+  .gmap{display:grid;grid-template-columns:1fr 54px 54px;gap:7px 12px;padding:6px 2px 18px;font-size:13.5px;align-items:center}
+  .gmap .h{font-size:10px;font-weight:800;letter-spacing:.12em;color:var(--dim);text-align:center;text-transform:uppercase}
+  .cell{height:11px;background:var(--bone);border:1px solid var(--rule)}
+  .cell.act{background:var(--sun);border-color:var(--ink)}
+  .cell.solid{background:var(--palm);border-color:var(--ink)}
+
+  .col{max-width:620px;margin:0 auto}
+  .entry{padding:18px 20px;border:2px solid var(--ink);background:var(--paper);margin:16px 0}
+  .pfp{width:42px;height:42px;border:2px solid var(--ink);background:var(--bone);display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0}
+  .instr{display:flex;gap:26px;align-items:center;flex-wrap:wrap;border:2px solid var(--ink);padding:18px 22px;margin-top:26px;background:var(--paper)}
+  .meters{flex:1;min-width:240px}
+  .meter{display:grid;grid-template-columns:88px 1fr 44px;gap:10px;align-items:center;margin-bottom:9px;font-size:13px;font-weight:700}
+  .meter:last-child{margin-bottom:0}
+  .meterbar{height:12px;border:2px solid var(--ink);background:var(--paper)}
+  .meterbar i{display:block;height:100%}
+  .meter .pc{text-align:right;color:var(--dim);font-variant-numeric:tabular-nums}
+  .entry .top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+  .entry .who{font-weight:800;font-size:14px}
+  .entry .sub{font-size:12px;color:var(--dim)}
+  .entry .tag{margin-left:auto;font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+  .entry .kt{font-size:19px;line-height:1.65}
+  .entry.quote .kt{font-family:var(--serif);font-style:italic;font-size:21px;border-left:5px solid var(--sun);padding-left:14px}
+  .entry .en{display:block;font-size:13px;color:var(--dim);font-style:italic;margin-top:8px}
+  .entry .acts{display:flex;gap:14px;margin-top:12px;flex-wrap:wrap}
+  .entry .acts button{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);padding:4px 0;border-bottom:2px solid transparent}
+  .entry .acts button:hover{color:var(--ink);border-color:var(--ink)}
+  .entry .acts .on{color:var(--ink);border-color:var(--sun);background:var(--sun);padding:4px 8px}
+  .revmark{font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--red)}
+  .duebadge{font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--cobalt)}
+  .femen{margin:30px auto 0;max-width:420px;text-align:center;padding:30px 24px}
+  .femen .disp{font-size:34px}
+
+  .stage{max-width:620px;margin:0 auto}
+  .boardbox{padding:38px 34px;border:3px solid var(--ink);position:relative}
+  .boardbox .tray{position:absolute;left:-3px;right:-3px;bottom:-14px;height:11px;background:var(--bone);border:2px solid var(--ink)}
+  .chalkbar{height:5px;background:#324453;margin:-38px -34px 26px;position:relative}
+  .chalkbar i{position:absolute;left:0;top:0;bottom:0;background:var(--chalk)}
+  .qp{font-family:var(--disp);font-size:clamp(26px,4.4vw,38px);line-height:1.15;text-align:center;margin:8px 0 26px}
+  .opts{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .opt{border:2px dashed var(--chalk);color:var(--chalk);padding:13px 26px;font-size:17px;font-weight:700;min-width:120px}
+  .opt:hover{border-style:solid;background:#2c3d49}
+  .opt.hit{border-style:solid;border-radius:50%/45%;border-width:2.5px}
+  .opt.miss{text-decoration:line-through;text-decoration-thickness:2.5px;opacity:.75}
+  .fb{text-align:center;min-height:24px;margin-top:16px;font-size:14.5px;color:var(--chalk)}
+  .fb .yes{border-bottom:2px solid var(--sun)}
+  .boardnote{text-align:center;font-size:12px;color:#8ba0af;margin-top:14px}
+  .chalkrule{max-width:400px;margin:14px auto 0;text-align:left;line-height:2.1;font-size:15px}
+  .chalkrule b{color:var(--sun);font-weight:700}
+  .board .flipnew{border-bottom-color:var(--sun)}
+
+  .panorama{display:block;width:100%;max-width:620px;margin:8px auto}
+  .legs{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin:18px 0}
+  .legcard{flex:1;min-width:230px;max-width:290px;border:2px solid var(--ink);padding:16px 18px;background:var(--paper);text-align:left}
+  .legcard.done{border-color:var(--palm)}
+  .legcard.now{background:var(--bone)}
+  .legcard .lh{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .chipav{width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-size:16px;color:var(--paper)}
+  .chipav.leo{background:var(--cobalt)} .chipav.isaac{background:var(--red)}
+  .konsey{border-left:4px solid var(--sun);padding:6px 0 6px 12px;margin-top:8px;font-size:13.5px}
+  .summitbar{max-width:460px;margin:0 auto}
+  .summitbar .t{display:flex;justify-content:space-between;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:5px}
+  .sbar{height:14px;border:2px solid var(--ink);background:var(--paper)}
+  .sbar i{display:block;height:100%;background:var(--sun)}
+
+  .poster{padding:34px 32px}
+  .poster h2{font-family:var(--disp);font-size:clamp(26px,4vw,34px);margin:10px 0 8px}
+  .starrow{display:flex;align-items:center;gap:12px;margin-top:20px;flex-wrap:wrap}
+  .starbox{display:flex;gap:6px}
+  .star{width:30px;height:30px;border:2px solid var(--ink);background:var(--paper);font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .star.on{background:var(--ink);color:var(--sun)}
+
+  .recfield{border:3px solid var(--ink);padding:22px;text-align:center;margin-top:16px;background:var(--paper)}
+  .recfield.live{background:var(--red);color:var(--paper)}
+  .recfield .heronum{font-size:44px}
+  .prompts{list-style:none;margin:16px 0;text-align:left}
+  .prompts li{display:flex;gap:12px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--rule);font-size:16px}
+  .prompts li:last-child{border-bottom:none}
+  .prompts .ref{margin-left:auto;font-size:10.5px;font-weight:800;letter-spacing:.1em;color:var(--dim);text-transform:uppercase}
+
+  .gate{max-width:900px;margin:0 auto;text-align:center;padding-top:28px}
+  .gate .masttitle{font-family:var(--disp);font-size:clamp(40px,7vw,64px);line-height:1.05}
+  .gate .k1{color:var(--cobalt)} .gate .k2{color:var(--red)}
+  .gate .tag{font-family:var(--serif);font-style:italic;font-size:19px;margin-top:8px}
+  .doors{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:30px;border:3px solid var(--ink)}
+  @media (max-width:640px){.doors{grid-template-columns:1fr}}
+  .door{padding:34px 26px 30px;text-align:left;position:relative}
+  .door::after{content:"";position:absolute;inset:7px;border:1.5px solid var(--paper);pointer-events:none}
+  .door.leo{background:var(--cobalt);color:var(--paper)}
+  .door.isaac{background:var(--red);color:var(--paper)}
+  .door:hover{filter:brightness(1.06)}
+  .door .nm{font-family:var(--disp);font-size:clamp(34px,5vw,48px);line-height:1}
+  .door .meta{font-size:12.5px;letter-spacing:.06em;margin:8px 0 16px;text-transform:uppercase;font-weight:700}
+  .door .stats{display:flex;gap:16px;font-size:12px;font-weight:700;letter-spacing:.04em;flex-wrap:wrap}
+  .door .stats b{font-family:var(--disp);font-weight:400;font-size:19px;display:block}
+  .goldband{background:var(--sun);color:var(--ink);border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);
+    padding:12px 20px;font-weight:700;font-size:14px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;align-items:center;grid-column:1/-1}
+
+  .receipt{position:fixed;bottom:0;left:50%;transform:translateX(-50%);z-index:300;background:var(--paper);
+    border:2px solid var(--ink);border-bottom:none;padding:12px 22px 16px;font-size:13.5px;font-weight:600;
+    animation:rise .2s ease both;max-width:90vw}
+  .receipt::before{content:"";position:absolute;top:6px;left:8px;right:8px;border-top:1.5px dashed var(--rule)}
+  @keyframes rise{from{transform:translate(-50%,100%)}to{transform:translate(-50%,0)}}
+
+  .hinttip{position:fixed;z-index:400;background:var(--slate);color:var(--chalk);border:2px solid var(--ink);
+    padding:9px 14px;font-size:13px;pointer-events:none;max-width:280px}
+
+  .devchip{position:fixed;bottom:16px;right:16px;z-index:150;border:2px solid var(--ink);background:var(--paper);
+    padding:6px 13px;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+  .devchip:hover{background:var(--ink);color:var(--paper)}
+  .devpanel{position:fixed;bottom:58px;right:16px;z-index:150;background:var(--paper);border:2px solid var(--ink);
+    padding:16px;width:250px;display:none;box-shadow:6px 6px 0 var(--rule)}
+  .devpanel.open{display:block}
+  .devpanel .row{font-size:12.5px;padding:8px 0}
+  .devpanel button,.devpanel select{border:1.5px solid var(--ink);background:var(--paper);padding:4px 10px;font-size:12px;font-weight:700}
+  .devpanel button:hover{background:var(--ink);color:var(--paper)}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+<div id="tip" class="hinttip" style="display:none"></div>
+
+<button class="devchip" id="devToggle">Prototype</button>
+<div class="devpanel" id="devPanel">
+  <div class="row" style="display:flex;justify-content:space-between"><span>Sim day</span><span><b class="num" id="devDay"></b> <button id="devAdvance">+1</button></span></div>
+  <div class="row" style="display:flex;justify-content:space-between"><span>Unit</span><select id="devUnit"></select></div>
+  <div class="row" style="display:flex;gap:8px"><button id="devExport">Export</button><button id="devReset">Reset</button><button id="devLint">Lint</button></div>
+  <div class="note">Real build: file persistence + native-review gate + language-lint CI (§10, audit).</div>
+</div>
+
+<script>
+"use strict";
+/* KONBIT KREYÒL v6.1 — language-law repair release.
+   Changes vs v6 (per audit):
+   1. 100% of chrome routes through T(). Zero Kreyòl literals in templates outside content data.
+   2. Product-name whitelist (closed set) is the only day-1 Kreyòl; every instance carries data-en.
+   3. Gate + diagnostic (pre-Unit-1 surfaces) are English-chrome only.
+   4. Unit titles bilingual until their unit opens.
+   5. Every rendered Kreyòl chrome string is long-pressable (data-en enforced by T()).
+   6. Scope gaps fixed: wi, mwen, fini, semèn, fanmi, konprann, monte, kòmanse, kizin, lòd, reyaji added.
+   7. Affordance de-conflation: .gloss = tappable content; .flipnew = newly flipped chrome (sun underline).
+   8. Dev "Lint" button: runtime scan for untaught Kreyòl in rendered chrome. */
+
+/* ---------------- scope items ---------------- */
+const ITEMS = [
+ ["nan","in / at",1,1,1],["ak","with",1,1,1],["yo","they / plural marker",1,1,1],["pou","for",1,1,1],
+ ["a","the (after vowel)",3,1,0],["ki","who / which",1,1,1],["yon","a / one",1,1,1],["la","the (after consonant)",3,1,0],
+ ["sou","on",1,1,1],["ou","you",1,1,1],["se","is / it's",2,1,1],["te","past marker",5,1,1],
+ ["an","the (after nasal vowel)",3,1,0],["sa","this / that",2,1,1],["nou","we / us",1,1,1],["pa","not",1,1,1],
+ ["li","he / she / it",1,1,1],["gen","have / there is",2,1,1],["pi","more (comparative)",2,1,1],["fè","do / make",2,1,1],
+ ["tout","all",1,1,1],["bon","good",2,1,1],["ka","can",2,1,1],["ap","progressive marker",4,1,1],
+ ["moun","person / people",1,1,1],["plis","more (quantity)",3,1,1],["oswa","or",1,1,0],["soti","come from / go out",2,1,1],
+ ["lè","when / time",1,1,1],["gwo","big",2,1,1],["epi","and then",1,1,1],["tou","also",1,1,1],
+ ["jan","way / manner",1,1,0],["l","he/she (short)",1,1,1],["si","if",3,1,1],["lòt","other",1,1,1],
+ ["men","but / hand",1,1,1],["ti","small",2,1,1],["kay","house",2,1,1],["travay","work",2,1,1],
+ ["bay","give",2,1,1],["pase","pass / than",3,1,1],["jwenn","find / get",2,1,1],["dwe","must / should",4,1,1],
+ ["kapab","be able to",2,1,0],["avèk","with (full form)",1,1,0],["di","say / tell",2,1,1],["anpil","a lot",1,1,1],
+ ["tan","time / weather",1,1,0],["lan","the (after nasal cons.)",3,1,0],["tankou","like / such as",2,1,0],["ane","year",1,1,1],
+ ["byen","well / fine",1,1,1],["menm","same / even",1,1,1],["peyi","country",2,1,1],["chak","each",1,1,1],
+ ["san","without / hundred",2,1,0],["jou","day",1,1,1],["kote","where / place",1,1,1],["ta","would (conditional)",6,1,0],
+ ["vle","want",2,1,1],["pran","take",2,1,1],["mete","put",3,1,1],["dlo","water",3,1,1],
+ ["youn","one (of them)",1,1,0],["non","no / name",1,1,1],["ant","between",2,1,0],["bagay","thing",1,1,1],
+ ["pati","leave / part",2,1,0],["ale","go",2,1,1],["manje","eat / food",3,1,1],["apre","after",1,1,1],
+ ["kèk","some / a few",1,1,0],["premye","first",1,1,0],["fèt","party / born / done",2,1,0],["nenpòt","any",2,1,0],["genyen","have / win",2,1,1],
+ /* audit scope additions */
+ ["wi","yes",1,0,1],["mwen","I / me (full form)",1,0,1],["fini","finish / done",1,0,1],["semèn","week",1,0,1],
+ ["kòmanse","start / begin",1,0,0],["monte","climb / go up",2,0,1],["konprann","understand",2,0,1],["fanmi","family",2,0,1],
+ ["kizin","kitchen",3,0,1],["lòd","order / command",3,0,0],["reyaji","react",4,0,0],
+ ["ann","let's (hortative)",2,0,1],["pwovèb","proverb",2,0,0],
+ ["konbit","work crew / collective effort",1,0,0],["padon","sorry / pardon",1,0,1],
+ /* Ti Mo strand */
+ ["kounye a","now",1,0,1],["toujou","always / still",1,0,1],["ankò","again",2,0,1],["deja","already",2,0,1],
+ ["janm","never",2,0,1],["anyen","nothing",2,0,1],["okenn","none / no",3,0,0],
+ /* U2 fanmi & verbs */
+ ["manman","mom",2,0,1],["papa","dad",2,0,1],["frè","brother",2,0,1],["sè","sister",2,0,1],
+ ["grann","grandma",2,0,1],["tonton","uncle",2,0,1],["matant","aunt",2,0,1],["kouzen","cousin",2,0,0],
+ ["vini","come",2,0,1],["rete","stay / live",2,0,1],["dòmi","sleep",2,0,1],["wè","see",2,0,1],
+ ["tande","hear",2,0,1],["konnen","know",2,0,1],["leve","get up",2,0,1],["chita","sit",2,0,0],
+ /* U3 manje */
+ ["diri","rice",3,0,1],["pwa","beans",3,0,1],["griyo","fried pork",3,0,0],["pikliz","spicy slaw",3,0,0],
+ ["poul","chicken",3,0,1],["kafe","coffee",3,0,0],["kwit","cook",3,0,1],["louvri","open",3,0,1],
+ ["fèmen","close",3,0,1],["koupe","cut",3,0,1],["goute","taste",3,0,1],["grangou","hungry",3,0,1],["swaf","thirsty",3,0,0],
+ /* expressions */
+ ["sa k ap fèt","what's happening? (current casual greeting)",1,0,1,"expr"],
+ ["sak cho","what's poppin? (very casual)",1,0,0,"expr"],
+ ["kòman ou ye","how are you? (neutral, elders)",1,0,1,"expr"],
+ ["n ap kenbe","we're hanging in there",1,0,1,"expr"],
+ ["m poze","I'm chilling",1,0,0,"expr"],
+ ["mèsi anpil","thank you very much",1,0,1,"expr"],
+ ["tèt chaje","overwhelmed / what a mess (slang, safe ak Manman)",1,0,0,"slang"],
+ ["piti piti zwazo fè nich li","little by little the bird builds its nest (pwovèb)",2,0,0,"pwoveb"],
+].map(r=>({id:r[0],ht:r[0],en:r[1],u:r[2],kle:!!r[3],pc:!!r[4],cat:r[5]||"word"}));
+const KLE_TOTAL = ITEMS.filter(i=>i.kle).length;
+
+/* ---------------- feed (content data — gate does not apply; native-review gate does) ---------------- */
+const POSTS = [
+ {id:"p1",pfp:"👩🏾",base:4,who:"Manman",sub:"chat fanmi an",tag:"Fanmi",u:2,
+  ht:[["Leo, ou fè devwa w? "],["Reponn mwen souple","answer me please"],[" 😤 M ap tann ou, manje a "],["pare","ready"],["!"]],
+  en:"Leo, did you do your homework? Answer me please 😤 I'm waiting, food's ready!",
+  items:["manje","fè","ou"],needsReview:true},
+ {id:"p2",pfp:"🦜",base:21,who:"Pwovèb jodi a",sub:"oral tradition",tag:"Pwovèb",u:2,quote:true,
+  ht:[["Piti piti "],["zwazo","bird"],[" fè "],["nich","nest"],[" li."]],
+  en:"Little by little, the bird builds its nest.",
+  items:["piti piti zwazo fè nich li","fè","li"],needsReview:false},
+ {id:"p3",pfp:"⚽",base:34,who:"Foutbòl cho",sub:"gwo pale",tag:"Espò",u:3,
+  ht:[["GÒÒÒL!! 🔥 Defans lan "],["te dòmi","was asleep — te = past"],[" men nou genyen "],["kanmenm","anyway / still"],["!!"]],
+  en:"GOAL!! The defense was asleep but we won anyway!!",
+  items:["te","dòmi","men","genyen"],needsReview:true},
+ {id:"p4",pfp:"🧢",base:17,who:"Dekòdè slang",sub:"jan jèn yo pale",tag:"Slang",u:1,
+  ht:[["Tèt chaje 🤯 — lè tout bagay an dezòd. Safe — even ak Manman."]],
+  en:"'Loaded head' — overwhelmed, what a mess.",
+  items:["tèt chaje","tout","bagay","lè"],needsReview:false},
+ {id:"p5",pfp:"👋",base:12,who:"Salitasyon",sub:"greeting check",tag:"Fanmi",u:1,
+  ht:[["Jèn yo di: "],["Sa k ap fèt?","what's happening — current casual greeting"],[" oswa "],["Sak cho?","what's poppin"],[" · Ak granmoun: "],["Kòman ou ye?","how are you — neutral, elders"]],
+  en:"Register by person: casual with peers, neutral with elders. ('Sak pase' reads dated now.)",
+  items:["sa k ap fèt","sak cho","kòman ou ye","oswa"],needsReview:false},
+ {id:"p6",pfp:"📱",base:9,who:"Chat-Kreyòl 101",sub:"two costumes, one language",tag:"Chat",u:4,
+  ht:[["Liv: « m ap vini kounye a » · Chat: « "],["map vini kounya","fused spelling — same sentence"],[" » — menm fraz la!"]],
+  en:"Book spelling vs chat spelling — you must read both.",
+  items:["ap","kounye a","vini","menm"],needsReview:false},
+ {id:"p7",pfp:"🎺",base:15,who:"Konpa klasik",sub:"Tabou Combo · 1975",tag:"Mizik",u:3,
+  ht:[["Refren semèn nan: « New York City » — koute l 3 fwa, chante l pou frè w."]],
+  en:"This week's chorus — listen 3×, sing it for your brother. Opens the full-song rung.",
+  items:["frè","lè","semèn"],needsReview:true,link:"YouTube"},
+ {id:"p8",pfp:"🔑",base:7,who:"Ti mo jodi a",sub:"little words, big load",tag:"TiMo",u:1,
+  ht:[["« "],["toujou","always / still"],[" » · « "],["tou","also"],[" » · « "],["menm","same / even"],[" » — twa ti mo, anpil travay."]],
+  en:"Three little words that carry huge functional load.",
+  items:["toujou","tou","menm","anpil","travay"],needsReview:true},
+ {id:"p9",pfp:"🍲",base:28,who:"Kizin Grann",sub:"vwa fanmi",tag:"Manje",u:3,
+  ht:[["« "],["Mete","put"],[" diri a nan dlo a, epi "],["kwit","cook"],[" li ak pwa. » — Grann"]],
+  en:"Put the rice in the water, then cook it with the beans.",
+  items:["mete","diri","dlo","kwit","pwa","epi","kizin"],needsReview:true,audio:"Vwa Grann · awaiting family recording"},
+ {id:"p10",pfp:"⚖️",base:19,who:"Konparezon",sub:"pi … pase",tag:"Espò",u:2,
+  ht:[["Griyo "],["pi bon pase","better than — comparative"],[" pizza. Pa diskite. 🔥"]],
+  en:"Griyo is better than pizza. Don't argue.",
+  items:["pi","pase","bon","griyo"],needsReview:true},
+];
+
+const DETERMINERS = [
+ ["chat ___","la","a","after a plain consonant → la"],
+ ["dlo ___","a","la","after an oral vowel → a"],
+ ["kay ___","la","an","after y-glide → la"],
+ ["manje ___","a","an","after an oral vowel → a"],
+ ["liv ___","la","nan","after a plain consonant → la"],
+ ["machin ___","nan","la","after a nasal consonant → nan"],
+ ["fanm ___","nan","a","after a nasal consonant → nan"],
+ ["timoun ___","nan","la","after a nasal consonant → nan"],
+];
+const CONTRACTIONS = [
+ ["map manje","mwen ap manje","mwen te manje"],
+ ["wap vini","ou ap vini","ou a vini"],
+ ["lap travay","li ap travay","li a travay"],
+ ["nap kenbe","nou ap kenbe","non ap kenbe"],
+ ["yap jwe","yo ap jwe","yo a jwe"],
+ ["pap dòmi","pa ap dòmi","pa te dòmi"],
+ ["tap li","te ap li","ta ap li"],
+ ["pat wè","pa te wè","pa ta wè"],
+];
+
+/* ---------------- UI STRING TABLE — the only path for chrome text ----------------
+   key: [en, ht, taughtWeek]
+   tw 0  = product-name whitelist (closed set, day-1 Kreyòl, always long-pressable)
+   tw 1-7= flips when its LAST-taught word's unit opens
+   tw 8  = immersion bucket: flips only at Kapstòn (full-Kreyòl stage)            */
+const UI = {
+ /* former "whitelist" abolished — surface names are vocabulary too.
+    Only the logo (the app's proper name) stays Kreyòl on day 1. */
+ fil:["Feed","Fil la",1], fokis:["Focus","Fokis",1], prod:["Record","Pwodiksyon",2],
+ mon:["Mountain","Mòn",2], misyon:["Missions","Misyon",1], anrejistre:["Recorder","Anrejistrè",2],
+ konbit:["Crew","Konbit",1], padon:["Repair","Padon",1], kle77:["Core 77","Kle 77",2],
+ /* gated chrome */
+ dash:["Front page","Paj devan",8], settings:["Settings","Paramèt",8],
+ today:["Today's session · 30 min","Sesyon jodi a · 30 min",8],
+ start:["Start →","Kòmanse →",1],
+ greeting:["What's happening","Sa k ap fèt",1],
+ days:["days","jou",1], week:["Week","Semèn",1],
+ streak:["Streak","Seri",8], pts:["Pts","Pwen",8],
+ climber:["Climber","Grenpe",8],
+ listening:["Listening","Konprann",2], reading:["Reading","Li",1], speaking:["Speaking","Pale",1], writing:["Writing","Ekri",1],
+ gmap:["Grammar map — recognition | production","Kat gramè — rekonesans | pwodiksyon",8],
+ ladder:["Media ladder","Nechèl medya",8],
+ standings:["Konbit standings — one team, two climbers","Konbit — yon ekip, de grenpe",8],
+ index:["Index","Endèks",8],
+ allunits:["All units","Tout inite yo",8],
+ done:["done","fini",1],
+ yes:["Yes","Wi",1],
+ now_stamp:["NOW","KOUNYE A",1],
+ react:["React","Reyaji",4],
+ reacted:["You reacted","Ou reyaji",4],
+ gotit:["Got it","Konprann",2],
+ scroll:["Tap the highlighted words · react to 3 posts","Peze mo yo · 3 reyaksyon",8],
+ mix:["mix: 60% unit / 25% review / 15% seed","melanj: 60% inite / 25% revi / 15% semans",8],
+ reviews_waiting:["reviews waiting in","revi ap tann nan",8],
+ micro:["Micro-mission: say one taught phrase to a family member today","Mikwo-misyon: di yon fraz bay yon moun nan fanmi an",8],
+ microdone:["Done — said it out loud","Fini — mwen di l",5],
+ session_title:["Manje: kitchen commands","Manje: bay lòd nan kizin nan",3],
+ step_fil:["Fil la — 3 reactions","Fil la — 3 reyaksyon",4],
+ step_fokis:["Fokis — determiners, judgment-first","Fokis — detèminan, jijman anvan",8],
+ step_prod:["Pwodiksyon — 5 kitchen commands","Pwodiksyon — 5 lòd pou kizin nan",3],
+ step_mon:["Mòn — your relay leg","Mòn — etap relè pa w",8],
+ min15:["15-min minimum","Minimòm 15 min",8],
+ sound_right:["Which sounds right?","Ki sa ki sonnen byen?",8],
+ leg_done:["Leg finished","Etap fini",8],
+ pass_rope:["Pass the rope →","Pase kòd la →",8],
+ climb:["Start my leg","Ann monte",2],
+ tip:["Leave a tip for your brother (required)","Kite yon konsèy pou frè w (obligatwa)",8],
+ tip_why:["Explaining it is retrieval for you, a hint for him (§7).","Esplike l se pratik pou ou, èd pou li.",8],
+ summit:["Combined score to summit","Nòt ansanm pou tèt mòn nan",8],
+ summit_stamp:["SUMMIT!","TÈT MÒN NAN",8],
+ summit_body:["You made it together — shared badge","Nou rive ansanm — badj pataje",8],
+ waits:["The mountain waits for tomorrow.","Mòn nan ap tann demen.",8],
+ rope_pass:["passed you the rope.","pase w kòd la.",8],
+ vs_mountain:["Relay · the two of you vs the mountain","Relè · nou de kont mòn nan",8],
+ nobodyloses:["Both summit together, or the mountain waits for tomorrow. Nobody loses.","Nou rive ansanm, oswa mòn nan ap tann demen. Pèsonn pa pèdi.",8],
+ femen:["CLOSED","FÈMEN",3],
+ femen_body:["3 reactions done. Come back tomorrow — the shop reopens with fresh posts.","3 reyaksyon fèt. Tounen demen — magazen an louvri ankò.",8],
+ markdone:["Mark mission complete","Make misyon fini",8],
+ mission_done:["MISSION DONE","MISYON FINI",1],
+ current_stamp:["CURRENT","KOUNYE A",1],
+ momrates:["Manman's rating","Nòt Manman an",8],
+ pwomode:["Pwo mode (hide points — stats only)","Mòd pwo",6],
+ appwords:["App words this unit","Mo aplikasyon inite sa a",8],
+ open:["Open","Louvri",3],
+ ref_family:["Ref · family","Ref · fanmi",2],
+ due_badge:["DUE","REVI",8],
+ prod_title:["5 kitchen commands","5 lòd pou kizin nan",3],
+ micro_stamp:["MICRO DONE","MIKWO FINI",1],
+};
+
+/* unit titles — bilingual until their unit opens (audit rule 4) */
+const UNITS=[null,
+ {ht:"Dekode",en:"Decode"},{ht:"Fanmi & Kay",en:"Family & Home"},{ht:"Manje",en:"Food"},
+ {ht:"Telefòn & WhatsApp",en:"Phone & WhatsApp"},{ht:"Tan Pase",en:"Past Tense"},
+ {ht:"Santiman",en:"Feelings"},{ht:"Nouvèl",en:"News"},{ht:"Kapstòn",en:"Capstone"}];
+function unitTitle(u){
+  const t=UNITS[u];
+  return taught(u===8?8:u) ? `<span class="flip" data-en="${t.en}">${t.ht}</span>` : `${t.ht} · ${t.en}`;
+}
+
+/* metalanguage & tag gates — grammar terminology and feed categories are chrome too */
+function gLbl(en,ht){ return S.unit>=8?`<span class="flip" data-en="${en.replace(/"/g,'&quot;')}">${ht}</span>`:en; }
+const TAGS={ "Fanmi":["Family",2], "Manje":["Food",3], "Pwovèb":["Proverb",2], "Espò":["Sports",8],
+ "Mizik":["Music",8], "Chat":["Chat",1], "Slang":["Slang",1], "TiMo":["Little words",8] };
+function tagT(tag){ const [en,tw]=TAGS[tag]||[tag,0];
+  return taught(tw)?`<span class="flip" data-en="${en}">${tag}</span>`:en; }
+
+const MISSIONS = [
+ {u:1,t:"Record 8 phrases with Manman",d:"Family audio bank, session one. Both boys present."},
+ {u:2,t:"Interview Grann",d:"Five questions in Kreyòl, recorded. Leo asks 1–3, Isaac 4–5 and keeps it going. Answers become Unit 5 listening."},
+ {u:3,t:"Cook a dish — Kreyòl only",d:"Follow Manman's spoken instructions. She rates comprehension, not the food."},
+ {u:4,t:"Run the family WhatsApp — 3 days",d:"At least one vwadyo (voice note) per day per boy. Chat spelling allowed — same language, second costume."},
+ {u:5,t:"Manman's childhood story",d:"Listen, then each boy retells one sentence back using te / t ap."},
+ {u:6,t:"Family joke exchange",d:"Affectionate teasing register — flags apply. Grann judges what lands."},
+ {u:7,t:"News summary",d:"Summarize one VOA Kreyòl item to the family, in Kreyòl."},
+ {u:8,t:"Kapstòn — host the lodyans",d:"Family listening event: Léa Kokoyé. The boys host and explain the Kreyòl; Manman narrates the French asides."},
+];
+
+const DIAG = [
+ ["grangou",["hungry","tired","angry","late"],0],
+ ["kay",["house","car","street","food"],0],
+ ["dòmi",["sleep","eat","run","sing"],0],
+ ["dlo",["water","fire","bread","milk"],0],
+ ["travay",["work","play","walk","talk"],0],
+ ["grann",["grandma","aunt","sister","neighbor"],0],
+ ["kounye a",["now","later","yesterday","never"],0],
+ ["jwenn",["find / get","lose","throw","hide"],0],
+ ["vle",["want","have","see","give"],0],
+ ["chak",["each","none","some","many"],0],
+ ["mete",["put","cut","open","taste"],0],
+ ["janm",["never","always","often","soon"],0],
+];
+
+/* ============ STATE ============ */
+const KEY="konbit-kreyol-v6-4";
+const INTERVALS=[1,3,7,16];
+let S = load() || fresh();
+function fresh(){
+  const mk=(name,grade,color,majoEn)=>({name,grade,color,majoEn,band:null,diagDone:false,
+    items:{},xp:0,streak:0,lastDay:0,pwoMode:false,micro:{},reactions:{},session:{},tiers:{}});
+  return { day:1, unit:1, padon:1,
+    profiles:{leo:mk("Leo","Grade 9","leo","Reading lead"), isaac:mk("Isaac","Grade 10","isaac","Listening lead")},
+    konbit:{streak:12,lastDay:0,stars:9,mon:{unit:1,threshold:14,legs:{isaac:{done:false,score:0,tip:""},leo:{done:false,score:0,tip:""}},summited:false}},
+    missions:{}, active:"gate", current:null, quiz:null };
+}
+function save(){ localStorage.setItem(KEY,JSON.stringify(S)); }
+function load(){ try{return JSON.parse(localStorage.getItem(KEY));}catch(e){return null;} }
+
+/* ============ ENGINE ============ */
+function itemState(p,id){ if(!p.items[id]) p.items[id]={rec:{box:0,due:1,hist:[]},prod:{box:0,due:1,hist:[]}}; return p.items[id]; }
+function seedTiers(p){ ITEMS.forEach(it=>{ const t=p.tiers[it.id]||"B"; const st=itemState(p,it.id);
+  if(t==="A"&&st.rec.box===0){st.rec.box=2; st.rec.due=S.day+INTERVALS[2];} }); }
+function review(p,id,mode,ok){ const st=itemState(p,id)[mode]; st.hist.push({d:S.day,ok});
+  if(ok){st.box=Math.min(3,st.box+1);}else{st.box=Math.max(0,st.box-1);} st.due=S.day+INTERVALS[st.box]; }
+function mastery(p,id,mode){ const st=itemState(p,id)[mode],h=st.hist;
+  if(mode==="prod"){ const l3=h.slice(-3);
+    if(l3.length===3&&l3.every(x=>x.ok)&&(l3[2].d-l3[0].d)>=7)return"solid";
+  } else { if(st.box>=3&&h.length&&h.slice(-2).every(x=>x.ok))return"solid"; }
+  if(h.some(x=>x.ok)||st.box>0)return"aktive"; return"pa"; }
+function kleSolid(p){ return ITEMS.filter(i=>i.kle&&mastery(p,i.id,"rec")==="solid").length; }
+function dueItems(p){ return ITEMS.filter(i=>i.u<=S.unit&&itemState(p,i.id).rec.due<=S.day); }
+function skillPct(p){ const sc=ITEMS.filter(i=>i.u<=S.unit);
+  const rec=sc.filter(i=>mastery(p,i.id,"rec")!=="pa").length/Math.max(1,sc.length);
+  const ps=sc.filter(i=>i.pc); const prod=ps.filter(i=>mastery(p,i.id,"prod")!=="pa").length/Math.max(1,ps.length);
+  return {konprann:Math.min(1,.55+rec*.4),li:rec,pale:prod,ekri:prod*.6}; }
+function practiceToday(p){ if(p.lastDay!==S.day){p.streak=(p.lastDay===S.day-1)?p.streak+1:1;p.lastDay=S.day;}
+  if(S.konbit.lastDay!==S.day){S.konbit.streak=(S.konbit.lastDay>=S.day-1)?S.konbit.streak+1:1;S.konbit.lastDay=S.day;} save(); }
+function addXP(p,n){ p.xp+=n; practiceToday(p); save(); }
+
+/* THE GATE — every chrome string passes here. */
+function taught(tw){ return tw===8 ? S.unit>=8 : S.unit>tw; }
+function T(key){
+  const [en,ht,tw]=UI[key];
+  if(taught(tw)){
+    const isNew=(tw===8)?(S.unit===8):(tw===S.unit-1);
+    return `<span class="${isNew?"flip flipnew":"flip"}" data-en="${en.replace(/"/g,'&quot;')}">${ht}</span>`;
+  }
+  return en;
+}
+/* plain-text variant for places where HTML spans can't go (rare) */
+function Tt(key){ const [en,ht,tw]=UI[key]; return taught(tw)?ht:en; }
+
+function arc(n,total){
+  const pct=n/total, C=2*Math.PI*13;
+  return `<svg width="34" height="34" viewBox="0 0 34 34" aria-label="Kle 77 gauge">
+    <circle cx="17" cy="17" r="13" fill="none" stroke="var(--bone)" stroke-width="5"/>
+    <circle cx="17" cy="17" r="13" fill="none" stroke="var(--sun)" stroke-width="5"
+      stroke-dasharray="${(pct*C).toFixed(1)} ${C}" transform="rotate(-90 17 17)"/></svg>`;
+}
+function ringBig(n,total){
+  const pct=n/total, C=2*Math.PI*46;
+  return `<svg width="122" height="122" viewBox="0 0 112 112" aria-label="Kle 77">
+    <circle cx="56" cy="56" r="46" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+    <circle cx="56" cy="56" r="46" fill="none" stroke="var(--bone)" stroke-width="9"/>
+    <circle cx="56" cy="56" r="46" fill="none" stroke="var(--sun)" stroke-width="9"
+      stroke-dasharray="${(pct*C).toFixed(1)} ${C}" transform="rotate(-90 56 56)"/>
+    <circle cx="56" cy="56" r="40" fill="none" stroke="var(--ink)" stroke-width="1"/>
+    <text x="56" y="56" text-anchor="middle" fill="var(--ink)" font-size="30" font-family="Alfa Slab One,Archivo Black,serif">${n}</text>
+    <text x="56" y="74" text-anchor="middle" fill="var(--dim)" font-size="10" font-weight="700" letter-spacing="1">/ ${total}</text></svg>`;
+}
+function panorama(progress,sunset){
+  const t=Math.min(1,progress);
+  const cx=90+t*280, cy=112-t*84;
+  const sunY = sunset? 92 : 34;
+  return `<svg class="panorama" viewBox="0 0 620 140" aria-hidden="true">
+    <circle cx="520" cy="${sunY}" r="26" fill="var(--sun)" stroke="var(--ink)" stroke-width="2"/>
+    <path d="M0 128 L120 70 L200 100 L300 34 L420 112 L520 64 L620 128" fill="none" stroke="var(--rule)" stroke-width="2"/>
+    <path d="M14 132 L200 46 L285 88 L400 14 L620 132" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.5"/>
+    <line x1="400" y1="14" x2="400" y2="-2" stroke="var(--ink)" stroke-width="2.5"/>
+    <path d="M400 -2 l17 5 -17 6 Z" fill="var(--red)" stroke="var(--ink)" stroke-width="1.5"/>
+    <path d="M40 128 C 140 104, 230 84, 400 20" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="1 7"/>
+    <circle cx="${cx}" cy="${cy}" r="7" fill="var(--cobalt)" stroke="var(--ink)" stroke-width="2"/>
+    <circle cx="${cx+19}" cy="${cy-6}" r="7" fill="var(--red)" stroke="var(--ink)" stroke-width="2"/></svg>`;
+}
+
+/* ============ VIEWS ============ */
+const app=document.getElementById("app");
+function esc(s){return s.replace(/</g,"&lt;");}
+function chrome(){
+  const p=S.current?S.profiles[S.current]:null;
+  const tabs=["dash","fil","fokis","prod","mon","misyon","settings"];
+  return `<header><div class="mast"><div class="in">
+      <span class="plate"><span class="k1">KONBIT</span> <span class="k2">KREYÒL</span></span>
+      ${p?`<span class="gauge">${arc(kleSolid(p),KLE_TOTAL)} ${T("kle77")} · <b class="num">${kleSolid(p)}</b>/${KLE_TOTAL}</span>`:""}
+      <span class="who">
+        ${p&&!p.pwoMode?`<span class="tike ${p.color}">${T("streak")} <span class="perf"><b>${p.streak}</b></span></span>
+        <span class="tike ${p.color}">${T("pts")} <span class="perf"><b>${p.xp}</b></span></span>`:""}
+        <span class="tike sunb">${T("konbit")} <span class="perf"><b>${S.konbit.streak}</b></span></span>
+        <button class="btn" data-go="gate" style="padding:5px 12px">${p?p.name+" ⇄":"—"}</button>
+      </span></div>
+    <nav class="tabs">${tabs.map(k=>`<button class="tab ${S.active===k?"on":""}" data-go="${k}">${T(k)}</button>`).join("")}</nav>
+  </div>
+  ${p?`<div class="band ${p.color}"><div class="in"><span>${T("week")} ${S.unit} · ${unitTitle(S.unit)}</span><span>${p.majoEn} · Band ${p.band?p.band.split(" ")[0]:"—"}</span></div></div>`:""}
+  </header>`;
+}
+
+/* ---------- gate (pre-Unit-1 surface: ENGLISH CHROME ONLY + whitelist + content quote) ---------- */
+function vGate(){
+  const d=k=>{const p=S.profiles[k];return `
+    <button class="door ${p.color}" data-pick="${k}">
+      <div class="lbl" style="color:inherit;opacity:.85">${p.grade}</div>
+      <div class="nm">${p.name.toUpperCase()}</div>
+      <div class="meta">${p.band?("Band "+p.band.split(" ")[0]):"Diagnostic not done yet"} · ${p.majoEn}</div>
+      <div class="stats">
+        <span>STREAK<b class="num">${p.streak}</b></span>
+        <span>PTS<b class="num">${p.xp}</b></span>
+        <span>KLE 77<b class="num">${kleSolid(p)}</b></span></div>
+    </button>`;};
+  return `<main><div class="gate">
+    <div class="lbl" style="margin-bottom:10px">Kreyòl activation · two brothers, one rope</div>
+    <div class="masttitle"><span class="k1">KONBIT</span> <span class="k2">KREYÒL</span></div>
+    <div class="tag">« Men anpil, chay pa lou. » <span class="note" style="font-family:var(--sans);font-style:normal">— many hands make the load light</span></div>
+    <div class="doors">
+      ${d("leo")}${d("isaac")}
+      <div class="goldband">${T("konbit")} · <b class="num">${S.konbit.streak}</b> days — survives if either of you practices
+        <span class="stamp" style="transform:none;font-size:10px;padding:2px 8px">${S.padon} ${T("padon")}</span></div>
+    </div>
+    <p class="note" style="margin-top:20px">${T("mon")} · UNIT ${S.konbit.mon.unit} — ${legStatus()}</p>
+  </div></main>`;
+}
+function legStatus(){
+  const m=S.konbit.mon;
+  if(m.summited) return "summited together · shared badge";
+  const i=m.legs.isaac.done,l=m.legs.leo.done;
+  if(i&&l) return "both legs done, short of summit — retry tomorrow, nobody loses";
+  if(i) return "Isaac finished his leg — Leo, the rope is yours";
+  if(l) return "Leo finished his leg — Isaac, the rope is yours";
+  return "nobody has climbed this unit yet";
+}
+
+/* ---------- diagnostic (pre-Unit-1 surface: English chrome; Kreyòl only inside test items) ---------- */
+function vDiag(p){
+  const q=S.quiz;
+  if(q.i>=DIAG.length){
+    return `<main><div class="stage"><div class="lbl" style="text-align:center;margin-bottom:10px">Before we climb · final step</div>
+    <div class="boardbox board"><div class="chalkbar"><i style="width:100%"></i></div>
+      <p class="qp">« M ap tann ou lakay la. »</p>
+      <p style="text-align:center;margin:-14px 0 22px;color:#9db0bd;font-size:14px">Read it aloud. Honestly — how did it go?</p>
+      <div class="opts">
+        <button class="opt" data-decode="0">Couldn't read it</button>
+        <button class="opt" data-decode="1">Slow but got it</button>
+        <button class="opt" data-decode="2">Read it smoothly</button></div>
+      <p class="boardnote">Real build: aural test with family audio + recorded read-aloud (§2).</p>
+      <div class="tray"></div></div></div></main>`;
+  }
+  const [ht]=DIAG[q.i];
+  return `<main><div class="stage">
+    <div class="lbl" style="text-align:center;margin-bottom:10px">Before we climb · ticket ${q.i+1} / ${DIAG.length} · ${p.name}</div>
+    <div class="boardbox board"><div class="chalkbar"><i style="width:${q.i/DIAG.length*100}%"></i></div>
+      <p class="qp">« ${ht} »</p>
+      <div class="opts">${q.shuffled.map((o,ix)=>`<button class="opt" data-diag="${ix}">${o}</button>`).join("")}</div>
+      <p class="boardnote">Guessing is fine — a miss just means "Acquire tier," not failure.</p>
+      <div class="tray"></div></div></div></main>`;
+}
+function shuffleOpts(i){ const [,opts,correct]=DIAG[i]; const pairs=opts.map((o,ix)=>[o,ix===correct]);
+  for(let j=pairs.length-1;j>0;j--){const k=Math.floor(Math.random()*(j+1));[pairs[j],pairs[k]]=[pairs[k],pairs[j]];}
+  S._diagKey=pairs.map(x=>x[1]); return pairs.map(x=>x[0]); }
+function answerDiag(ix){ const p=S.profiles[S.current],q=S.quiz,ok=S._diagKey[ix];
+  p.tiers[DIAG[q.i][0]]=ok?"A":"C"; if(ok)q.score++; q.i++;
+  if(q.i<DIAG.length)q.shuffled=shuffleOpts(q.i); render(); }
+function finishDiag(decode){ const p=S.profiles[S.current],sc=S.quiz.score;
+  p.band=(sc>=10&&decode===2)?"Strong (~600)":(sc>=7)?"Moderate (~450)":"Emerging (~300)";
+  ITEMS.forEach(it=>{ if(!p.tiers[it.id]) p.tiers[it.id]=p.band.startsWith("Strong")?"A":(p.band.startsWith("Moderate")?(it.kle?"A":"B"):"B"); });
+  p.diagDone=true; seedTiers(p); addXP(p,30); S.quiz=null; S.active="dash"; save(); render();
+  toast(`${p.name} · band ${p.band} · tiers set from your answers`); }
+
+/* ---------- front page ---------- */
+function vDash(){
+  const p=S.profiles[S.current], sk=skillPct(p), due=dueItems(p).length;
+  const done=p.session[S.day]||{};
+  const m=S.konbit.mon, monTotal=m.legs.isaac.score+m.legs.leo.score;
+  const gsys=[[gLbl("Pronouns","Pwonon")+" m/w/l/n/y",["li","ou","nou"]],[gLbl("Orthography","Òtograf")+" IPN",["kay","dlo"]],["se / ye",["se"]],[gLbl("Determiners","Detèminan"),["la","a","an","lan"]],["pi ("+gLbl("comparative","konparezon")+")",["pi","pase"]],["Modal ka / dwe",["ka","dwe"]],["ap",["ap"]],["te / t ap",["te"]],["pral",[]],["konn · fèk · sot",[]]];
+  const cellFor=(ids,mode)=>{ if(!ids.length)return"pa"; const ms=ids.map(id=>mastery(p,id,mode));
+    if(ms.every(x=>x==="solid"))return"solid"; if(ms.some(x=>x!=="pa"))return"act"; return"pa"; };
+  const missionU=MISSIONS.find(x=>x.u===S.unit);
+  const appWords=ITEMS.filter(i=>i.u===S.unit).slice(0,7);
+  return `<main class="ruled">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;flex-wrap:wrap">
+      <span class="chipav ${p.color}" style="width:46px;height:46px;font-size:22px">${p.name[0]}</span>
+      <h1 class="disp d2" style="line-height:1">${T("greeting")}, ${p.name}?</h1>
+      <span class="lbl" style="margin-left:auto">TODAY · <b class="num" style="color:var(--ink)">${due}</b> ${T("reviews_waiting")} ${T("fil")}</span>
+    </div>
+    <section class="lead" style="border-left:10px solid var(--${p.color==="leo"?"cobalt":"red"})">
+      <div class="kicker">
+        <span class="lbl">${T("today")}</span>
+      </div>
+      <h1 class="disp d1">${T("session_title")}</h1>
+      <ol class="steps">
+        <li class="${done.fil?"ok":""}"><span class="t">5 MIN</span> ${T("step_fil")} ${done.fil?"· "+Tt("done"):""}</li>
+        <li class="${done.fokis?"ok":""}"><span class="t">10 MIN</span> ${T("step_fokis")} ${done.fokis?"· "+Tt("done"):""}</li>
+        <li class="${done.prod?"ok":""}"><span class="t">8 MIN</span> ${T("step_prod")} ${done.prod?"· "+Tt("done"):""}</li>
+        <li class="${done.mon?"ok":""}"><span class="t">7 MIN</span> ${T("step_mon")} ${done.mon?"· "+Tt("done"):""}</li>
+      </ol>
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+        <button class="cta ${p.color==="leo"?"cobalt":"red"}" data-go="fil">${T("start")}</button>
+        <button class="btn" data-go="fil">${T("min15")}</button>
+        <span class="note" style="margin-left:auto">${p.micro[S.day]?`<span class="stamp palm" style="font-size:10px;padding:2px 9px">${T("micro_stamp")}</span>`
+          :`<button class="btn" data-micro="1" style="font-size:11px">${T("microdone")}</button>`} — ${T("micro")}</span>
+      </div>
+    </section>
+
+    <section class="instr">
+      ${ringBig(kleSolid(p),KLE_TOTAL)}
+      <div style="min-width:150px"><div class="lbl">${T("kle77")}</div>
+        <p class="note" style="margin-top:4px">The 77 core words.<br>All receptively solid<br>by end of Unit 3.</p></div>
+      <div class="meters">
+        ${[["listening",sk.konprann],["reading",sk.li],["speaking",sk.pale],["writing",sk.ekri]].map(([k,v])=>`
+        <div class="meter"><span>${T(k)}</span>
+          <span class="meterbar"><i style="width:${Math.round(v*100)}%;background:var(--${p.color==="leo"?"cobalt":"red"})"></i></span>
+          <span class="pc">${Math.round(v*100)}%</span></div>`).join("")}
+      </div>
+    </section>
+
+    <section style="margin-top:26px">
+      <div class="lbl" style="margin-bottom:4px">${T("standings")}</div>
+      <table class="standings">
+        <tr><th>${T("climber")}</th><th>${T("streak")}</th><th>${T("pts")}</th><th>${T("kle77")}</th><th>${T("mon")} ${monTotal}/${m.threshold}</th><th>★ ${S.konbit.stars}/10</th></tr>
+        ${["leo","isaac"].map(k=>{const b=S.profiles[k];const leg=m.legs[k];return `
+        <tr><td><span class="sw" style="background:var(--${k==="leo"?"cobalt":"red"})"></span>${b.name} <span class="note">${b.majoEn}</span></td>
+          <td class="num">${b.streak}</td><td class="num">${b.xp}</td><td class="num">${kleSolid(b)}</td>
+          <td>${leg.done?`<b class="num">${leg.score}</b>/10`:"—"}</td>
+          <td><span class="barcell" style="display:inline-block;width:80px"><i style="width:${S.konbit.stars*10}%;background:var(--sun)"></i></span></td></tr>`;}).join("")}
+      </table>
+      <p class="note" style="margin-top:6px">One team. Roles swap Mondays — each brother teaches what he leads.</p>
+    </section>
+
+    <section class="index">
+      <div class="lbl">${T("index")}</div>
+      <div class="row"><span>${T("ladder")}</span><span class="dim">Micro-posts ✓ · Chorus ✓ · <b style="color:var(--ink)">Full song — Tabou Combo</b> · Sixto 🔒 · Léa Kokoyé 🔒</span></div>
+      <div class="row"><span>${T("misyon")} — Unit ${S.unit}</span><span><b>${missionU.t}</b> <button class="btn" data-go="misyon" style="margin-left:10px;font-size:11px">${T("open")}</button></span></div>
+      <div class="row"><span>${T("appwords")}</span><span>${appWords.map(i=>`<button class="gloss flip" data-en="${i.en}" data-gloss="${i.en}" style="margin:0 3px">${i.ht}</button>`).join("")}</span></div>
+    </section>
+
+    <details class="drawer"><summary>${T("gmap")}</summary>
+      <div class="gmap"><span></span><span class="h">Rec</span><span class="h">Prod</span>
+      ${gsys.map(([n,ids])=>`<span>${n}</span><span class="cell ${cellFor(ids,"rec")}"></span><span class="cell ${cellFor(ids,"prod")}"></span>`).join("")}</div>
+      <p class="note" style="padding-bottom:14px">Two ledgers per system, derived from evidence (§6). Sun = activating · palm = solid.</p>
+    </details>
+  </main>`;
+}
+
+/* ---------- Fil la ---------- */
+function vFil(){
+  const p=S.profiles[S.current];
+  const reacts=p.reactions[S.day]||0;
+  const visible=POSTS.filter(x=>x.u<=S.unit);
+  const dueSet=new Set(dueItems(p).map(i=>i.id));
+  const doneToday = reacts>=3;
+  return `<main><div class="col">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px">
+      <h1 class="disp d1">${T("fil")}</h1>
+      <span class="lbl"><b class="num" style="color:var(--ink)">${Math.min(3,reacts)}</b> / 3 ${T("react")}</span></div>
+    <div class="stripe"></div>
+    <p class="note" style="margin-bottom:4px">${T("scroll")} · ${T("mix")}</p>
+    ${visible.map(post=>{
+      const hasDue=post.items.some(id=>dueSet.has(id));
+      const reacted=(p.reactions["p_"+post.id]||0)>=1, got=(p.reactions["g_"+post.id]||0)>=1;
+      return `<article class="entry ${post.quote?"quote":""}">
+        <div class="top" style="align-items:center"><span class="pfp">${post.pfp}</span>
+          <span><span class="who">${post.who}</span><br><span class="sub">${post.sub}</span></span>
+          <span class="tag">${hasDue?`<span class="duebadge">${T("due_badge")} · </span>`:""}${post.needsReview?`<span class="revmark" title="Synthetic draft — blocked until native pass (§1)">DRAFT · </span>`:""}${tagT(post.tag)}</span></div>
+        <p class="kt">${post.ht.map(seg=>seg[1]?`<button class="gloss" data-gloss="${esc(seg[1])}">${seg[0]}</button>`:seg[0]).join("")}
+          ${S.unit<8?`<span class="en">${post.en}</span>`:""}</p>
+        ${post.audio?`<p class="note" style="margin-top:6px">▸ ${post.audio}</p>`:""}
+        <div class="acts">
+          <button class="${reacted?"on":""}" data-react="${post.id}">${reacted?T("reacted"):T("react")} · <b class="num">${post.base+(reacted?1:0)}</b></button>
+          <button class="${got?"on":""}" data-got="${post.id}">${T("gotit")} ✓</button>
+          ${post.link?`<button>${post.link} ↗</button>`:""}
+        </div></article>`;}).join("")}
+    ${doneToday?`<div class="femen paint cobalt"><div class="disp">${T("femen")}</div>
+      <p style="margin-top:8px">${T("femen_body")}</p></div>`:""}
+    <p class="note" style="text-align:center;margin-top:18px">"${Tt("gotit")} ✓" writes real receptive reviews — retrieval hidden in the scroll (§6).</p>
+  </div></main>`;
+}
+
+/* ---------- Fokis ---------- */
+function vFokis(){
+  const q=S.quiz;
+  if(!q||q.kind!=="fokis"){
+    return `<main><div class="stage">
+      <div class="lbl" style="text-align:center;margin-bottom:10px">${T("fokis")} · Unit 3</div>
+      <div class="boardbox board">
+        <p class="qp">${gLbl("Determiners","Detèminan")}<br>la · a · an · lan · nan</p>
+        <p style="text-align:center;color:#9db0bd;font-size:14.5px;max-width:420px;margin:-10px auto 24px">
+          Your ear already knows the answer. Pick what <b style="color:var(--chalk)">sounds right</b> — the rule comes after, as a label for what you already knew.</p>
+        <div style="text-align:center"><button class="cta sun" data-fokis="start">${T("start")}</button></div>
+        <div class="tray"></div></div></div></main>`;
+  }
+  if(q.i>=q.bank.length){
+    return `<main><div class="stage">
+      <div class="lbl" style="text-align:center;margin-bottom:10px">${T("fokis")} — ${Tt("done")} · <b class="num" style="color:var(--ink)">${q.score}</b>/${q.bank.length} · +${q.score*4} ${Tt("pts")}</div>
+      <div class="boardbox board"><div class="chalkbar"><i style="width:100%"></i></div>
+        <p class="qp" style="font-size:26px">The rule your ear already knew</p>
+        <div class="chalkrule">
+          plain consonant → <b>la</b> — chat <b>la</b><br>
+          oral vowel → <b>a</b> — dlo <b>a</b><br>
+          nasal consonant → <b>nan</b> — machin <b>nan</b><br>
+          nasal vowel → <b>an</b> — pen <b>an</b></div>
+        <div style="text-align:center;margin-top:24px"><button class="btn chalk" data-go="dash">← ${T("dash")}</button></div>
+        <div class="tray"></div></div></div></main>`;
+  }
+  const [stem,correct,distractor]=q.bank[q.i];
+  const opts=q.flip?[distractor,correct]:[correct,distractor];
+  return `<main><div class="stage">
+    <div class="lbl" style="text-align:center;margin-bottom:10px">${T("sound_right")} · ${q.i+1}/${q.bank.length}</div>
+    <div class="boardbox board"><div class="chalkbar"><i style="width:${q.i/q.bank.length*100}%"></i></div>
+      <p class="qp">${stem.replace("___","______")}</p>
+      <div class="opts">${opts.map(o=>`<button class="opt" data-j="${o===correct?1:0}">${o}</button>`).join("")}</div>
+      <div class="fb">${q.fb||""}</div>
+      <div class="tray"></div></div></div></main>`;
+}
+function startFokis(){ S.quiz={kind:"fokis",i:0,score:0,flip:Math.random()<.5,bank:DETERMINERS.slice(),fb:""}; render(); }
+function answerFokis(ok){
+  const p=S.profiles[S.current], q=S.quiz;
+  ["la","a","an","lan"].forEach(id=>review(p,id,"rec",!!ok));
+  q.fb= ok?`<span class="yes">${Tt("yes")} — ${q.bank[q.i][3]}</span>`
+          :`Ear says: <b style="color:var(--sun)">${q.bank[q.i][1]}</b> — ${q.bank[q.i][3]}`;
+  if(ok){q.score++; addXP(p,4);}
+  q.i++; q.flip=Math.random()<.5;
+  if(q.i>=q.bank.length){ (p.session[S.day]=p.session[S.day]||{}).fokis=true; }
+  save(); render();
+}
+
+/* ---------- Mòn ---------- */
+function vMon(){
+  const m=S.konbit.mon, me=S.current, myLeg=m.legs[me], other=me==="leo"?"isaac":"leo", otherLeg=m.legs[other];
+  const q=S.quiz, total=m.legs.isaac.score+m.legs.leo.score;
+  if(q&&q.kind==="mon"){
+    if(q.i>=q.bank.length) return vMonTip(q);
+    const item=q.bank[q.i];
+    return `<main><div class="stage">
+      <div class="lbl" style="text-align:center;margin-bottom:10px">Leg ${me==="isaac"?"1 · listening / match":"2 · reading / form"} · ${q.i+1}/${q.bank.length}</div>
+      <div class="boardbox board"><div class="chalkbar"><i style="width:${q.i/q.bank.length*100}%"></i></div>
+        <p class="qp">${item.prompt}</p>
+        <div class="opts">${item.opts.map((o,ix)=>`<button class="opt" data-mon="${ix===item.c?1:0}">${o}</button>`).join("")}</div>
+        <div class="fb">${q.fb||""}</div>
+        <div class="tray"></div></div></div></main>`;
+  }
+  const bothDone=m.legs.isaac.done&&m.legs.leo.done;
+  return `<main><div style="max-width:720px;margin:0 auto;text-align:center">
+    <div class="lbl">${T("vs_mountain")}</div>
+    <h1 class="disp d1" style="margin-top:4px">${T("mon")} · UNIT ${m.unit}</h1>
+    <p class="note" style="max-width:480px;margin:6px auto 0;font-family:var(--serif);font-style:italic;font-size:17px;color:var(--ink)">
+      <span class="flip" data-en="Behind mountains there are more mountains.">« Dèyè mòn gen mòn. »</span> <span class="note" style="font-family:var(--sans);font-style:normal">${T("nobodyloses")}</span></p>
+    ${panorama(total/m.threshold, bothDone&&total<m.threshold)}
+    <div class="summitbar"><div class="t"><span>${T("summit")}</span><span class="num">${total} / ${m.threshold}</span></div>
+      <div class="sbar"><i style="width:${Math.min(100,total/m.threshold*100)}%"></i></div></div>
+    <div class="legs">
+      ${["isaac","leo"].map(k=>{const L=m.legs[k];const now=!L.done&&k===me;return `
+      <div class="legcard ${L.done?"done":""} ${now?"now":""}">
+        <div class="lh"><span class="chipav ${k}">${k[0].toUpperCase()}</span>
+          <span><b>LEG ${k==="isaac"?1:2} — ${S.profiles[k].name}</b><br>
+          <span class="note">${k==="isaac"?"match meanings (listening-style)":"pick the written form (reading)"}</span></span></div>
+        <div class="heronum">${L.done?L.score:"—"}<span style="font-size:16px;font-family:var(--sans);font-weight:700;color:var(--dim)">/10</span></div>
+        ${L.done?`<div class="note" style="margin-top:4px">${T("done")} ${L.tip?`<div class="konsey">"${esc(L.tip)}"</div>`:""}</div>`
+          :(k===me?`<div style="margin-top:10px"><button class="cta ${k==="leo"?"cobalt":"red"}" data-monstart="1" style="font-size:15px;padding:10px 20px">${T("climb")}</button></div>`
+                  :`<div class="note" style="margin-top:6px">waiting…</div>`)}
+      </div>`;}).join("")}
+    </div>
+    ${bothDone?(total>=m.threshold
+        ?`<div class="panel" style="padding:22px;border-width:3px"><span class="stamp palm new">${T("summit_stamp")}</span>
+           <p style="margin-top:12px">${T("summit_body")} — <b class="num">+40</b> ${T("pts")} each.</p></div>`
+        :`<div class="panel well" style="padding:22px"><b class="disp d3">${T("waits")}</b>
+           <p class="note" style="margin-top:6px"><span class="num">${total}</span>/${m.threshold} — retry tomorrow with each other's tips. Nobody loses. (Advance the day in Prototype to retry.)</p></div>`)
+    :(otherLeg.done&&!myLeg.done
+        ?`<div class="panel" style="padding:22px"><b class="disp d3">${S.profiles[other].name} ${T("rope_pass")}</b>
+          <p class="note" style="margin:6px 0 12px">His tip is on his card. Your leg needs <b class="num" style="color:var(--ink)">${Math.max(0,m.threshold-otherLeg.score)}+</b> to summit together.</p>
+          <button class="cta ${me==="leo"?"cobalt":"red"}" data-monstart="1">${T("climb")}</button></div>`:"")}
+  </div></main>`;
+}
+function vMonTip(q){
+  return `<main><div class="stage">
+    <div class="lbl" style="text-align:center;margin-bottom:10px">${T("leg_done")} · <b class="num" style="color:var(--ink)">${q.score}</b>/10</div>
+    <div class="boardbox board"><div class="chalkbar"><i style="width:100%"></i></div>
+      <p class="qp" style="font-size:26px">${T("tip")}</p>
+      <p style="text-align:center;color:#9db0bd;font-size:13.5px;margin:-12px 0 8px">${T("tip_why")}</p>
+      <input class="tipbox" id="tipInput" maxlength="90" placeholder='"nan = after nasal sounds, watch for it"'
+        style="width:100%;max-width:420px;display:block;margin:14px auto;padding:12px 14px;font:inherit;background:#2c3d49;border:2px dashed var(--chalk);color:var(--chalk)">
+      <div style="text-align:center"><button class="cta sun" data-montip="1">${T("pass_rope")}</button></div>
+      <div class="tray"></div></div></div></main>`;
+}
+function startMonLeg(){
+  const me=S.current; let bank;
+  if(me==="isaac"){
+    const pool=ITEMS.filter(i=>i.kle&&i.u<=S.unit);
+    bank=pool.sort(()=>Math.random()-.5).slice(0,10).map(it=>{
+      let wrong=it; while(wrong.id===it.id){ wrong=pool[Math.floor(Math.random()*pool.length)]; }
+      const opts=Math.random()<.5?[it.en,wrong.en]:[wrong.en,it.en];
+      return {prompt:`« ${it.ht} »`,opts,c:opts.indexOf(it.en),ids:[it.id]};});
+  } else {
+    const d=DETERMINERS.slice(0,5).map(([s,c,w])=>{const opts=Math.random()<.5?[c,w]:[w,c];return{prompt:s.replace("___","______"),opts,c:opts.indexOf(c),ids:["la","a","an","lan"]};});
+    const c=CONTRACTIONS.slice(0,5).map(([f,c1,w])=>{const opts=Math.random()<.5?[c1,w]:[w,c1];return{prompt:`« ${f} » = ?`,opts,c:opts.indexOf(c1),ids:["ap","te","pa"]};});
+    bank=d.concat(c);
+  }
+  S.quiz={kind:"mon",i:0,score:0,bank,fb:""}; render();
+}
+function answerMon(ok){
+  const p=S.profiles[S.current], q=S.quiz, item=q.bank[q.i];
+  item.ids.forEach(id=>review(p,id,"rec",!!ok));
+  if(ok){q.score++; addXP(p,3);}
+  q.fb= ok?`<span class="yes">${Tt("yes")}.</span>`:`→ <b style="color:var(--sun)">${item.opts[item.c]}</b>`;
+  q.i++; save(); render();
+}
+function submitTip(){
+  const t=document.getElementById("tipInput").value.trim();
+  if(!t){ toast("The tip is required (§7)"); return; }
+  const m=S.konbit.mon, me=S.current;
+  m.legs[me]={done:true,score:S.quiz.score,tip:t};
+  (S.profiles[me].session[S.day]=S.profiles[me].session[S.day]||{}).mon=true;
+  const total=m.legs.isaac.score+m.legs.leo.score;
+  if(m.legs.isaac.done&&m.legs.leo.done&&total>=m.threshold&&!m.summited){
+    m.summited=true; S.profiles.leo.xp+=40; S.profiles.isaac.xp+=40;
+    toast(Tt("summit_stamp")+" — shared badge, +40 "+Tt("pts")+" each");
+  }
+  S.quiz=null; save(); render();
+}
+
+/* ---------- Pwodiksyon ---------- */
+let mediaRec=null,chunks=[],lastUrl=null,recTimer=null,recStart=0;
+function vProd(){
+  const p=S.profiles[S.current], done=(p.session[S.day]||{}).prod;
+  return `<main><div class="col">
+    <div class="lbl">${T("prod")} · Unit 3</div>
+    <h1 class="disp d1">${T("prod_title")}</h1>
+    <div class="stripe"></div>
+    <p class="note">Real build: listen–compare–rerecord against Manman's reference audio (§8). Reference slots await family recordings.</p>
+    <ul class="prompts">
+      ${["Louvri dlo a.","Mete diri a nan dlo a.","Kwit pwa yo.","Koupe legim yo.","Goute manje a!"].map(s=>`<li><b>${s}</b><span class="ref">${T("ref_family")}</span></li>`).join("")}
+    </ul>
+    <div class="recfield" id="recField">
+      <div class="lbl" id="recState" style="color:inherit">Hold the button · release to stop</div>
+      <div class="heronum" id="recClock" style="margin:6px 0">0.0</div>
+      <button id="recBtn" class="btn" style="font-size:14px;padding:12px 26px">HOLD TO RECORD</button>
+      <div id="playWrap" style="margin-top:12px"></div>
+    </div>
+    <div style="margin-top:18px;text-align:center">${done?`<span class="stamp palm">${T("mission_done")}</span>`
+      :`<button class="cta sun" data-proddone="1">Mark set complete · +20 ${T("pts")}</button>`}</div>
+  </div></main>`;
+}
+function bindRecorder(){
+  const btn=document.getElementById("recBtn"); if(!btn)return;
+  const st=document.getElementById("recState"), fld=document.getElementById("recField"), clk=document.getElementById("recClock");
+  const start=async e=>{e.preventDefault();
+    try{
+      const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+      chunks=[]; mediaRec=new MediaRecorder(stream);
+      mediaRec.ondataavailable=ev=>chunks.push(ev.data);
+      mediaRec.onstop=()=>{ if(lastUrl)URL.revokeObjectURL(lastUrl);
+        lastUrl=URL.createObjectURL(new Blob(chunks,{type:"audio/webm"}));
+        document.getElementById("playWrap").innerHTML=`<audio controls src="${lastUrl}"></audio>`;
+        stream.getTracks().forEach(t=>t.stop()); };
+      mediaRec.start(); fld.classList.add("live"); st.textContent="RECORDING";
+      recStart=performance.now();
+      recTimer=setInterval(()=>{clk.textContent=((performance.now()-recStart)/1000).toFixed(1);},100);
+    }catch(err){ st.textContent="Mic unavailable — grant permission on the shared PC."; }};
+  const stop=()=>{ if(mediaRec&&mediaRec.state==="recording"){mediaRec.stop();fld.classList.remove("live");
+    st.textContent="Play it back · compare · rerecord"; clearInterval(recTimer);} };
+  btn.addEventListener("pointerdown",start);
+  btn.addEventListener("pointerup",stop);
+  btn.addEventListener("pointercancel",stop);
+}
+function prodDone(){
+  const p=S.profiles[S.current];
+  ["louvri","mete","kwit","koupe","goute","diri","dlo","pwa","manje"].forEach(id=>review(p,id,"prod",true));
+  (p.session[S.day]=p.session[S.day]||{}).prod=true; addXP(p,20); save(); render();
+}
+
+/* ---------- Misyon ---------- */
+function vMisyon(){
+  const cur=MISSIONS.find(x=>x.u===S.unit);
+  const st=S.missions[S.unit]||{stars:0,done:false};
+  return `<main><div style="max-width:700px;margin:0 auto">
+    <div class="lbl">${T("misyon")} · Unit ${S.unit} · Leo + Isaac</div>
+    <div class="goldsheet poster" style="margin-top:10px">
+      <h2>${cur.t.toUpperCase()}</h2>
+      <p style="font-size:15px;max-width:520px">${cur.d}</p>
+      <div class="starrow">
+        <span class="lbl" style="color:var(--ink)">${T("momrates")}</span>
+        <div class="starbox">${[1,2,3,4,5].map(n=>`<button class="star ${st.stars>=n?"on":""}" data-star="${n}">${n}</button>`).join("")}</div>
+        ${st.stars?`<b class="num">${st.stars}/5</b>`:""}</div>
+      <div style="margin-top:22px;display:flex;gap:14px;flex-wrap:wrap;align-items:center">
+        ${st.done?`<span class="stamp new">${T("mission_done")}</span>`
+          :`<button class="cta cobalt" data-mdone="1">${T("markdone")}</button>`}
+        <button class="btn" data-go="prod">${T("anrejistre")}</button></div>
+    </div>
+    <section class="index" style="margin-top:26px">
+      <div class="lbl">${T("allunits")}</div>
+      ${MISSIONS.map(x=>`<div class="row"><span><b class="num" style="color:var(--dim)">U${x.u}</b> &nbsp;${unitTitle(x.u)} — ${x.t}</span>
+        <span>${(S.missions[x.u]||{}).done?`<span class="stamp palm" style="font-size:9.5px;padding:1px 8px;transform:none">${Tt("mission_done")} · ${(S.missions[x.u]||{}).stars||0}/5</span>`
+          :(x.u===S.unit?`<span class="stamp" style="font-size:9.5px;padding:1px 8px;transform:none">${T("current_stamp")}</span>`:`<span class="note">—</span>`)}</span></div>`).join("")}
+    </section>
+    <p class="note" style="margin-top:16px">Family brief (printable in real build): <b style="color:var(--ink)">recast</b>, don't correct mid-sentence · never mock accent · praise attempts specifically. Manman's role alternates weekly: judge / interviewee / co-player.</p>
+  </div></main>`;
+}
+
+/* ---------- Settings ---------- */
+function vSettings(){
+  const p=S.profiles[S.current];
+  return `<main><div class="col">
+    <h1 class="disp d1">${T("settings")}</h1>
+    <div class="stripe"></div>
+    <div class="lbl" style="margin-top:8px">${p.name}</div>
+    <div class="row"><span>${T("pwomode")}</span><button class="btn" data-pwo="1">${p.pwoMode?"ON":"OFF"}</button></div>
+    <div class="row"><span>Band (diagnostic result)</span><b>${p.band||"—"}</b></div>
+    <div class="row"><span>Redo diagnostic</span><button class="btn" data-rediag="1">Run</button></div>
+    <div class="row"><span>Long-press any underlined or highlighted Kreyòl</span><span class="note">reveals English (§9)</span></div>
+    <div class="lbl" style="margin-top:26px">Program</div>
+    <div class="row"><span>Current unit</span><b>Unit ${S.unit} — preview flips via Prototype card</b></div>
+    <div class="row"><span>${T("padon")}</span><b class="num">${S.padon}</b></div>
+    <div class="row"><span>Persistence</span><span class="note">prototype: localStorage · real: file JSON + backups (§10)</span></div>
+  </div></main>`;
+}
+
+/* ============ ROUTER / EVENTS ============ */
+function render(){
+  const views={gate:vGate,dash:vDash,fil:vFil,fokis:vFokis,prod:vProd,mon:vMon,misyon:vMisyon,settings:vSettings};
+  let html="";
+  if(S.active!=="gate"&&!S.current)S.active="gate";
+  if(S.active!=="gate"){
+    const p=S.profiles[S.current];
+    if(!p.diagDone&&S.quiz&&S.quiz.kind===undefined){ html=chrome()+vDiag(p); }
+    else html=chrome()+views[S.active]();
+  } else html=vGate();
+  app.innerHTML=html;
+  bindRecorder();
+  document.getElementById("devDay").textContent=S.day;
+  document.getElementById("devUnit").value=S.unit;
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-go],[data-pick],[data-react],[data-got],[data-gloss],[data-fokis],[data-j],[data-monstart],[data-mon],[data-montip],[data-diag],[data-decode],[data-micro],[data-mdone],[data-star],[data-pwo],[data-rediag],[data-proddone]");
+  if(!b)return;
+  const p=S.current?S.profiles[S.current]:null;
+  if(b.dataset.pick){ S.current=b.dataset.pick; const pr=S.profiles[S.current];
+    if(!pr.diagDone){ S.quiz={i:0,score:0,shuffled:shuffleOpts(0)}; S.active="diag"; render(); return; }
+    S.active="dash"; render(); return; }
+  if(b.dataset.diag!==undefined){ answerDiag(+b.dataset.diag); return; }
+  if(b.dataset.decode!==undefined){ finishDiag(+b.dataset.decode); return; }
+  if(b.dataset.go){ S.active=b.dataset.go==="dash"&&!S.current?"gate":b.dataset.go; S.quiz=null; render(); return; }
+  if(b.dataset.react){ p.reactions["p_"+b.dataset.react]=1; p.reactions[S.day]=(p.reactions[S.day]||0)+1;
+    addXP(p,5); if(p.reactions[S.day]>=3)(p.session[S.day]=p.session[S.day]||{}).fil=true; render(); return; }
+  if(b.dataset.got){ const post=POSTS.find(x=>x.id===b.dataset.got);
+    post.items.forEach(id=>review(p,id,"rec",true)); p.reactions["g_"+post.id]=1; addXP(p,4);
+    toast(`${post.items.length} items → receptive ledger`); render(); return; }
+  if(b.dataset.gloss){ toast(b.dataset.gloss); return; }
+  if(b.dataset.fokis){ startFokis(); return; }
+  if(b.dataset.j!==undefined){ answerFokis(+b.dataset.j); return; }
+  if(b.dataset.monstart){ startMonLeg(); return; }
+  if(b.dataset.mon!==undefined){ answerMon(+b.dataset.mon); return; }
+  if(b.dataset.montip){ submitTip(); return; }
+  if(b.dataset.micro){ p.micro[S.day]=true; addXP(p,10); render(); return; }
+  if(b.dataset.mdone){ S.missions[S.unit]=S.missions[S.unit]||{stars:0}; S.missions[S.unit].done=true;
+    S.konbit.stars=Math.min(10,S.konbit.stars+(S.missions[S.unit].stars||3)); addXP(p,25); render(); return; }
+  if(b.dataset.star){ S.missions[S.unit]=S.missions[S.unit]||{done:false}; S.missions[S.unit].stars=+b.dataset.star; save(); render(); return; }
+  if(b.dataset.pwo){ p.pwoMode=!p.pwoMode; save(); render(); return; }
+  if(b.dataset.rediag){ p.diagDone=false; p.band=null; p.tiers={}; S.quiz={i:0,score:0,shuffled:shuffleOpts(0)}; render(); return; }
+  if(b.dataset.proddone){ prodDone(); return; }
+});
+/* long-press English reveal — works on .flip (chrome) and .gloss (content) */
+let pressTimer=null;
+const tipEl=document.getElementById("tip");
+document.addEventListener("pointerdown",e=>{
+  const f=e.target.closest(".flip,.gloss");
+  if(!f)return;
+  const txt=f.dataset.en||f.dataset.gloss;
+  if(!txt)return;
+  pressTimer=setTimeout(()=>{ tipEl.textContent=txt; tipEl.style.display="block";
+    tipEl.style.left=Math.min(window.innerWidth-290,Math.max(10,e.clientX-60))+"px";
+    tipEl.style.top=Math.max(10,e.clientY-52)+"px"; },420);
+});
+document.addEventListener("pointerup",()=>{clearTimeout(pressTimer);tipEl.style.display="none";});
+document.addEventListener("pointercancel",()=>{clearTimeout(pressTimer);tipEl.style.display="none";});
+
+/* dev card + runtime language lint */
+document.getElementById("devToggle").addEventListener("click",()=>document.getElementById("devPanel").classList.toggle("open"));
+document.getElementById("devAdvance").addEventListener("click",()=>{
+  const yesterday=S.day; S.day++;
+  if(S.konbit.lastDay<yesterday){
+    if(S.padon>0){S.padon--; toast("Padon used — konbit streak repaired");}
+    else {S.konbit.streak=0; toast("Konbit streak reset.");}}
+  const m=S.konbit.mon;
+  if(m.legs.isaac.done&&m.legs.leo.done&&!m.summited){
+    m.legs={isaac:{done:false,score:0,tip:m.legs.isaac.tip},leo:{done:false,score:0,tip:m.legs.leo.tip}};}
+  save(); render();
+});
+const unitSel=document.getElementById("devUnit");
+for(let u=1;u<=8;u++){const o=document.createElement("option");o.value=u;o.textContent="Unit "+u;unitSel.appendChild(o);}
+unitSel.addEventListener("change",()=>{S.unit=+unitSel.value;S.konbit.mon.unit=S.unit;save();render();});
+document.getElementById("devReset").addEventListener("click",()=>{localStorage.removeItem(KEY);S=fresh();render();});
+document.getElementById("devExport").addEventListener("click",()=>{
+  const blob=new Blob([JSON.stringify(S,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="konbit-kreyol-state.json";a.click();});
+
+/* Runtime lint (audit enforcement, prototype edition):
+   walks rendered CHROME text nodes (skips .kt content, quotes, test items),
+   flags Kreyòl-diacritic tokens or scope words not inside .flip/.gloss. */
+const SCOPE=new Set(ITEMS.flatMap(i=>i.id.split(" ")));
+const WHITELIST=new Set(["kreyòl","konbit","leo","isaac","manman","grann","léa","kokoyé","sixto","tabou","combo","voa","ipn","lodyans","vwadyo","kapstòn"]);
+document.getElementById("devLint").addEventListener("click",()=>{
+  const bad=[];
+  const walker=document.createTreeWalker(app,NodeFilter.SHOW_TEXT);
+  while(walker.nextNode()){
+    const n=walker.currentNode, el=n.parentElement;
+    if(!el||el.closest(".flip,.gloss,.kt,.qp,.prompts,.konsey,.tag,option"))continue;
+    n.textContent.toLowerCase().split(/[^a-zàèòù]+/).forEach(w=>{
+      if(!w)return;
+      const kreyolish=/[àèòù]/.test(w)||SCOPE.has(w);
+      if(kreyolish&&!WHITELIST.has(w)&&!["a","la","an","san","men","non","pa","ta","bay","band","plate"].includes(w)) bad.push(w);
+    });
+  }
+  toast(bad.length?("LINT: ungated Kreyòl in chrome → "+[...new Set(bad)].slice(0,8).join(", ")):"LINT: chrome clean — no ungated Kreyòl");
+});
+
+function toast(msg){const t=document.createElement("div");t.className="receipt";t.textContent=msg;
+  document.body.appendChild(t);setTimeout(()=>t.remove(),3200);}
+
+render();
+</script>
+</body>
+</html>
