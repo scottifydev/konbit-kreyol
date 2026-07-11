@@ -20,6 +20,7 @@ const RENDER_CAP = 120;
  *  certifying only flips it live once its unit is also taught (flip gate). */
 export default function GmClient() {
   const [queue, setQueue] = useState<QueueItem[]>([]);
+  const [loaded, setLoaded] = useState(false);
   const [kind, setKind] = useState("all");
   const [unit, setUnit] = useState<number | "all">("all");
   const [q, setQ] = useState("");
@@ -27,23 +28,34 @@ export default function GmClient() {
   const [busy, setBusy] = useState(false);
 
   const refresh = useCallback(async () => {
-    const res = await fetch("/api/gm/queue");
-    const data = await res.json();
-    setQueue(data.queue);
+    try {
+      const res = await fetch("/api/gm/queue");
+      const data = await res.json();
+      setQueue(data.queue ?? []);
+    } finally {
+      setLoaded(true);
+    }
   }, []);
   useEffect(() => {
     refresh();
   }, [refresh]);
 
+  const [err, setErr] = useState(false);
   const certify = async (keys: string[], value: boolean) => {
     if (keys.length === 0) return;
     setBusy(true);
-    await fetch("/api/gm/certify", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ keys, certified: value }),
-    });
-    await refresh();
+    setErr(false);
+    try {
+      const res = await fetch("/api/gm/certify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ keys, certified: value }),
+      });
+      if (!res.ok) throw new Error();
+      await refresh();
+    } catch {
+      setErr(true); // never let her believe an approval reached the boys when it didn't
+    }
     setBusy(false);
   };
 
@@ -78,9 +90,18 @@ export default function GmClient() {
         ships English there until you decide.
       </p>
 
-      <div className="goldband">
-        {doneCount} / {total} cleared · {total - doneCount} waiting on you
-      </div>
+      {!loaded ? (
+        <div className="goldband pending">reading the queue…</div>
+      ) : (
+        <div className="goldband">
+          {doneCount} / {total} cleared · {total - doneCount} waiting on you
+        </div>
+      )}
+      {err && (
+        <p className="label" style={{ color: "var(--scarlet)" }}>
+          that didn&apos;t save — check the connection and try again.
+        </p>
+      )}
 
       <div className="row" style={{ flexWrap: "wrap", gap: 6, margin: "14px 0" }}>
         {KINDS.map((k) => (

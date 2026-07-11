@@ -54,11 +54,15 @@ export default function MonClient({
 
   const post = async (action: string, extra: Record<string, unknown> = {}) => {
     setBusy(true);
-    await fetch("/api/mon", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action, boy, ...extra }),
-    });
+    try {
+      await fetch("/api/mon", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action, boy, ...extra }),
+      });
+    } catch {
+      /* the refresh below re-reads server truth; nothing is faked here */
+    }
     setBusy(false);
     router.refresh();
   };
@@ -97,7 +101,7 @@ export default function MonClient({
       {!dealt && !legDone && pending > 0 && (
         <p style={{ marginBottom: 0 }}>
           <button
-            className="cta sun"
+            className={busy ? "cta sun pending" : "cta sun"}
             disabled={busy}
             onPointerUp={() => post("deal")}
           >

@@ -40,11 +40,21 @@ export default function FeedClient({
 
   const doReview = async (id: string) => {
     setReviewed((r) => new Set(r).add(id)); // optimistic
-    await fetch("/api/feed/review", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ boy, id }),
-    });
+    try {
+      const res = await fetch("/api/feed/review", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ boy, id }),
+      });
+      if (!res.ok) throw new Error();
+    } catch {
+      // roll back — never show a ✓ that didn't land
+      setReviewed((r) => {
+        const n = new Set(r);
+        n.delete(id);
+        return n;
+      });
+    }
   };
 
   const toggleGloss = (key: string) =>
@@ -56,11 +66,20 @@ export default function FeedClient({
 
   const react = async (post: WirePost) => {
     setReacted((r) => new Set(r).add(post.id)); // optimistic
-    await fetch("/api/feed/react", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ boy, postId: post.id, items: post.items }),
-    });
+    try {
+      const res = await fetch("/api/feed/react", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ boy, postId: post.id, items: post.items }),
+      });
+      if (!res.ok) throw new Error();
+    } catch {
+      setReacted((r) => {
+        const n = new Set(r);
+        n.delete(post.id);
+        return n;
+      });
+    }
   };
 
   return (

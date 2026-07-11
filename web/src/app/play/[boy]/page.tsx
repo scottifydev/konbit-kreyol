@@ -183,8 +183,8 @@ export default async function FrontPage({
 
       <nav className="index label">
         <Link href={`/play/${boy}/dispatch`}><Flip view={c("prod")} /></Link>
-        <span><Flip view={c("misyon")} /></span>
-        <span><Flip view={c("ladder")} /></span>
+        <span style={{ opacity: 0.38 }} title="coming soon"><Flip view={c("misyon")} /> · soon</span>
+        <span style={{ opacity: 0.38 }} title="coming soon"><Flip view={c("ladder")} /> · soon</span>
         <Link href={`/play/${boy}/settings`}><Flip view={c("settings")} /></Link>
       </nav>
     </main>

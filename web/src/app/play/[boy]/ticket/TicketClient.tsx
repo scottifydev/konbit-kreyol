@@ -34,6 +34,7 @@ export default function TicketClient({
 }) {
   const [recorded, setRecorded] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState(false);
 
   const upload = async (blob: Blob) => {
     const form = new FormData();
@@ -46,14 +47,23 @@ export default function TicketClient({
 
   const finish = async () => {
     setBusy(true);
-    const res = await fetch("/api/ticket", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "finish", boy }),
-    });
-    const data = await res.json();
-    if (data.ok) window.location.href = data.href;
-    else setBusy(false);
+    setErr(false);
+    try {
+      const res = await fetch("/api/ticket", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "finish", boy }),
+      });
+      const data = res.ok ? await res.json() : { ok: false };
+      if (data.ok) {
+        window.location.href = data.href;
+        return;
+      }
+      throw new Error();
+    } catch {
+      setErr(true); // never leave the on-ramp a dead button with no signal
+      setBusy(false);
+    }
   };
 
   return (
@@ -98,10 +108,15 @@ export default function TicketClient({
       </div>
 
       <p style={{ marginTop: 16 }}>
-        <button className="cta sun" disabled={busy} onPointerUp={finish}>
+        <button className={busy ? "cta sun pending" : "cta sun"} disabled={busy} onPointerUp={finish}>
           {labels.finish}
         </button>
       </p>
+      {err && (
+        <p className="label" style={{ color: "var(--scarlet)" }}>
+          almost — that didn&apos;t go through. Tap it again in a sec.
+        </p>
+      )}
     </div>
   );
 }

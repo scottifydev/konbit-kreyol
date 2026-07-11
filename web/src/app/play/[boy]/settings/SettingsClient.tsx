@@ -29,11 +29,16 @@ export default function SettingsClient({
   const togglePwo = async () => {
     const next = !pwo;
     setPwo(next); // optimistic
-    await fetch("/api/settings", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ boy, pwoMode: next }),
-    });
+    try {
+      const res = await fetch("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ boy, pwoMode: next }),
+      });
+      if (!res.ok) throw new Error();
+    } catch {
+      setPwo(!next); // roll back — the toggle never lies about the saved value
+    }
   };
 
   const leave = async () => {

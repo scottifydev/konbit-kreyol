@@ -41,7 +41,15 @@ const caslon = Libre_Caslon_Display({
 export const metadata: Metadata = {
   title: "Kòd La",
   description: "Two brothers, one wire the enemy cannot read.",
+  openGraph: {
+    title: "Kòd La",
+    description: "Two brothers, one wire the enemy cannot read.",
+    type: "website",
+    images: ["/art/gate-ground.webp"],
+  },
 };
+
+export const viewport = { themeColor: "#0d0a07" };
 
 export default function RootLayout({
   children,
