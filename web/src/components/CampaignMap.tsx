@@ -85,7 +85,7 @@ export default function CampaignMap({ currentUnit = 4 }: { currentUnit?: number 
       const x = X(m.lng), y = Y(m.lat), cur = m.n === currentUnit, past = m.n < currentUnit;
       if (cur) E("circle", { cx: x, cy: y, r: 16, fill: "none", stroke: "url(#mgold)", "stroke-width": 2, opacity: 0.8 }, s);
       E("circle", { cx: x, cy: y, r: cur ? 12 : 9, fill: C.iron, stroke: cur ? "url(#mgold)" : C.umber, "stroke-width": cur ? 2.5 : 1.5 }, s);
-      const t = E("text", { x, y: y + 4, "text-anchor": "middle", "font-family": "Anton, sans-serif", "font-size": cur ? 14 : 11, fill: past ? "#8a7a5a" : C.cornmeal }, s);
+      const t = E("text", { x, y: y + 4, "text-anchor": "middle", "font-family": "Archivo Black, sans-serif", "font-size": cur ? 14 : 11, fill: past ? "#8a7a5a" : C.cornmeal }, s);
       t.textContent = String(m.n);
     });
     const lbl = (la: number, lo: number, txt: string, dx: number, dy: number) => {
@@ -102,9 +102,9 @@ export default function CampaignMap({ currentUnit = 4 }: { currentUnit?: number 
     E("line", { x1: cx, y1: cy - 18, x2: cx, y2: cy + 18, stroke: C.cornmeal, "stroke-width": 1 }, s);
     E("line", { x1: cx - 18, y1: cy, x2: cx + 18, y2: cy, stroke: C.cornmeal, "stroke-width": 1 }, s);
     E("polygon", { points: `${cx},${cy - 22} ${cx + 4},${cy} ${cx},${cy + 5} ${cx - 4},${cy}`, fill: "url(#mgold)" }, s);
-    const nt = E("text", { x: cx, y: cy - 26, "text-anchor": "middle", "font-family": "Anton, sans-serif", "font-size": 12, fill: C.cornmeal }, s);
+    const nt = E("text", { x: cx, y: cy - 26, "text-anchor": "middle", "font-family": "Archivo Black, sans-serif", "font-size": 12, fill: C.cornmeal }, s);
     nt.textContent = "N";
   }, [currentUnit]);
 
-  return <svg ref={ref} className="svgwrap" viewBox="0 0 900 640" style={{ aspectRatio: "900 / 640" }} aria-label="Saint-Domingue — the campaign" />;
+  return <svg ref={ref} className="svgwrap" viewBox="0 0 900 640" preserveAspectRatio="xMidYMid meet" style={{ width: "100%", aspectRatio: "900 / 640", display: "block" }} aria-label="Saint-Domingue — the campaign" />;
 }

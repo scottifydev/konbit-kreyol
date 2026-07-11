@@ -38,7 +38,7 @@ export default async function DispatchPage({
         </div>
         <div className="meta">blow the signal · say the line</div>
       </header>
-      <section className="hero" style={{ aspectRatio: "16 / 5", minHeight: 150, marginBottom: 22 }}>
+      <section className="hero banner-wide" style={{ marginBottom: 22 }}>
         <img src="/art/lambi-conch.webp" alt="" style={{ objectPosition: "center 42%" }} />
         <div className="veil" />
         <div className="cap">

@@ -23,7 +23,7 @@ export default async function Gate() {
 
   return (
     <main className="stage">
-      <section className="hero" style={{ aspectRatio: "16 / 7", minHeight: 300 }}>
+      <section className="hero banner-tall">
         <img src="/art/gate-ground.webp" alt="" />
         <div className="veil" />
         {/* Legba's crossroads — cornmeal on the dark, self-drawn ceremony vèvè */}
@@ -60,7 +60,7 @@ export default async function Gate() {
       </div>
 
       <div className="two" style={{ marginTop: 22 }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+        <div className="doorgrid">
           {DOORS.map((d) => {
             const p = profiles[d.id];
             if (!p) return null;

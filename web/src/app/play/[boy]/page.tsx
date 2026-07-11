@@ -69,7 +69,7 @@ export default async function FrontPage({
       </header>
 
       {/* the chapter's painted moment */}
-      <section className="hero" style={{ aspectRatio: "16 / 6", minHeight: 190, marginBottom: 26 }}>
+      <section className="hero banner" style={{ marginBottom: 26 }}>
         <img src={CH_ART[unit] ?? "/art/map-haiti.webp"} alt="" />
         <div className="veil" />
         <div className="cap">
@@ -160,9 +160,9 @@ export default async function FrontPage({
 
       <nav className="index label">
         <Link href={`/play/${boy}/dispatch`}><Flip view={c("prod")} /></Link>
-        <Flip view={c("misyon")} />
-        <Flip view={c("ladder")} />
-        <Flip view={c("settings")} />
+        <span><Flip view={c("misyon")} /></span>
+        <span><Flip view={c("ladder")} /></span>
+        <span><Flip view={c("settings")} /></span>
       </nav>
     </main>
   );

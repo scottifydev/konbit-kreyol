@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import {
-  Anton,
+  Archivo_Black,
   Literata,
   Fraunces,
   IBM_Plex_Mono,
@@ -9,9 +9,10 @@ import {
 import "./globals.css";
 
 /** DRAPO GINEN type spine (05-art-direction-drapo-ginen.md §4), self-hosted.
- *  Anton = display/English chrome; Literata = the Kreyòl reading body;
+ *  Archivo Black = loud poster display/English chrome (renders è/ò/à — the
+ *  Kreyòl-diacritic-safe poster face); Literata = the Kreyòl reading body;
  *  Fraunces = ceremonial subhead; Plex Mono = cipher; Caslon = French artifact. */
-const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--f-display", display: "swap" });
+const display = Archivo_Black({ weight: "400", subsets: ["latin"], variable: "--f-display", display: "swap" });
 const literata = Literata({
   subsets: ["latin"],
   style: ["normal", "italic"],
@@ -48,7 +49,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${anton.variable} ${literata.variable} ${fraunces.variable} ${mono.variable} ${caslon.variable}`}
+      className={`${display.variable} ${literata.variable} ${fraunces.variable} ${mono.variable} ${caslon.variable}`}
     >
       <body>{children}</body>
     </html>
