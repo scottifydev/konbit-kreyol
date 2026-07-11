@@ -37,6 +37,7 @@ Where documents conflict, higher wins:
 | 7 | `06-engineering.md` | Architecture, schemas, engine-port notes, traps |
 | 8 | `07-build-plan.md` | Issues, ACs, first-playable definition |
 | 9 | `08-family-handbook.md` | Adult-facing: GM guide, Cipher Office guide, parent brief, kickoff |
+| 10 | `09-game-mechanics.md` | **The unified mechanics spec** — how every element fits as one game; the co-op battle & economy **formulas**. Refines `02`'s prose into build targets; defers to `01`/`03`/`04` (history, pedagogy, laws are sovereign). |
 | ref | `konbit-kreyol-app-v6-4.html` | **Archived reference implementation — never edit.** Its engine (gate helpers, two-ledger SRS, relay/konbit state) is behavior-normative with the fixes listed in `06-engineering.md`. Open it in a browser to feel the loop. |
 | archive | `archive/*.md` | The superseded brainstorm lineage. Consult for rationale; never build from these. |
 
@@ -46,6 +47,7 @@ Owner decisions, in force. A build must not quietly contradict any row.
 
 | Date | Decision |
 |---|---|
+| 2026-07-11 | **Unified game-mechanics spec ratified** (`09-game-mechanics.md`) — a research-grounded design pass (co-op / SRS-gamification / roguelike-meta / voice-as-mechanic / reward-psych / narrative-fusion → 3 blueprints → pedagogy/fun/laws judge panel → synthesis) ties every element into one game. **Load-bearing rulings:** the co-op battle takes the position iff `L_A + L_B ≥ 1.30 AND min(L_A,L_B) ≥ 0.40 AND allLegsDone` (fractional accuracy over band-fixed volley budgets 6/8/10 from each boy's own due queue — the three-pillars + no-solo-solve formula); the tip and the history-flank are **double-reps / set-changers only** (any bonus into the mastery threshold is DELETED — Law 1); the economy is six lanes walled off the mastery→threshold path, proven by a Pwo-mode "every gate resolves identically without XP" test. Engine deltas + constant-calibration + the #1 QA gate (dispatch action-set separability) listed in `09` §11. |
 | 2026-07-10 | **Game pivot:** text-based video game set in the Haitian Revolution; 8 chapters = the 8 units; Kreyòl is the weapon. |
 | 2026-07-10 | **Full-canon anachronism** ("the Hamilton rule") — see `04-laws.md` §Anachronism. The "dispatch wire"/"vwadyo = voice dispatches" costume renamings are retired. |
 | 2026-07-10 | **Voice dispatches = main mechanic.** Grading is peer + family only; comprehension proven by action; no machine judgment. ASR is out of the design entirely; TTS survives only as a benched audio-fallback question. |
@@ -113,6 +115,7 @@ Anything in `archive/` asserting the following is superseded:
 06-engineering.md             ← Vercel/Supabase architecture, schemas, traps
 07-build-plan.md              ← issues, ACs, first playable
 08-family-handbook.md         ← adult-facing: GM + Cipher Office + parent brief
+09-game-mechanics.md          ← UNIFIED mechanics spec: everything tied together + battle/economy formulas
 konbit-kreyol-app-v6-4.html   ← archived reference implementation (engine-normative)
 archive/                      ← superseded brainstorm docs (rationale only)
 web/                          ← the app (Next.js) — engine, lint, tests, screens
