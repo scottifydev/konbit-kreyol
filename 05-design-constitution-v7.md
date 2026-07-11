@@ -1,4 +1,6 @@
-# 05 · DESIGN CONSTITUTION v7 — "Daylight Broadsheet"
+# 05 · DESIGN CONSTITUTION v7 — "Daylight Broadsheet" — ⚠️ SUPERSEDED
+
+> **SUPERSEDED (owner directive, 2026-07-10) by `05-art-direction-drapo-ginen.md`.** The owner overruled this flat, minimalist, cream-paper, no-gradient/no-texture/thin-line direction wholesale — "no more of this flat minimalist lines, this isn't the New Yorker." The new visual law is warm, saturated, textured, Vodou-suffused, unflinching (the Black Jacobins lens). This file is retained for rationale/history only. Do NOT build against it. The non-visual laws it references (language flip-gate, copy tone, native gate) still hold and live in `04-laws.md`; the Vodou-opt-in and no-gore *sensitivity* rulings here are also lifted by the owner — see `05-art-direction-drapo-ginen.md` §2 for the replacement guardrails (appropriation firewall, upright-subject, RED/GREEN audit, comic-enemy firewall).
 
 **The visual law: constitution v6 with the v7 re-cut applied inline. Target read: L'Équipe front page in our colors, not Etsy. The game strengthens the direction — dispatches, proclamations, and war bulletins are natively broadsheet forms. Build against this, nothing else.**
 

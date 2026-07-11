@@ -33,7 +33,7 @@ Where documents conflict, higher wins:
 | 3 | `01-world-and-story.md` | The fiction and the verified history (facts and spellings are **binding**) |
 | 4 | `02-game-systems.md` | Mechanics: voice-dispatch loop, daily loop, battles, GM layer, co-op law |
 | 5 | `03-language-program.md` | Pedagogy: units, scope, SRS, mastery, diagnostic, exit criteria |
-| 6 | `05-design-constitution-v7.md` | Visual law |
+| 6 | `05-art-direction-drapo-ginen.md` | **Visual law** — warm, saturated, Vodou-suffused, unflinching (Black Jacobins lens). Supersedes `05-design-constitution-v7.md` (retained for rationale only). |
 | 7 | `06-engineering.md` | Architecture, schemas, engine-port notes, traps |
 | 8 | `07-build-plan.md` | Issues, ACs, first-playable definition |
 | 9 | `08-family-handbook.md` | Adult-facing: GM guide, Cipher Office guide, parent brief, kickoff |
@@ -54,7 +54,9 @@ Owner decisions, in force. A build must not quietly contradict any row.
 | 2026-07-10 | **Stack: Vercel + Supabase.** Phone + PC hybrid: the 30-min daily loop lives on the shared PC; each boy's phone carries the voice surface. Privacy copy: "stays in the family." |
 | 2026-07-10 | **Working title: KÒD LA** ("the rope / the code" — attested material, no coinage). Pending Manman like every Kreyòl string; the boys' build shows "THE ROPE" until she passes it. "Konbit Kreyòl" stays as the program/repo name. `kòd` added to the pending U2 scope batch (`04` §1.1). |
 | 2026-07-10 | **Build started** — `web/` (Next.js): engine port, law lint + tests, voice-dispatch pipeline, Cipher Office queue; Supabase schema staged in `supabase/migrations/`, `LocalStore` as the dev placeholder until the Supabase gate clears. |
-| 2026-07-10 | **The Period Cut** (owner): the design shows 18th-century Haiti — campaign map, battle plans, militia document forms, geography. Ruled and recorded in `05` §12a after a judged element pass (teen/Manman/cohesion lenses): seven elements admitted, kills recorded, period through structure never distress. Mockups v2 (`mockups/`, artifact link) demonstrate. |
+| 2026-07-10 | **The Period Cut** (owner): the design shows 18th-century Haiti — campaign map, battle plans, militia document forms, geography. Ruled and recorded in `05` §12a after a judged element pass (teen/Manman/cohesion lenses): seven elements admitted, kills recorded, period through structure never distress. Mockups v2 (`mockups/`, artifact link) demonstrate. *(The FLAT execution of this was superseded the same day — see the Drapo Ginen row; the map/battle/geography intent carries forward, rendered warm and painterly.)* |
+| 2026-07-10 | **VISUAL PIVOT → "Drapo Ginen"** (owner, overrides the flat "Daylight Broadsheet" wholesale — "no more flat minimalist lines, this isn't the New Yorker"): warm, saturated, textured, gold, dirt, geography — Haitian painting (Obin/Duffaut/Hyppolite/Saint-Soleil), fer découpé, drapo, through the lens of C.L.R. James's *The Black Jacobins*. Full law in `05-art-direction-drapo-ginen.md`; judged (authenticity / historical-truth / buildable-not-slop) and built in `mockups/kod-la-drapo-ginen-v3.html` (artifact link). The one retained visual rule: no generic AI slop, no sterile minimalism. |
+| 2026-07-10 | **Content gates LIFTED** (owner): Vodou and the lwa are wholeheartedly in; the terror of the slave trade and the massacre at Le Cap (Rochambeau's noyades) are in; register is *The Black Jacobins* — the enslaved and their gods as subjects of history, never victims. The prior Vodou-opt-in and no-gore/"nobody scary" sensitivity rulings are replaced by four guardrails (`05-art-direction-drapo-ginen.md` §2): the **appropriation firewall** (fer découpé carries all repeated chrome; sacred vèvè/lwa/drapo only in rare Manman-reviewed ceremony), the **upright-subject** rule, the **RED/GREEN trauma-porn audit**, and the **comic-enemy firewall**. Kept: co-op no-game-over, native gate for Kreyòl *and* sacred naming, binding history, French-as-artifact, Claude coins/asserts nothing. |
 | 2026-07-10 | Copy law adopted (every kid-facing word inviting, never scary) and "Daylight Broadsheet" design re-cut adopted — carried into `04-laws.md` and `05-design-constitution-v7.md`. |
 | 2026-07-10 | **History brief is binding** (now `01-world-and-story.md`): facts, spellings, legend-vs-documented flags, sensitivity rulings. Capois' cry is « An avan! An avan! », never "the bullets are dust"; Catherine Flon is "the story goes." |
 | 2026-07-10 | **Do not "fix" Tier-A seeding** — the old HANDOFF delta row was a 0-vs-1-indexing misread; `box=2` (0-indexed) already equals the spec's box 3. See `06-engineering.md` §Traps. |
@@ -103,14 +105,15 @@ Anything in `archive/` asserting the following is superseded:
 02-game-systems.md            ← voice-dispatch loop, daily loop, battles, GM layer
 03-language-program.md        ← pedagogy, units, scope, SRS, exit criteria
 04-laws.md                    ← all lintable laws + PR checklists + string rulings
-05-design-constitution-v7.md  ← visual law + mobile addendum
+05-art-direction-drapo-ginen.md ← VISUAL LAW (warm/saturated/Vodou/Black-Jacobins)
+05-design-constitution-v7.md  ← SUPERSEDED flat "Daylight Broadsheet" (rationale only)
 06-engineering.md             ← Vercel/Supabase architecture, schemas, traps
 07-build-plan.md              ← issues, ACs, first playable
 08-family-handbook.md         ← adult-facing: GM + Cipher Office + parent brief
 konbit-kreyol-app-v6-4.html   ← archived reference implementation (engine-normative)
 archive/                      ← superseded brainstorm docs (rationale only)
 web/                          ← the app (Next.js) — engine, lint, tests, screens
-mockups/                      ← design mockups (self-contained HTML; kod-la-mockup-v1)
+mockups/                      ← self-contained HTML mockups; kod-la-drapo-ginen-v3 = current visual direction
 supabase/migrations/          ← schema + RLS, ready for the Supabase gate
 .github/workflows/ci.yml     ← law lint + tests + build on every push
 ```
