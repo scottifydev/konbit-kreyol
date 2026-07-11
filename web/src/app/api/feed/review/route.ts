@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getStore } from "@/lib/store/local";
 import { itemState, review } from "@/lib/engine/srs";
 import { practiceToday } from "@/lib/engine/konbit";
+import { guardBoy } from "@/lib/session";
 
 /** POST { boy, id } — a due-signal review from the feed (the Revi step). Writes
  *  a receptive review on the scope item ONLY if it is genuinely due today; the
@@ -10,6 +11,8 @@ import { practiceToday } from "@/lib/engine/konbit";
  *  A recognition retrieval in context, never a self-report of mastery. */
 export async function POST(req: NextRequest) {
   const { boy, id } = await req.json().catch(() => ({}));
+  const denied = await guardBoy(boy);
+  if (denied) return denied;
   const store = getStore();
   const state = await store.load();
   const p = state.profiles[boy];

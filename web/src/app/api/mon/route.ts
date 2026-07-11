@@ -6,6 +6,7 @@ import {
   passTheWord,
   positionState,
 } from "@/lib/engine/konbit";
+import { guardBoy } from "@/lib/session";
 
 /** The battle — HOLD/TAKE THE POSITION (09-game-mechanics.md §4). This route
  *  orchestrates one boy's leg; it never touches mastery beyond the volleys
@@ -21,6 +22,8 @@ import {
  */
 export async function POST(req: NextRequest) {
   const { action, boy, tip } = await req.json();
+  const denied = await guardBoy(boy);
+  if (denied) return denied;
   const store = getStore();
   const state = await store.load();
   const p = state.profiles[boy];

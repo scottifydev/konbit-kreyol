@@ -3,6 +3,7 @@ import { getStore } from "@/lib/store/local";
 import { review } from "@/lib/engine/srs";
 import { practiceToday } from "@/lib/engine/konbit";
 import { compareKreyol } from "@/lib/normalize";
+import { guardBoy } from "@/lib/session";
 
 /** POST { boy, id, answer, rung } — typed production (Tape, 09 §13.2). The
  *  server holds the answer; the boy types the Kreyòl.
@@ -16,6 +17,8 @@ import { compareKreyol } from "@/lib/normalize";
  *  Typed text is NOT voice — this is lawful and never touches audio. */
 export async function POST(req: NextRequest) {
   const { boy, id, answer, rung } = await req.json().catch(() => ({}));
+  const denied = await guardBoy(boy);
+  if (denied) return denied;
   const store = getStore();
   const state = await store.load();
   const p = state.profiles[boy];

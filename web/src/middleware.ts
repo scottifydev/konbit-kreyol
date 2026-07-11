@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { SESSION_COOKIE, authConfigured, verifySession } from "@/lib/auth";
+import { SESSION_COOKIE, authEnforced, verifySession } from "@/lib/auth";
 
 /** Family-only gate. When AUTH_SECRET is unset the app runs open (local dev /
  *  an unconfigured deploy). When configured, every route except the gate
@@ -11,7 +11,7 @@ import { SESSION_COOKIE, authConfigured, verifySession } from "@/lib/auth";
 const PUBLIC_PATHS = new Set(["/", "/api/login", "/api/logout"]);
 
 export async function middleware(req: NextRequest) {
-  if (!authConfigured()) return NextResponse.next();
+  if (!authEnforced()) return NextResponse.next();
 
   const { pathname } = req.nextUrl;
   if (PUBLIC_PATHS.has(pathname)) return NextResponse.next();

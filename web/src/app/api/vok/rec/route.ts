@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getStore } from "@/lib/store/local";
 import { itemState, review } from "@/lib/engine/srs";
 import { practiceToday } from "@/lib/engine/konbit";
+import { guardBoy } from "@/lib/session";
 
 /** POST { boy, id, ok } — a recognition self-mark (Entwodiksyon / Rekonet,
  *  09 §13.2). Lawful for reception (the Fil-la model): the boy judges whether
@@ -10,6 +11,8 @@ import { practiceToday } from "@/lib/engine/konbit";
  *  demotion, not a penalty. */
 export async function POST(req: NextRequest) {
   const { boy, id, ok } = await req.json().catch(() => ({}));
+  const denied = await guardBoy(boy);
+  if (denied) return denied;
   const store = getStore();
   const state = await store.load();
   const p = state.profiles[boy];

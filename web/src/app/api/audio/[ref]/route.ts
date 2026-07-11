@@ -1,12 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getStore } from "@/lib/store/local";
+import { guardFamily } from "@/lib/session";
 
-/** Audio streaming. Local dev only; the Supabase build replaces this with
- *  signed bucket URLs — private, family-only (voice law 6). */
+/** Audio streaming — family-only (voice law 6). Requires an authenticated
+ *  family session so a stranger can never reach the boys' recordings; the
+ *  Supabase build additionally moves to signed bucket URLs. */
 export async function GET(
   _req: NextRequest,
   ctx: { params: Promise<{ ref: string }> },
 ) {
+  const denied = await guardFamily();
+  if (denied) return denied;
   const { ref } = await ctx.params;
   if (ref.includes("/") || ref.includes("..")) {
     return new NextResponse(null, { status: 400 });

@@ -5,6 +5,7 @@ import { POSTS } from "@/data/posts";
 import { KANPAY } from "@/data/kanpay";
 import scopeData from "@/data/scope.json";
 import type { ScopeItem } from "@/lib/engine/types";
+import { guardAdult } from "@/lib/session";
 
 const SCOPE = (scopeData as { items: ScopeItem[] }).items;
 
@@ -22,6 +23,8 @@ interface QueueItem {
  *  bank, `08` §4 — the gate that unblocks all recognition-leg learning
  *  content). ADULT SURFACE (kid copy law does not apply). */
 export async function GET() {
+  const denied = await guardAdult();
+  if (denied) return denied;
   const state = await getStore().load();
   const cert = (key: string) => !!state.certified[key];
   const queue: QueueItem[] = [];

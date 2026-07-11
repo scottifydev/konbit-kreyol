@@ -3,6 +3,7 @@ import { getStore } from "@/lib/store/local";
 import { seedTiers } from "@/lib/engine/srs";
 import scopeData from "@/data/scope.json";
 import type { ScopeItem } from "@/lib/engine/types";
+import { guardBoy } from "@/lib/session";
 
 const SCOPE = (scopeData as { items: ScopeItem[] }).items;
 
@@ -25,6 +26,8 @@ export async function POST(req: NextRequest) {
   if (ctype.includes("multipart/form-data")) {
     const form = await req.formData();
     const boy = String(form.get("boy") ?? "");
+    const denied = await guardBoy(boy);
+    if (denied) return denied;
     const slot = String(form.get("slot") ?? "x");
     const file = form.get("audio");
     const p = state.profiles[boy];
@@ -43,6 +46,8 @@ export async function POST(req: NextRequest) {
   }
 
   const { action, boy } = await req.json().catch(() => ({}));
+  const denied = await guardBoy(boy);
+  if (denied) return denied;
   const p = state.profiles[boy];
   if (action !== "finish" || !p || p.kind !== "boy") {
     return NextResponse.json({ ok: false }, { status: 400 });

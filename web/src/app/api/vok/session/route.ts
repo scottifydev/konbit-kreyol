@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getStore } from "@/lib/store/local";
 import { cardFor, dueItems, dueProd, itemState } from "@/lib/engine/srs";
 import scopeData from "@/data/scope.json";
+import { guardBoy } from "@/lib/session";
 import type { ScopeItem } from "@/lib/engine/types";
 
 const SCOPE = (scopeData as { items: ScopeItem[] }).items;
@@ -20,6 +21,8 @@ const SESSION_CAP = 10;
  *  shortchanges their own practice. A token indirection can harden this later. */
 export async function GET(req: NextRequest) {
   const boy = req.nextUrl.searchParams.get("for") ?? "";
+  const denied = await guardBoy(boy);
+  if (denied) return denied;
   const state = await getStore().load();
   const p = state.profiles[boy];
   if (!p || p.kind !== "boy") {

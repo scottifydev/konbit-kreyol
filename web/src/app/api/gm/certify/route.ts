@@ -1,12 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getStore } from "@/lib/store/local";
 import { CERT_KEY } from "@/lib/certifyKeys";
+import { guardAdult } from "@/lib/session";
 
 /** Certify Kreyòl (Manman's pass). GM LAW 1 BY CONSTRUCTION: this endpoint
  *  writes ONLY the certification overlay — it has no access path to profiles,
  *  ledgers, konbit state, or thresholds. */
 
 export async function POST(req: NextRequest) {
+  const denied = await guardAdult(); // only the Cipher Office may certify (native gate)
+  if (denied) return denied;
   const body = await req.json();
   const certified = body.certified !== false;
   // Batch { keys: [...] } (a reviewed lexicon subset) or single { key }.

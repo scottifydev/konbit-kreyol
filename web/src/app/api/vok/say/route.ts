@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getStore } from "@/lib/store/local";
+import { guardBoy } from "@/lib/session";
 
 /** POST multipart { audio, boy, id } — Di li verbal practice (09 §13.2, the
  *  owner's verbal steer). The boy says the word aloud; the recording is stored
@@ -9,6 +10,8 @@ import { getStore } from "@/lib/store/local";
 export async function POST(req: NextRequest) {
   const form = await req.formData();
   const boy = String(form.get("boy") ?? "");
+  const denied = await guardBoy(boy);
+  if (denied) return denied;
   const id = String(form.get("id") ?? "x");
   const file = form.get("audio");
   const store = getStore();

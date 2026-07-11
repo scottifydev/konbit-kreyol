@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getStore } from "@/lib/store/local";
 import { resolveDispatch, requestRepeat } from "@/lib/engine/dispatch";
 import { landVolley, practiceToday } from "@/lib/engine/konbit";
+import { guardBoy } from "@/lib/session";
 
 /** POST { option } — the receiver acts on the dispatch. The server compares
  *  against the paired check and credits both ledgers exactly once on
@@ -17,6 +18,8 @@ export async function POST(
   const state = await store.load();
   const d = state.dispatches.find((x) => x.id === id);
   if (!d) return NextResponse.json({ ok: false }, { status: 404 });
+  const denied = await guardBoy(d.receiver); // only the receiver acts on it
+  if (denied) return denied;
 
   if (body.repeat === true) {
     requestRepeat(d);

@@ -73,10 +73,17 @@ export function timingSafeEqual(a: string, b: string): boolean {
   return diff === 0;
 }
 
-/** true when auth is configured; when AUTH_SECRET is unset the app runs open
- *  (local dev / an unconfigured deploy) — production sets the env. */
+/** true when auth is configured (AUTH_SECRET set). */
 export function authConfigured(): boolean {
   return !!process.env.AUTH_SECRET;
+}
+
+/** Whether to ENFORCE the gate. Fail-closed in production: if a prod deploy
+ *  has no AUTH_SECRET, enforcement is on but no session can verify, so the app
+ *  is LOCKED rather than wide open (the safe failure). Local dev stays open
+ *  when unconfigured. (Set AUTH_SECRET before deploying prod or it locks.) */
+export function authEnforced(): boolean {
+  return !!process.env.AUTH_SECRET || process.env.NODE_ENV === "production";
 }
 
 export async function signSession(sub: string, role: Role): Promise<string> {

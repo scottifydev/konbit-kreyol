@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getStore } from "@/lib/store/local";
 import { KANPAY, type DispatchPrompt } from "@/data/kanpay";
 import type { Dispatch } from "@/lib/engine/types";
+import { guardBoy } from "@/lib/session";
 
 function findPrompt(promptId: string): DispatchPrompt | null {
   for (const ch of KANPAY)
@@ -22,6 +23,8 @@ export async function POST(req: NextRequest) {
   if (!(audio instanceof Blob) || !sender || !receiver) {
     return NextResponse.json({ ok: false }, { status: 400 });
   }
+  const denied = await guardBoy(sender); // you send only as yourself
+  if (denied) return denied;
   const prompt = findPrompt(promptId);
   if (!prompt) return NextResponse.json({ ok: false }, { status: 404 });
 
@@ -57,6 +60,8 @@ export async function POST(req: NextRequest) {
  *  server, voice law 2). */
 export async function GET(req: NextRequest) {
   const who = req.nextUrl.searchParams.get("for") ?? "";
+  const denied = await guardBoy(who);
+  if (denied) return denied;
   const state = await getStore().load();
   const list = state.dispatches
     .filter((d) => d.receiver === who || d.sender === who)

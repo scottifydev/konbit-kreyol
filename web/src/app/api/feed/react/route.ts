@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getStore } from "@/lib/store/local";
 import { gotIt } from "@/lib/engine/srs";
 import { practiceToday } from "@/lib/engine/konbit";
+import { guardBoy } from "@/lib/session";
 
 /** POST { boy, postId, items } — the boy reacts to a feed post ("Got it").
  *  This writes a receptive review on the post's items EXACTLY ONCE per post
@@ -11,6 +12,8 @@ import { practiceToday } from "@/lib/engine/konbit";
  *  test and never a self-report of mastery. */
 export async function POST(req: NextRequest) {
   const { boy, postId, items } = await req.json().catch(() => ({}));
+  const denied = await guardBoy(boy);
+  if (denied) return denied;
   const store = getStore();
   const state = await store.load();
   const p = state.profiles[boy];

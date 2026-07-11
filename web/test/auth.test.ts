@@ -1,6 +1,7 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import {
   authConfigured,
+  authEnforced,
   checkPassphrase,
   signSession,
   timingSafeEqual,
@@ -62,6 +63,9 @@ describe("passphrase check", () => {
 describe("primitives", () => {
   it("authConfigured tracks AUTH_SECRET", () => {
     expect(authConfigured()).toBe(true);
+  });
+  it("authEnforced is on when the secret is set (and fail-closed in prod)", () => {
+    expect(authEnforced()).toBe(true); // AUTH_SECRET set in beforeAll
   });
   it("timingSafeEqual: equal true, unequal/length-mismatch false", () => {
     expect(timingSafeEqual("abc", "abc")).toBe(true);
