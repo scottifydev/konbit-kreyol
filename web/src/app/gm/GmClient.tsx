@@ -9,6 +9,12 @@ interface QueueItem {
   certified: boolean;
   unit?: number;
 }
+interface Recording {
+  boy: string;
+  kind: string;
+  ref: string;
+  label: string;
+}
 
 const KINDS = ["all", "lexicon", "chrome", "feed", "scene", "chapter name", "open ticket"];
 const RENDER_CAP = 120;
@@ -21,6 +27,8 @@ const RENDER_CAP = 120;
 export default function GmClient() {
   const [queue, setQueue] = useState<QueueItem[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [view, setView] = useState<"queue" | "recordings">("queue");
+  const [recordings, setRecordings] = useState<Recording[] | null>(null);
   const [kind, setKind] = useState("all");
   const [unit, setUnit] = useState<number | "all">("all");
   const [q, setQ] = useState("");
@@ -39,6 +47,18 @@ export default function GmClient() {
   useEffect(() => {
     refresh();
   }, [refresh]);
+
+  const loadRecordings = useCallback(async () => {
+    setView("recordings");
+    if (recordings !== null) return;
+    try {
+      const res = await fetch("/api/gm/audio");
+      const data = await res.json();
+      setRecordings(data.recordings ?? []);
+    } catch {
+      setRecordings([]);
+    }
+  }, [recordings]);
 
   const [err, setErr] = useState(false);
   const certify = async (keys: string[], value: boolean) => {
@@ -83,6 +103,39 @@ export default function GmClient() {
 
   return (
     <div>
+      <div className="row" style={{ gap: 8, borderTop: "none", paddingTop: 0 }}>
+        <button className={view === "queue" ? "cta sun" : "cta"} onPointerUp={() => setView("queue")} style={{ fontSize: 13 }}>
+          Review queue
+        </button>
+        <button className={view === "recordings" ? "cta sun" : "cta"} onPointerUp={loadRecordings} style={{ fontSize: 13 }}>
+          Their voices
+        </button>
+      </div>
+
+      {view === "recordings" ? (
+        <div style={{ marginTop: 16 }}>
+          <p className="label">
+            Every recording your sons have made — hear them, then reply by voice
+            (recast, never mock the accent). Nothing here scores a voice.
+          </p>
+          {recordings === null ? (
+            <div className="goldband pending">gathering the recordings…</div>
+          ) : recordings.length === 0 ? (
+            <div className="scrim"><p style={{ margin: 0 }}>No recordings yet — they&apos;ll land here as the boys send dispatches and say words aloud.</p></div>
+          ) : (
+            recordings.map((r, n) => (
+              <div key={n} className="hairline-row">
+                <div className="row" style={{ justifyContent: "space-between", padding: 0 }}>
+                  <span className="label">{r.boy} · {r.kind}</span>
+                  <span className="label" style={{ color: "var(--cornmeal)" }}>{r.label}</span>
+                </div>
+                <audio controls preload="none" src={`/api/audio/${r.ref}`} style={{ width: "100%", marginTop: 6 }} />
+              </div>
+            ))
+          )}
+        </div>
+      ) : (
+      <>
       <p>
         Nothing Kreyòl renders to the boys until it passes here. Certifying a
         draft flips it live once its unit is also taught (the flip gate still
@@ -169,6 +222,8 @@ export default function GmClient() {
           )}
         </div>
       ))}
+      </>
+      )}
     </div>
   );
 }
