@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import HoldToRecord from "@/components/HoldToRecord";
+import AudioPlayer from "@/components/AudioPlayer";
 
 interface WireDispatch {
   id: string;
@@ -121,7 +122,7 @@ export default function DispatchClient({
         <h2 className="d3">{labels.inbox}</h2>
         {inbox.map((d) => (
           <div key={d.id} className="hairline-row">
-            <audio controls src={`/api/audio/${d.audioRef}`} />
+            <AudioPlayer src={`/api/audio/${d.audioRef}`} />
             {d.status === "acted" || outcomes[d.id] === "acted" ? (
               <>
                 <p className="goldband ignite">

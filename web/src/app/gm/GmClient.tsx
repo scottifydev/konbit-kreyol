@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import AudioPlayer from "@/components/AudioPlayer";
 
 interface QueueItem {
   key: string;
@@ -129,7 +130,7 @@ export default function GmClient() {
                   <span className="label">{r.boy} · {r.kind}</span>
                   <span className="label" style={{ color: "var(--cornmeal)" }}>{r.label}</span>
                 </div>
-                <audio controls preload="none" src={`/api/audio/${r.ref}`} style={{ width: "100%", marginTop: 6 }} />
+                <AudioPlayer src={`/api/audio/${r.ref}`} />
               </div>
             ))
           )}
