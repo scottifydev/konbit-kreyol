@@ -89,10 +89,27 @@ export default async function FrontPage({
 
       <div className="two">
         <div>
+          {/* chapter cleared — the milestone + anthem slot (09 §7) */}
+          {konbit.mon.taken && (
+            <div className="goldband ignite" style={{ marginBottom: 20 }}>
+              <div className="d3" style={{ color: "var(--night)" }}>
+                <Flip view={c("cleared_stamp")} />
+              </div>
+              <p style={{ margin: "6px 0 0", color: "var(--night)", fontWeight: 400 }}>{chapter.milestoneFactEn}</p>
+              <p style={{ margin: "8px 0 0", color: "var(--night)", fontStyle: "italic", fontWeight: 400 }}>
+                <Flip view={c("anthem_coming")} />
+              </p>
+            </div>
+          )}
+
           {/* today's session — the lead */}
           <div className="panel">
             <div className="meta" style={{ color: "var(--gold-bright)" }}>
               <Flip view={c("today")} />
+            </div>
+            <div className="row">
+              <span className="sundot" />
+              <Link href={`/play/${boy}/scene`}><Flip view={c("scene_step")} /></Link>
             </div>
             <div className="row">
               <span className="sundot" />
