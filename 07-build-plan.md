@@ -83,11 +83,13 @@ Two ultracode audits — a code-robustness pass and a user-standpoint "why does 
 
 **P1 — DONE (issue 7 vertical slice):** ✅ the **scene surface** (`/play/[boy]/scene` — narration → choice → history-bonus → comic enemy intercept → dispatch hand-off; the authored narrative + thesis now render); ✅ the **chapter-cleared milestone + anthem slot** on a taken position. The Ch1 loop connects: scene → Vokabile → Fil la → dispatch → battle → milestone.
 
-**P1 — remaining (deeper content/polish):**
-- **Fokis** (war college / grammar) — needs a Manman-gated grammar bank; the step is marked "· soon".
-- Seed an opening volley so the battle is winnable solo on run one; the real anthem link (family vets).
-- A **custom gold audio player** (replacing the raw `<audio>` in the inbox / Cipher Office); animate/seed the Kle-77 + Sak Mo counters; **hear-it-back-before-send** on recordings.
-- Route/authz unit tests for the new session guards (guardBoy/guardAdult).
+**P1 — DONE (this pass):** ✅ **Fokis frame** (`/play/[boy]/grammar` — judgment-first drill + additive chalk; "coming" until the gated bank seeds); ✅ **custom gold audio player** (dispatch inbox + Cipher Office); ✅ **hear-it-back before send** (dispatch + Di li); ✅ **guard authorization unit tests**.
+
+**Remaining (content-gated on the family, or minor polish):**
+- The Manman-gated content that lights up existing frames: the **grammar bank** (Fokis), Chapter-1 **Kreyòl scene lines + dispatch templates**, the **scope-bank lexicon pass**, post/scene certification.
+- The **family's anthem track pick** per chapter; seed an opening volley so the battle is winnable solo on run one (content/design); animate the Kle-77 / Sak Mo counters on a tick.
+
+**Ops:** ✅ auth secrets (`AUTH_SECRET` + `AUTH_PASS_*`) set on Vercel (production + preview) and in local `.env.local` — a production deploy is now safe under fail-closed auth.
 
 ## Definition of first playable
 
