@@ -81,8 +81,11 @@ Two ultracode audits — a code-robustness pass and a user-standpoint "why does 
 
 **P1 — DONE:** ✅ Cipher Office **audio playback** ("Their voices" view); ✅ **the world ticks forward** (`rolloverDay`); ✅ **gate hardening** (`tsc --noEmit`); ✅ **dispatch degrades** on chapters 2–8 instead of 404; ✅ the konbit **"position held" signature moment** (marks slide together, ignite, the motto); ✅ the **comic-enemy reaction** at the instant a dispatch is acted.
 
+**P1 — DONE (issue 7 vertical slice):** ✅ the **scene surface** (`/play/[boy]/scene` — narration → choice → history-bonus → comic enemy intercept → dispatch hand-off; the authored narrative + thesis now render); ✅ the **chapter-cleared milestone + anthem slot** on a taken position. The Ch1 loop connects: scene → Vokabile → Fil la → dispatch → battle → milestone.
+
 **P1 — remaining (deeper content/polish):**
-- Real **scene surface** rendering the chapter narrative (needs authored/gated scene content); seed an opening volley so the battle is winnable solo on run one.
+- **Fokis** (war college / grammar) — needs a Manman-gated grammar bank; the step is marked "· soon".
+- Seed an opening volley so the battle is winnable solo on run one; the real anthem link (family vets).
 - A **custom gold audio player** (replacing the raw `<audio>` in the inbox / Cipher Office); animate/seed the Kle-77 + Sak Mo counters; **hear-it-back-before-send** on recordings.
 - Route/authz unit tests for the new session guards (guardBoy/guardAdult).
 
