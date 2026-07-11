@@ -92,7 +92,8 @@ export default async function FrontPage({
             <div className="row">
               <span className="sundot" />
               <div>
-                <Flip view={c("fil")} /> — {due} <Flip view={c("words_back")} />
+                <Link href={`/play/${boy}/feed`}><Flip view={c("fil")} /></Link> — {due}{" "}
+                <Flip view={c("words_back")} />
               </div>
             </div>
             <div className="row"><Flip view={c("step_fokis")} /></div>
