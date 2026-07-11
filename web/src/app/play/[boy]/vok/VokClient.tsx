@@ -144,7 +144,7 @@ export default function VokClient({ boy, labels }: { boy: string; labels: Labels
       {said ? (
         <span className="goldband">{labels.sayDone} ✓</span>
       ) : recording ? (
-        <HoldToRecord labels={{ idle: labels.hold, denied: labels.denied }} onRecorded={say} />
+        <HoldToRecord labels={{ idle: labels.hold, denied: labels.denied }} onRecorded={say} review />
       ) : (
         <button className="cta" onPointerUp={() => setRecording(true)}>
           {labels.say}

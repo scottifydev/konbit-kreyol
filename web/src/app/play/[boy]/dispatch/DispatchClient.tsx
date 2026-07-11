@@ -108,6 +108,7 @@ export default function DispatchClient({
             <HoldToRecord
               labels={{ idle: labels.hold, denied: labels.denied }}
               onRecorded={send}
+              review
             />
             {sendError && (
               <p className="label" style={{ color: "var(--scarlet)", marginTop: 8 }}>
