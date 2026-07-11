@@ -5,6 +5,8 @@ import { getStore } from "@/lib/store/local";
 import { KANPAY } from "@/data/kanpay";
 import DispatchClient from "./DispatchClient";
 
+export const dynamic = "force-dynamic";
+
 /** Dispatch surface (phone-first). The chapter's prompt + the inbox. */
 export default async function DispatchPage({
   params,

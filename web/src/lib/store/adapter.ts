@@ -36,3 +36,61 @@ export function certifiedUiString(
   if (certified[`ui:${key}`]) return { ...s, needsReview: false };
   return s;
 }
+
+/** Shared fresh-state factory (used by both stores; no fs/network deps). */
+function mkProfile(
+  id: string,
+  name: string,
+  role: string,
+  color: Profile["color"],
+  kind: Profile["kind"],
+): Profile {
+  return {
+    id,
+    name,
+    role,
+    color,
+    kind,
+    band: null,
+    diagDone: false,
+    items: {},
+    tiers: {},
+    xp: 0,
+    streak: 0,
+    lastDay: 0,
+    pwoMode: false,
+    reactions: {},
+    gotit: {},
+  };
+}
+
+export function freshState(): AppState {
+  const konbit: KonbitState = {
+    streak: 0,
+    lastDay: 0,
+    stars: 0,
+    padon: 1,
+    mon: {
+      unit: 1,
+      threshold: 14,
+      legs: {
+        leo: { done: false, score: 0, tip: "" },
+        isaac: { done: false, score: 0, tip: "" },
+      },
+      summited: false,
+    },
+  };
+  return {
+    day: 1,
+    unit: 1, // fresh state boots Unit 1: all-English chrome (language law §1.8)
+    profiles: {
+      leo: mkProfile("leo", "Leo", "Reading lead", "leo", "boy"),
+      isaac: mkProfile("isaac", "Isaac", "Listening lead", "isaac", "boy"),
+      manman: mkProfile("manman", "Manman", "Cipher Office", "adult", "adult"),
+      gm: mkProfile("gm", "GM", "War room", "adult", "adult"),
+    },
+    konbit,
+    certified: {},
+    dispatches: [],
+  };
+}

@@ -10,6 +10,8 @@ import type { ScopeItem } from "@/lib/engine/types";
 
 const SCOPE = (scopeData as { items: ScopeItem[] }).items;
 
+export const dynamic = "force-dynamic";
+
 /** The front page (dashboard) — one lead story, konbit strip, campaign
  *  strip, 77-tick ruler, small index (05 §5). No number here is comparable
  *  across brothers on a shared surface; this is HIS page (masthead stats

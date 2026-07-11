@@ -1,36 +1,75 @@
-/** SUPABASE STORE — production target (06-engineering.md §1–2).
- *
- *  STATUS: skeleton. Blocked on an open human gate: Scott creates the
- *  Supabase project + billing (00-START-HERE.md §5). When SUPABASE_URL and
- *  SUPABASE_ANON_KEY exist, this class replaces LocalStore behind the same
- *  Store interface; the SQL schema is ready in supabase/migrations/.
- *
- *  Contracts this implementation must keep (law-level):
- *  - RLS scoped to the family; a boy session writes only his own rows.
- *  - gm_queue has NO write path into ledger tables (GM law 1).
- *  - Audio buckets are private; signed URLs only ("stays in the family",
- *    voice law 6); family export + delete supported.
- */
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { AppState, Store } from "./adapter";
+import { freshState } from "./adapter";
+
+/** SUPABASE STORE — production persistence (06-engineering.md §1).
+ *
+ *  TRANSITIONAL SHAPE (2026-07-11): app state is one JSONB row in
+ *  `public.app_state` (RLS on, no anon policy → reachable only by the
+ *  server-side service-role client here). The normalized schema in
+ *  supabase/migrations/0001_init.sql is the later target; this preserves
+ *  the exact LocalStore contract so the app runs on the real backend and
+ *  deploys to Vercel now. Audio lives in the private `dispatches` bucket
+ *  ("stays in the family", voice law 6).
+ *
+ *  Server-only: uses SUPABASE_SERVICE_ROLE_KEY. Never import into a client
+ *  component. All callers are Server Components / route handlers.
+ */
+const BUCKET = "dispatches";
+const STATE_ID = 1;
 
 export class SupabaseStore implements Store {
+  private db: SupabaseClient;
+
   constructor() {
-    if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
+    const url = process.env.SUPABASE_URL;
+    const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!url || !key) {
       throw new Error(
-        "SupabaseStore requires SUPABASE_URL and SUPABASE_ANON_KEY — the project is an open gate (00-START-HERE.md §5). Dev runs on LocalStore.",
+        "SupabaseStore requires SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.",
       );
     }
+    this.db = createClient(url, key, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
   }
-  load(): Promise<AppState> {
-    return Promise.reject(new Error("SupabaseStore: not yet implemented — see supabase/migrations/0001_init.sql for the ready schema"));
+
+  async load(): Promise<AppState> {
+    const { data, error } = await this.db
+      .from("app_state")
+      .select("data")
+      .eq("id", STATE_ID)
+      .maybeSingle();
+    if (error) throw error;
+    if (!data) {
+      const fresh = freshState();
+      await this.save(fresh);
+      return fresh;
+    }
+    return data.data as AppState;
   }
-  save(): Promise<void> {
-    return Promise.reject(new Error("SupabaseStore: not yet implemented"));
+
+  async save(state: AppState): Promise<void> {
+    const { error } = await this.db
+      .from("app_state")
+      .upsert({ id: STATE_ID, data: state, updated_at: new Date().toISOString() });
+    if (error) throw error;
   }
-  saveAudio(): Promise<string> {
-    return Promise.reject(new Error("SupabaseStore: not yet implemented"));
+
+  async saveAudio(id: string, data: Uint8Array, mime: string): Promise<string> {
+    const ext = mime.includes("webm") ? "webm" : mime.includes("mp4") ? "m4a" : "bin";
+    const ref = `${id}.${ext}`;
+    const { error } = await this.db.storage
+      .from(BUCKET)
+      .upload(ref, data, { contentType: mime, upsert: true });
+    if (error) throw error;
+    return ref;
   }
-  readAudio(): Promise<{ data: Uint8Array; mime: string } | null> {
-    return Promise.reject(new Error("SupabaseStore: not yet implemented"));
+
+  async readAudio(ref: string) {
+    const { data, error } = await this.db.storage.from(BUCKET).download(ref);
+    if (error || !data) return null;
+    const buf = new Uint8Array(await data.arrayBuffer());
+    return { data: buf, mime: data.type || "audio/webm" };
   }
 }
