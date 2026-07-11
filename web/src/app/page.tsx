@@ -1,5 +1,5 @@
-import Link from "next/link";
 import Flip from "@/components/Flip";
+import GateDoors from "./GateDoors";
 import { chrome } from "@/lib/chrome";
 import { getStore } from "@/lib/store/local";
 
@@ -60,19 +60,20 @@ export default async function Gate() {
       </div>
 
       <div className="two" style={{ marginTop: 22 }}>
-        <div className="doorgrid">
-          {DOORS.map((d) => {
-            const p = profiles[d.id];
-            if (!p) return null;
-            return (
-              <Link key={d.id} href={d.href} className="panel" style={{ textDecoration: "none", color: "var(--kanvas)" }}>
-                <span className={`liy ${d.cls}`}>{p.name[0]}</span>
-                <div className="d3" style={{ marginTop: 10 }}>{p.name}</div>
-                <div className="label" style={{ marginTop: 4 }}>{p.role}</div>
-              </Link>
-            );
-          })}
-        </div>
+        <GateDoors
+          doors={DOORS.filter((d) => profiles[d.id]).map((d) => ({
+            id: d.id,
+            cls: d.cls,
+            name: profiles[d.id].name,
+            initial: profiles[d.id].name[0],
+            role: profiles[d.id].role,
+          }))}
+          labels={{
+            word: c("gate_word").text,
+            enter: c("gate_enter").text,
+            noMatch: c("gate_nomatch").text,
+          }}
+        />
         <aside className="scrim">
           <div className="meta" style={{ color: "var(--gold-bright)" }}>the network · Saint-Domingue · 1791–1804</div>
           <p style={{ margin: "8px 0 0", color: "#e7dcc2" }}>
