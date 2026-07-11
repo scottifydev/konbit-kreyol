@@ -21,16 +21,31 @@ export default function FeedClient({
   boy,
   posts,
   reactedIds,
+  reviews = [],
+  reviLabel = "",
   labels,
 }: {
   boy: string;
   posts: WirePost[];
   reactedIds: string[];
+  reviews?: { id: string; en: string }[];
+  reviLabel?: string;
   labels: { gotit: string };
 }) {
   const [reacted, setReacted] = useState<Set<string>>(new Set(reactedIds));
   const [glossed, setGlossed] = useState<Set<string>>(new Set());
   const [showEn, setShowEn] = useState<string | null>(null);
+  const [reviewed, setReviewed] = useState<Set<string>>(new Set());
+  const [openGloss, setOpenGloss] = useState<Set<string>>(new Set());
+
+  const doReview = async (id: string) => {
+    setReviewed((r) => new Set(r).add(id)); // optimistic
+    await fetch("/api/feed/review", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ boy, id }),
+    });
+  };
 
   const toggleGloss = (key: string) =>
     setGlossed((g) => {
@@ -50,6 +65,31 @@ export default function FeedClient({
 
   return (
     <div>
+      {reviews.length > 0 && (
+        <section className="panel" style={{ marginBottom: 16 }}>
+          <div className="meta" style={{ color: "var(--gold-bright)" }}>{reviLabel}</div>
+          <div className="row" style={{ flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+            {reviews.map((r) =>
+              reviewed.has(r.id) ? (
+                <span key={r.id} className="goldband" style={{ padding: "6px 10px" }}>✓</span>
+              ) : (
+                <button
+                  key={r.id}
+                  className="cta"
+                  onPointerUp={() => {
+                    if (openGloss.has(r.id)) doReview(r.id);
+                    else setOpenGloss((g) => new Set(g).add(r.id));
+                  }}
+                  title={openGloss.has(r.id) ? labels.gotit : undefined}
+                >
+                  {openGloss.has(r.id) ? `${r.en} ✓` : r.id}
+                </button>
+              ),
+            )}
+          </div>
+        </section>
+      )}
+
       {posts.map((post) => (
         <article key={post.id} className="panel" style={{ marginBottom: 16 }}>
           <div className="row" style={{ alignItems: "center", gap: 10 }}>

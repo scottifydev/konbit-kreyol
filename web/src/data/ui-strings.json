@@ -119,6 +119,7 @@
     "tk_done": { "en": "You're on the wire. The Cipher Office will size your track from here.", "ht": null, "tw": 8, "needsReview": true },
     "tap_hint": { "en": "Tap a word for its meaning · hold a post for the English", "ht": null, "tw": 8, "needsReview": true },
     "feed_warming": { "en": "The wire's warming up — new traffic lands as the Cipher Office clears it.", "ht": null, "tw": 8, "needsReview": true },
+    "revi_title": { "en": "Check the wire — due signals", "ht": null, "tw": 8, "needsReview": true },
     "set_pwo": { "en": "Pro mode", "ht": null, "tw": 8, "needsReview": true },
     "set_pwo_sub": { "en": "Hide the point counts — nothing else changes", "ht": null, "tw": 8, "needsReview": true },
     "set_export": { "en": "Everything here is yours", "ht": null, "tw": 8, "needsReview": true },

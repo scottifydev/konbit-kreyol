@@ -5,6 +5,11 @@ import FeedClient from "./FeedClient";
 import { chrome } from "@/lib/chrome";
 import { getStore } from "@/lib/store/local";
 import { POSTS } from "@/data/posts";
+import { dueItems } from "@/lib/engine/srs";
+import scopeData from "@/data/scope.json";
+import type { ScopeItem } from "@/lib/engine/types";
+
+const SCOPE = (scopeData as { items: ScopeItem[] }).items;
 
 export const dynamic = "force-dynamic";
 
@@ -23,8 +28,14 @@ export default async function FeedPage({
   const p = state.profiles[boy];
   if (!p || p.kind !== "boy") notFound();
 
-  const { unit, certified } = state;
+  const { unit, certified, day } = state;
   const c = (key: string) => chrome(key, unit, certified);
+  // Revi: due scope words that have cleared the lexicon pass render as review
+  // cards. Certifying a word in the Cipher Office makes it reviewable here.
+  const reviews = dueItems(p, SCOPE, unit, day)
+    .filter((i) => certified[`scope:${i.id}`] === true)
+    .slice(0, 12)
+    .map((i) => ({ id: i.id, en: i.en }));
   const visible = POSTS.filter(
     (post) =>
       (post.needsReview === false || certified[`post:${post.id}`] === true) &&
@@ -46,7 +57,7 @@ export default async function FeedPage({
         </div>
       </header>
 
-      {visible.length === 0 ? (
+      {visible.length === 0 && reviews.length === 0 ? (
         <div className="scrim">
           <p style={{ margin: 0, color: "#e7dcc2" }}>
             <Flip view={c("feed_warming")} />
@@ -55,6 +66,8 @@ export default async function FeedPage({
       ) : (
         <FeedClient
           boy={boy}
+          reviews={reviews}
+          reviLabel={c("revi_title").text}
           posts={visible.map((post) => ({
             id: post.id,
             pfp: post.pfp,
