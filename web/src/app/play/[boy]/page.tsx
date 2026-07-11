@@ -133,7 +133,7 @@ export default async function FrontPage({
             </div>
           </div>
 
-          {/* konbit — one rope, two climbers */}
+          {/* konbit — the two of you, one load (« Men anpil, chay pa lou ») */}
           <div className="goldband" style={{ marginTop: 18 }}>
             <Flip view={c("standings")} /> · {konbit.streak} <Flip view={c("days")} />
           </div>

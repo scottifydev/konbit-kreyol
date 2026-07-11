@@ -35,6 +35,31 @@ describe("language lint", () => {
   it("declared ambiguous tokens do not false-positive in English", () => {
     expect(lintChromeString("a la carte men and women", "x")).toHaveLength(0);
   });
+  it("lwa proper nouns pass; the bare common word still flags", () => {
+    expect(lintChromeString("Papa Legba opens the way", "gate")).toHaveLength(0);
+    expect(lintChromeString("Ogou walks with the army", "scene")).toHaveLength(0);
+    // "papa" is also a scope item — outside "Papa Legba" it is not blessed
+    expect(
+      lintChromeString("call your papa manje time", "x").some(
+        (x: { token: string }) => x.token === "papa",
+      ),
+    ).toBe(true);
+  });
+  it("attested quoted proverbs pass; the strip is not a rigging vector", () => {
+    expect(lintChromeString("« Men anpil, chay pa lou »", "gate")).toHaveLength(0);
+    expect(lintChromeString("L'union fait la force", "crest")).toHaveLength(0);
+    // an un-attested Kreyòl phrase is NOT in the allowlist — still fails
+    expect(
+      lintChromeString("nou pral manje ansanm", "x").length,
+    ).toBeGreaterThan(0);
+    // a leaked scope token OUTSIDE the proverb still flags even when the
+    // proverb is present in the same string
+    expect(
+      lintChromeString("Men anpil, chay pa lou — kounye a nou manje", "x").some(
+        (x: { token: string }) => x.token === "manje",
+      ),
+    ).toBe(true);
+  });
 });
 
 describe("copy lint — kid surfaces", () => {
@@ -50,7 +75,7 @@ describe("copy lint — kid surfaces", () => {
     expect(lintKidCopy("that answer was wrong", "x").length).toBeGreaterThan(0);
   });
   it("catches third-person-about-the-kid", () => {
-    expect(lintKidCopy("each boy climbs his leg", "x").length).toBeGreaterThan(0);
+    expect(lintKidCopy("each boy runs his leg", "x").length).toBeGreaterThan(0);
   });
   it("house reference lines pass", () => {
     expect(lintKidCopy("Your ear already knows the answer. Pick what sounds right.", "x")).toHaveLength(0);
@@ -74,7 +99,7 @@ describe("scope-coverage lint", () => {
       lintUiStringCoverage("ok8", { en: "x", ht: "nou de kont mòn nan", tw: 8, needsReview: true }),
     ).toHaveLength(0);
     expect(
-      lintUiStringCoverage("logo", { en: "THE ROPE", ht: "KÒD LA", tw: 0, needsReview: true }),
+      lintUiStringCoverage("logo", { en: "THE CODE", ht: "KÒD LA", tw: 0, needsReview: true }),
     ).toHaveLength(0);
   });
 });

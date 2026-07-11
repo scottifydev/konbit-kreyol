@@ -43,10 +43,20 @@
     "Boukan Ginen",
     "BIC",
     "VOA",
-    "IPN"
+    "IPN",
+    "Ginen",
+    "Legba",
+    "Papa Legba",
+    "Ogou",
+    "Ezili",
+    "Danbala",
+    "Gede",
+    "Agwe"
   ],
   "_flaggedTokensRule": "Known-unlawful Kreyòl tokens named in 04-laws.md §9 — not proper nouns, not in scope, carrying no diacritic tell, so the wordlist rules cannot catch them. Explicitly flagged until resolved by scope-add or rename (Manman gate). Removing an entry requires the resolution to be recorded in 04-laws.md.",
   "flaggedTokens": ["lodyans", "vwadyo", "kapstòn"],
   "_ambiguousTokensRule": "Recorded amendment (04-laws.md §9, 2026-07-10): scope ids that are also common English words are exempt from per-token flagging in English chrome — they flag only when diacritic-bearing or matched as whole Kreyòl phrases. This list is declared openly here (the v6-4 lint hid an equivalent list in code, which the trap review forbade inheriting undeclared).",
-  "ambiguousTokens": ["a", "an", "la", "san", "men", "non", "pa", "ta", "bay", "band", "ban", "we", "di", "male", "plate", "genyen", "m", "w", "si", "tan", "ki", "sou"]
+  "ambiguousTokens": ["a", "an", "la", "san", "men", "non", "pa", "ta", "bay", "band", "ban", "we", "di", "male", "plate", "genyen", "m", "w", "l", "si", "tan", "ki", "sou"],
+  "_quotedLiteratureRule": "Recorded amendment (04-laws.md §9, 2026-07-11): attested proverbs/mottos quoted verbatim on a kid surface are oral literature, not coined chrome (the same exception 06-engineering.md §4 already grants the gate motto, and 04-laws.md grants Bwa Kayiman). Each entry is a documented, attested phrase — NOT a Claude coinage — rendered in guillemets with a long-press English gloss. The lint strips these exact phrases before scanning for leaked scope tokens. Adding an entry requires the phrase be attested (national motto, documented proverb) and recorded here; never a coinage or a register claim (those stay Manman-gated).",
+  "quotedLiterature": ["Men anpil, chay pa lou", "L'union fait la force"]
 }

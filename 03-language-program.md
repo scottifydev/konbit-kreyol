@@ -28,7 +28,7 @@
 6. Retrieval hidden in the scroll — the feed is the SRS; review precedes new content daily. (True design; never rendered as kid copy.)
 7. Game layer ≠ learning layer — XP rewards effort; mastery requires evidence. Tone: Strava, not Duolingo.
 8. The family is infrastructure — the app orchestrates the family; it does not replace it.
-9. Nobody loses — brothers only ever climb *together against the mountain* (Dèyè mòn gen mòn); no head-to-head ranking exists.
+9. Nobody loses — brothers only ever stand *together against the historical army*; failure is marronage (falling back to the mountains, « Dèyè mòn gen mòn »), never defeat; no head-to-head ranking exists. *(The climb metaphor is purged — `00-START-HERE.md` / `04` §2.10.)*
 10. **Speech first** — Kreyòl is primarily a spoken language; the central productive act is a spoken message another person understands (`02` §1).
 
 ## 2. Learners, diagnostic, and scope bands
@@ -104,7 +104,7 @@ Weekly **Misyon Fanmi** replaces one production block (interview Grann → cook-
 - **Leitner:** 4 boxes (1/3/7/16 days). Tier A enters `rec` at the 7-day box. **Productive ledger applies only to the ~250-item productive core** (receptive-600/productive-250 asymmetry — the honest load math: ~45–55 reviews/day peak ≈ 4–5 min).
 - **Dispatch evidence:** a successful transmission writes a prod event for the sender and a rec event for the receiver on the prompt's target items; a "garbled" outcome writes nothing false — it simply isn't evidence. Family star-ratings gate *missions*; ledgers gate *mastery*; **no machine judges audio**.
 - Grammar map = 2-D grid (system × mode): pronouns, orthography, se/ye, determiners, ap, te/t ap, pral, konn, modals, comparatives, fèk/sot, serial chunks. Kid-facing labels: Know / Use.
-- **XP is fully decoupled from mastery.** XP = effort/completion. Mòn summit thresholds key off evidence-weighted items.
+- **XP is fully decoupled from mastery.** XP = effort/completion. The relay's position thresholds key off evidence-weighted items.
 
 ## 7. Content architecture
 

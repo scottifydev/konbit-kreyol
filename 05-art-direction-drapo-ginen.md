@@ -81,7 +81,7 @@ One Centre d'Art vernacular-modernist style contract governs every illustrated s
 | **Agwe's boat & La Sirèn** | Agwe (sea/ships) + La Sirèn (constant in fer découpé) | Sea/crossing beats; the noyades as darkened near-still sea with nothing in the water. Ordinary Agwe sea kept visually distinct from the noyades. |
 | **The torn flag & cockade** | Congress of Arcahaie, 18 May 1803 | Ch.6 climax: 1803 **horizontal** blue-over-red; the kid performs the tear (clip-path); the removed band is "the colony, torn away." Flon's needle labeled legend. |
 | **Fer découpé** | Liautaud / Croix-des-Bouquets cut-oil-drum (secular) | ALL repeated/utility chrome — the appropriation firewall's workhorse. Single-fill charcoal silhouettes, evenodd punches, lifted top edge, baked hammer grain; no glossy bevel. |
-| **Duffaut stacked-mountain road** | Préfète Duffaut's ville-imaginaire sacred vertical | THE campaign map: 8 nodes on one bone-white serpentine road climbing from Bwa Kayiman (base) to Gonaïves 1804 (summit), Citadelle crowning the peak. Dense baked backdrop + thinned interactive road (≥44px hit). |
+| **The Saint-Domingue campaign map** | real geography (owner ruling), painted in the Duffaut/naïf manner | THE campaign map: the true coastline of Saint-Domingue with the 8 battles at their real coordinates, a dashed march-route through them in chronological order, fer-découpé pins, painterly terrain. NOT a vertical climb (that metaphor is purged, `04` §2.10); mountains render as real relief and marronage, never a summit to conquer. |
 
 ## 7. Register arc — four chromatic stations (dark is always a way-station toward the flag)
 
@@ -108,4 +108,4 @@ The saturation serves the learning. The core loop is unchanged — Leo and Isaac
 
 ## 10. Mockup of record
 
-`mockups/kod-la-drapo-ginen-v3.html` (self-contained; five faces embedded) — six hero surfaces: the Legba gate, the Duffaut climb, the lambi wire, the Ogou battle, the Bwa Kayiman uprising, the Gede still water. Fonts, palette, texture recipes, and motifs are executed exactly to this document.
+`mockups/kod-la-drapo-ginen-v3.html` (self-contained; five faces embedded) — six hero surfaces: the Legba gate, the Saint-Domingue campaign map, the lambi wire, the Ogou battle, the Bwa Kayiman uprising, the Gede still water. Fonts, palette, texture recipes, and motifs are executed exactly to this document.

@@ -23,6 +23,13 @@ const PROPER = new Set(
 );
 const AMBIGUOUS = new Set(wl.ambiguousTokens.map((s) => s.toLowerCase()));
 const FLAGGED = new Set(wl.flaggedTokens.map((s) => s.toLowerCase()));
+/** Attested proverbs/mottos quoted verbatim — oral literature, not coined
+ *  chrome (whitelist.json _quotedLiteratureRule; 04-laws.md §9 amendment
+ *  2026-07-11). Stripped whole, longest-first, before token scanning so a
+ *  documented proverb never trips the scope-token rule. */
+const QUOTED = (wl.quotedLiterature ?? [])
+  .slice()
+  .sort((a, b) => b.length - a.length);
 const SCOPE_TOKENS = new Set(
   scope.items.flatMap((i) => i.id.split(/\s+/)).map((s) => s.toLowerCase()),
 );
@@ -81,7 +88,16 @@ function isWhitelisted(token, context) {
  *  Kreyòl leaking outside the gate helpers. Returns violation list. */
 export function lintChromeString(str, where = "") {
   const violations = [];
-  const tokens = str.split(/[^\p{L}\p{N}ÀàÈèÌìÒòÙù'’-]+/u).filter(Boolean);
+  let scan = str;
+  for (const phrase of QUOTED) {
+    if (scan.toLowerCase().includes(phrase.toLowerCase())) {
+      scan = scan.replace(
+        new RegExp(phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi"),
+        " ",
+      );
+    }
+  }
+  const tokens = scan.split(/[^\p{L}\p{N}ÀàÈèÌìÒòÙù'’-]+/u).filter(Boolean);
   for (const tok of tokens) {
     const lower = tok.toLowerCase();
     if (FLAGGED.has(lower)) {

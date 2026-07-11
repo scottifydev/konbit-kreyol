@@ -37,7 +37,7 @@
 
 ## 3. Screens
 
-1 Profile doors (boys + adults) · 2 Dashboard (front page: lead story, campaign strip, 77-tick ruler, konbit strip, index, pending-dispatch tray) · 3 Fil la · 4 Fokis (slate stage) · 5 Pwodiksyon / dispatch composer (PC + phone modes) · 6 Dispatch inbox (phone-first) · 7 Mòn (relay, mandatory tip, summit reveal, sunset variant) · 8 Misyon Fanmi (poster, commendations) · 9 Anrejistrè (family capture → Storage) · 10 Media library / anthems · 11 Settings (track, pwo mode, export, long-press toggle) · 12 GM console (adult-only: composer, Cipher Office queue, voice-feedback desk, commendations, event scheduler) · 13 Dev panel (flagged).
+1 Profile doors (boys + adults) · 2 Dashboard (front page: lead story, campaign strip, 77-tick ruler, konbit strip, index, pending-dispatch tray) · 3 Fil la · 4 Fokis (slate stage) · 5 Pwodiksyon / dispatch composer (PC + phone modes) · 6 Dispatch inbox (phone-first) · 7 The relay/battle (co-op legs, mandatory tip, position-held reveal, marronage/sunset variant) · 8 Misyon Fanmi (poster, commendations) · 9 Anrejistrè (family capture → Storage) · 10 Media library / anthems · 11 Settings (track, pwo mode, export, long-press toggle) · 12 GM console (adult-only: composer, Cipher Office queue, voice-feedback desk, commendations, event scheduler) · 13 Dev panel (flagged).
 
 ## 4. Engine port (from `konbit-kreyol-app-v6-4.html` — behavior-normative)
 
@@ -55,7 +55,7 @@ Port as shared client logic, byte-for-byte in spirit:
 3. **`touch-action:none`** on the hold-to-record button (v6-4 omitted it; pointercancel was handled, so it was touch-device risk — on phones it's now mandatory).
 4. **Chalk `.hit`/`.miss` classes were defined but never applied** by any answer path. The non-punitive circle-and-strike is constitution-load-bearing; wire it to **every** quiz answer path.
 5. **Fokis miss feedback:** never "Ear says: <right answer>" on a miss (credits the ear with the answer it just missed). Ruling: **"Close — the rule: plain consonant → la."**
-6. **Pass-the-rope disabled until the tip box has text** (enforcement by button).
+6. **Pass-the-word (relay handoff) disabled until the tip box has text** (enforcement by button).
 7. **Mission stars need a real role gate** — solved structurally now: commendations issue from an adult's logged-in door (GM console), not from a label on the boys' screen.
 8. **Kle 77 reachability:** spec requires all 77 receptively solid by end of U3, but Kle items sit in U4–U6 and v6-4's `dueItems()`/SRS entry filter on `i.u <= unit`. Ruling in force: Kle items are receptively seedable/reviewable from U1 (flood-before-focus). Implement in the SRS issue.
 9. **Lint inheritance:** the v6-4 runtime lint whitelist (`lodyans`, `vwadyo`, `kapstòn` — not proper nouns) and its undeclared homograph skip-list (`a, la, an, san, men, non, pa, ta, bay, band, plate`) are **not** inherited without a recorded amendment to `04-laws.md`. CI lint must cover toasts and `title=` attributes (v6-4's walked only `#app`).

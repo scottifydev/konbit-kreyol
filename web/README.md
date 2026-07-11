@@ -1,6 +1,6 @@
 # KÒD LA — the app
 
-Next.js app for the Konbit Kreyòl program. Working title **Kòd La** ("the rope / the code" — owner decision 2026-07-10, pending Manman's pass like every Kreyòl string; the kid-facing logo falls back to **THE ROPE** until certified).
+Next.js app for the Konbit Kreyòl program. Working title **Kòd La** ("the code" — the cipher the enemy can't read; the rope reading was purged with the climb metaphor, 2026-07-11; pending Manman's pass like every Kreyòl string; the kid-facing logo falls back to **THE CODE** until certified).
 
 Read `../00-START-HERE.md` first; the laws in `../04-laws.md` are enforced here by `npm run lint:laws` and the test suite.
 
