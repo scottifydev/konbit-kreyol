@@ -232,3 +232,56 @@ These are real, checked claims about the shipped engine (`web/src/lib/engine/`).
 | **7 · Native gate** | no rendered Kreyòl reaches the boys without Manman; `needsReview:true` filtered from their build; Claude coins nothing; the boys' own productions are not filtered (the gate protects what is shown *to* them). |
 | **Copy law** | kid surfaces dry, wry, second person; no fear words / jargon / per-brother comparison; requirements by disabled buttons; "Nobody loses" said exactly once; enemy comic never menacing; Kle-77 ruler buried. |
 | **Non-punitive** | marronage not game-over; garble blames the wire; gentle 2-miss demotion; band-capped due-count with forward-spill; silent padon; forbidden-copy lint on loss-anchored reminders. |
+
+---
+
+## 13. VOKABILE — the vocabulary core (the meat)
+
+**Owner steer (2026-07-11):** *"Before any spoken-word parts, the meat of the learning must be vocabulary — the words that feed the messages they'll put together"* and *"verbally practicing the vocab words should be incorporated."* This section (from a dedicated ultracode pass: lexical approach / Willis lexical syllabus / Nation's Four Strands / the receptive-productive gap / formulaic sequences / substitution tables / Conti's MARS-EARS → 3 blueprints → pedagogy + laws judges → synthesis) specifies how a **vocabulary-first core** incorporates into the built game. It refines the daily loop (§3) and the economy (§6); it obeys every law. Both judges ranked *"the drill is the meat"* first.
+
+### 13.1 The thesis
+Vocabulary is the daily meat and gets its **own focused surface** — a due-first **VOKABILE** drill that walks every *certified* scope item along the two shipped ledgers: **introduced → recognition-solid (rec) → typed-production-solid (prod) → spoken-eligible.** A word is **never a bare flashcard** — it is introduced and drilled *inside a Manman-certified chunk/frame*, so "learned word" and "usable message" are the same act. The typed message a boy assembles is literally the script his later spoken dispatch performs *one modality up*. **Typed text is the lawful, machine-checkable, non-voice bridge** (the ASR law is about *spoken* voice); **verbal practice is a first-class strand graded by ear (self + family), never by machine.** Voice arrives last, as the low-load performance of an already-stocked, already-typed chunk — no lock, no punishment.
+
+### 13.2 The card kinds (each with its exact ledger write)
+1. **Entwodiksyon** (intro / Modelling) — a new word/chunk shown *already inside a certified frame*, long-press-to-English. **Writes nothing** (marks introduced).
+2. **Rekonet** (recognition, form→meaning) — Kreyòl shown, tap-to-reveal, self-mark (the Fil-la model). **Writes `rec`.** Leaves when `mastery(rec)==='solid'`.
+3. **Tape** (typed production, meaning→form) — English/image/**audio** prompt, TYPE the Kreyòl into letter-slots. Cue-fade: R1 tap-assemble → R2 first-letter → R3 **cold**. **Only R3-cold-correct writes `prod`;** assist rungs are **XP-only, never touch a box** (the load-bearing anti-faking rule, unit-tested like the Tier-A trap). Miss = the shipped gentle 2-miss demotion, framed as a garbled wire.
+4. **Kloz** (typed cloze, use-in-context) — a certified one-blank frame; type the missing (already rec-solid) word. **Writes `prod` with `inMessage:true`** (a qualifying in-message rep).
+5. **Bati Mesaj** (typed message-builder / graduation) — a **substitution table** whose tiles come *only from THIS boy's own stocked words* + certified distractors; he assembles a whole dispatch, scaffold-fading L1 modeled → L2 frame+bank → L3 tiles-no-frame → L4 cold free-type. **Each cold slot writes `prod` `inMessage:true`; emits a dispatch DRAFT.**
+6. **Di li** (say-it / shadow — **the verbal strand, owner steer**) — reference audio (family-recorded; "coming" until the audio session) plays; the boy **records himself and self-compares by ear**; family may commend (the recast model, `08 §3`). **No machine ever scores it** — it **earns XP and builds speaking comfort but does not machine-write a ledger** (voice law). Offered once a word is rec-solid; it is the rehearsal that de-risks the eventual spoken dispatch. Verbal practice thus sits at *every* vocab rung, not only at the message capstone.
+
+**Mapping guarantee:** no self-mark ever touches `prod`; no typed check ever fakes `rec`; assist rungs never touch a box; **verbal never machine-writes any ledger.**
+
+### 13.3 The graduation ladder (all derived from the two ledgers)
+**Learned** = rec-solid (Rekonet) → **Usable** = ≥1 cold Tape (the "I could read it but couldn't produce it" noticing event) → **Assembled into a typed message** = Kloz/Bati cold reps → **prod-solid** = `mastery(prod)==='solid'` **AND ≥1 of the qualifying reps was in-message** (so "assembled" provably precedes "solid") → **Spoken** = the existing voice dispatch, offered only once the frame + its content words are prod-solid; the boy *says the message he already typed to death*. Across all of it runs the **Di li** verbal strand (say it aloud, self/family-verified). **Chunks are the rung that turns words into messages, not grammar** — collocations/expressions/sentence-frames are first-class items (reusing `cat:'expr'`, **no new taxonomy enum**), seeded flood-before-focus like the Kle 77.
+
+### 13.4 Soft sequencing (never a punitive lock)
+The one engine addition is **`dueProd()`** — mirrors the shipped `dueItems()` but also requires `mastery(rec)==='solid'`, so a word's *production* drills don't open until its *recognition* is solid. Downstream, the **voice dispatch and battle fluency rounds query prod-solid stock** — you can only be asked to produce or say what you've stocked (i+1). Nothing is blocked or penalized: an unready rung shows a **"warming up"** state (Manman coins the label), never a lock or a fear word. The receptive→productive lag is displayed as a **feature** (a filling armory), not a backlog. **XP flows at every rung including assist + verbal reps**, so a literacy-weak boy always advances on effort while a hard word warms.
+
+### 13.5 Surfaces (changes to the shipped app)
+- **NEW `/play/[boy]/vok`** (the core daily activity) — due-first session pulling due rec (`dueItems`) + due prod (`dueProd`) through a pure **`cardFor()`** selector into the card kinds.
+- **Front page** gains a **Sak Mo** armory panel (collected = rec-solid vs battle-ready = prod-solid) beside the Kle-77 ruler — the rec/prod lag reads as an armory filling, never a deficit — and a **"Stock the wire"** step anchoring the session before dispatch.
+- **Fil la stays LIGHT and unchanged** — a passive ambient rec top-up, *not* overloaded into the production surface (judge kill applied).
+- **Dispatch composer** pre-populates from the boy's Bati Mesaj draft / prod-solid bank, so recording *performs a built line*, never composes cold at the mic.
+- **Cipher Office** extends the word-level lexicon pass with a **frame pass** (frames, slot-fillers, distractors, cloze answers — all `pending`/`needsReview`, Claude coins none).
+
+### 13.6 How it feeds the game
+Every game surface queries the **live ledgers at runtime** (never hand-scripted ahead of the learner), so the game can never outrun the vocabulary. The **battle** gains an optional typed-construction **fluency round drawn only from prod-solid items** (Nation's fluency strand uses only well-known language; thresholds still read fractional accuracy over derived mastery, never XP). **Dispatch/campaign prompts** pre-populate strictly from the sender's prod-solid inventory; a prompt is well-formed only if it is i+1 over that set. **Gap-as-payload:** a message a boy can't complete from stock isn't an error — the missing word drops back into Vokabile as a fresh intro card ("the wire dropped a word — want to stock it?").
+
+### 13.7 Engine additions (build order — non-content-gated core first)
+1. `srs.ts`: **`dueProd(p, items, unit, day)`** — like `dueItems` but `prod.due<=day AND mastery(rec)==='solid'`. Pure, reads derived mastery, stores nothing. Do NOT touch `dueItems`/`seedTiers`/the rec branch.
+2. `types.ts`+`srs.ts`: add optional **`m?:boolean`** (in-message) to a prod hist entry; `review(...,inMessage=false)` sets it only on prod writes; `mastery()` prod-solid additionally requires `l3.some(x=>x.m)` (≥1 in-message rep of the qualifying three).
+3. Tests (Tier-A-class invariants): assist rungs never advance/demote the prod box; prod-solid unreachable without an in-message rep even with 3 cold successes ≥7d; `dueProd` never returns a non-rec-solid item.
+4. `frames.json` + a `Frame` interface (`{id, en, u, slots:[{idx, fillers[], distractors[]}], pending?}`); chunk items reuse `cat:'expr'`. All strings `pending:true` for Manman.
+5. Pure **`cardFor(item, state, frames)`** selector → the card kind from ledger state.
+6. API: `/api/vok/session` (GET, sanitized — never leak answers), `/api/vok/type` (POST — normalize spelling; cold-correct writes prod, `inMessage=!!frameId`; assist rungs XP-only), `/api/vok/build`, and a verbal-capture endpoint for **Di li** (stores audio to the private bucket, no grading).
+7. UI `/vok` (VokClient) + Sak Mo panel + Cipher Office frame pass + dispatch pre-populate + (flagged) battle fluency round.
+
+### 13.8 Law check
+- **Game ≠ learning:** XP reads effort at every rung (incl. assist + verbal); the prod box advances only on **cold typed** retrieval; all thresholds read `mastery()`, never XP; a rec-solid word displays honestly as "stocked" with production an optional next tier.
+- **No machine judges voice:** Tape/Kloz/Bati are **typed** (machine-checkable, not voice); **Di li** verbal practice and the spoken dispatch are **human/self-verified, never ASR** — the linguistic work already happened at the typed stage, so protecting the voice costs no pedagogy.
+- **Native gate:** every word/chunk/frame/filler/distractor/cloze-answer is a certified item routed through variables, `pending` until Manman; the engine only recombines *certified* cells; Claude coins zero.
+- **Co-op / non-punitive:** soft "warming up" not a lock; gentle 2-miss demotion; Sak Mo is per-boy (no shared comparison). **Spelling is normalized** (case + diacritics folded first pass, per Manman's ruling) so typed production is never spelling-police against a literacy gap.
+
+### 13.9 Open gates
+Spelling-normalization spec (which diacritics/elisions fold — Manman); first frame-pass batch size (Manman); the in-message bar (≥1 vs ≥2 — Scott, once prod queues exist); the "warming up" label (Manman coins); C-tier daily cap by band (Scott); ship the battle fluency round now vs flag-gate it (recommend later); Sak Mo "collected vs battle-ready" framing (validate with the boys).

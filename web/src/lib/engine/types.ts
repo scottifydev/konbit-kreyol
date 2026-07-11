@@ -6,7 +6,10 @@ export type Mode = "rec" | "prod";
 export interface LedgerEntry {
   box: number; // 0-indexed over INTERVALS [1,3,7,16]
   due: number; // day number
-  hist: { d: number; ok: boolean }[];
+  /** m = in-message rep (prod only): the retrieval happened inside a cloze /
+   *  Bati-Mesaj frame, not isolated form-recall. prod-solid requires ≥1
+   *  (09 §13.3) so "solid" provably means wieldable-in-a-sentence. */
+  hist: { d: number; ok: boolean; m?: boolean }[];
 }
 
 export interface ItemState {

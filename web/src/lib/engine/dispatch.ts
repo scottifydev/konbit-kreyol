@@ -33,7 +33,9 @@ export function resolveDispatch(
   d.status = "acted";
   d.credited = true; // exactly once
   for (const id of d.targetItems) {
-    review(sender, id, "prod", true, day);
+    // a dispatch IS an in-message production — it qualifies toward prod-solid
+    // (09 §13.3); the receiver gets a plain recognition credit.
+    review(sender, id, "prod", true, day, /*inMessage*/ true);
     review(receiver, id, "rec", true, day);
   }
   return "acted";

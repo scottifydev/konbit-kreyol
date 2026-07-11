@@ -1,4 +1,4 @@
-import type { ItemState, Mode, Profile, ScopeItem } from "./types";
+import type { ItemState, LedgerEntry, Mode, Profile, ScopeItem } from "./types";
 
 /** Leitner intervals in days, 0-indexed boxes (06-engineering.md §4). */
 export const INTERVALS = [1, 3, 7, 16] as const;
@@ -38,9 +38,12 @@ export function review(
   mode: Mode,
   ok: boolean,
   day: number,
+  inMessage = false,
 ): void {
   const st = itemState(p, id)[mode];
-  st.hist.push({ d: day, ok });
+  // m is set ONLY on a productive, in-message rep (cloze / Bati Mesaj); it is
+  // meaningless on rec and is never set there (09 §13.2).
+  st.hist.push(mode === "prod" && inMessage ? { d: day, ok, m: true } : { d: day, ok });
   if (ok) {
     st.box = Math.min(3, st.box + 1);
     st.due = day + INTERVALS[st.box];
@@ -59,21 +62,32 @@ export function review(
 
 export type Mastery = "solid" | "aktive" | "pa";
 
-/** Derived, never stored (03-language-program.md §6).
- *  prod solid = 3 consecutive correct spanning ≥7 days;
- *  rec solid = box ≥ 3 with last two correct. */
+/** rec-solid = box ≥ 3 with the last two correct. Extracted so cardFor and
+ *  dueProd read the SAME rule as mastery() — no drift. */
+export function recSolid(e: LedgerEntry): boolean {
+  return e.box >= 3 && e.hist.length > 0 && e.hist.slice(-2).every((x) => x.ok);
+}
+
+/** prod-solid = 3 consecutive correct spanning ≥7 days AND ≥1 of those was an
+ *  IN-MESSAGE rep (09 §13.3 — "solid" must mean wieldable-in-a-sentence, not
+ *  isolated form-recall). The in-message clause is the load-bearing honesty
+ *  rule: cold typed drills alone cannot reach solid. */
+export function prodSolid(e: LedgerEntry): boolean {
+  const l3 = e.hist.slice(-3);
+  return (
+    l3.length === 3 &&
+    l3.every((x) => x.ok) &&
+    l3[2].d - l3[0].d >= 7 &&
+    l3.some((x) => x.m === true)
+  );
+}
+
+/** Derived, never stored (03-language-program.md §6, 09 §13.3). */
 export function mastery(p: Profile, id: string, mode: Mode): Mastery {
   const st = itemState(p, id)[mode];
-  const h = st.hist;
-  if (mode === "prod") {
-    const l3 = h.slice(-3);
-    if (l3.length === 3 && l3.every((x) => x.ok) && l3[2].d - l3[0].d >= 7)
-      return "solid";
-  } else {
-    if (st.box >= 3 && h.length && h.slice(-2).every((x) => x.ok))
-      return "solid";
-  }
-  if (h.some((x) => x.ok) || st.box > 0) return "aktive";
+  const solid = mode === "prod" ? prodSolid(st) : recSolid(st);
+  if (solid) return "solid";
+  if (st.hist.some((x) => x.ok) || st.box > 0) return "aktive";
   return "pa";
 }
 
@@ -96,6 +110,40 @@ export function dueItems(
   return items.filter(
     (i) => (i.u <= unit || i.kle) && itemState(p, i.id).rec.due <= day,
   );
+}
+
+/** Due PRODUCTION queue (09 §13.4) — mirrors dueItems but for the prod ledger,
+ *  and only opens a word for typed production once its RECOGNITION is solid
+ *  (soft sequencing: rec before prod). This is the single engine addition the
+ *  vocab core needs; it reads derived mastery and stores nothing. */
+export function dueProd(
+  p: Profile,
+  items: ScopeItem[],
+  unit: number,
+  day: number,
+): ScopeItem[] {
+  return items.filter(
+    (i) =>
+      (i.u <= unit || i.kle) &&
+      itemState(p, i.id).prod.due <= day &&
+      recSolid(itemState(p, i.id).rec),
+  );
+}
+
+export type CardKind = "entwodiksyon" | "rekonet" | "tape" | "kloz" | "bati";
+
+/** Pure selector (09 §13.2): the card kind for a due item from its ledger
+ *  state alone, so a harder rung never appears until the stock exists. The
+ *  verbal "Di li" strand is offered alongside, not selected here (it never
+ *  writes a ledger). `hasFrame` = a certified frame exists for this item. */
+export function cardFor(st: ItemState, hasFrame: boolean): CardKind {
+  if (st.rec.box === 0 && st.rec.hist.length === 0) return "entwodiksyon";
+  if (!recSolid(st.rec)) return "rekonet";
+  // rec-solid → production ladder:
+  const prodOks = st.prod.hist.filter((x) => x.ok);
+  if (prodOks.length === 0) return "tape"; // first cold production
+  if (!st.prod.hist.some((x) => x.m)) return "kloz"; // need an in-message rep
+  return hasFrame ? "bati" : "tape"; // keep drilling toward solid
 }
 
 /** Feed reaction → receptive reviews, EXACTLY ONCE per post per profile.
