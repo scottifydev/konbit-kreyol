@@ -49,7 +49,14 @@
 
 ## Progress & critical path (2026-07-11)
 
-**Shipped:** the engine (gate helpers, two-ledger SRS + gentle demotion, the `09` co-op battle formula — `positionState`/`dealLeg`/`landVolley`/`passTheWord`, marronage), the law lint + 49 tests, the voice-dispatch pipeline (record → Storage → act-on-it → double-ledger credit → garble/retry), the **Mòn battle screen** (voice-volley leg → pass the word → take-the-position/marronage), the Cipher Office, the campaign map, GM certify. Supabase backend provisioned; SupabaseStore active when env is set. `npm run check` + `npm run build` green.
+**Shipped (the non-content-gated skeleton is complete — the daily loop runs end to end in English chrome, lighting up as Manman certifies content):**
+- **Engine:** gate helpers, two-ledger SRS + gentle 2-miss demotion, the `09` co-op battle formula (`positionState`/`dealLeg`/`landVolley`/`passTheWord`, marronage), Kle-77 seeding, idempotent reactions. Law lint + **58 tests**; `npm run check` + `npm run build` green.
+- **Family-only auth (issue 1):** the gate is the sign-in — per-person passphrase → signed httpOnly session; middleware protects every route; no signup path; Leave/logout in Settings. *Activates on prod once Scott sets `AUTH_SECRET` + `AUTH_PASS_*` and redeploys.*
+- **The ticket (issue 4):** first-run Cipher Office intake → provisional track (Moderate ~450) + Kle-77 Tier-A seeding + `diagDone`; the describe-the-camp production probe records now; aural/read-aloud probes show "coming" pending Manman.
+- **Daily-loop screens:** front page → **Fil la** (feed = receptive SRS in the scroll; tap-gloss, hold-for-English, "Got it" → idempotent rec review) → **dispatch** (the voice spine) → **Mòn battle** (voice-volley leg → pass the word → take-the-position/marronage) → **Settings** (Pro mode, "stays in the family" export, Leave).
+- **Adult side:** the Cipher Office / GM certify (no ledger write path), the campaign map. Supabase backend provisioned; SupabaseStore active when env is set; production live at `konbit-kreyol.vercel.app`.
+
+**Still content-gated (build the frame only after the content clears Manman):** **Fokis** (no grammar bank exists; grammar examples are Kreyòl → Manman-gated), Fil la's recognition-leg reviews on the scope bank, chapters 2–8 scenes, missions with Kreyòl.
 
 **The critical path to first-playable is now mostly human gates, not code:**
 1. **Manman's item-bank lexicon pass** (`08` §4) — THE blocker. Until the scope bank is native-reviewed, no recognition-leg review content (Fil la, Fokis, the battle's recognition leg, the full daily loop) can render Kreyòl to the boys. The voice-volley path works today because dispatch content is separately gated. *Everything downstream waits on this.*
