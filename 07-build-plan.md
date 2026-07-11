@@ -71,18 +71,20 @@ Two ultracode audits — a code-robustness pass and a user-standpoint "why does 
 
 **DONE this session:** the undefined design tokens (`.cta.sun`/`.kreyol-body`/`.slate`/`--gold` — the app's own visual laws weren't rendering); error/not-found/global-error boundaries (dropped fetches were white screens); a 120–200ms **motion + feedback layer** (screens settle, cards advance, the earned-it **ignite** beat, soft-shake miss, `:hover`/`:focus-visible`); **dispatch send honesty** (was faking ✓ on a dropped upload); a **live mic level meter** (proves the wire hears you, volume-only/no-ASR); optimistic **rollbacks** (feed/settings no longer show a ✓ that didn't save); **pending** states; dead nav tabs muted; **favicon + OG**; skeleton loaders; empty-states with an onward door.
 
-**P0 — remaining (security/law + felt-broken):**
-- **Bind identity to the session; gate adult surfaces.** No API route reads the session — identity comes from the request body, and `/api/gm/certify` + `/api/export` have no adult check, so a boy could self-publish Kreyòl (bypasses the native gate, the #1 law).
-- **Fail CLOSED in production** — auth runs open when `AUTH_SECRET` is unset (`middleware.ts`/`auth.ts`).
-- **Authorize private audio** — `/api/audio/[ref]` has a path-guard only, no ownership check; refs are guessable. The "signed URLs" were never built.
-- **Stop load-mutate-saving the whole world** — the family is one JSONB row with no version/lock; concurrent co-op writes clobber (add optimistic-concurrency guard).
+**P0 — DONE:**
+- ✅ **Identity bound to the session; adult surfaces gated** (`lib/session.ts` — `guardAdult` on gm/certify, gm/queue, export; `guardBoy` on every boy route; `guardFamily` on audio). The native gate is no longer bypassable.
+- ✅ **Fail CLOSED in production** (`authEnforced` — a prod deploy with no `AUTH_SECRET` locks rather than opens).
+- ✅ **Private audio family-gated** (`/api/audio` requires a session; strangers blocked).
+
+**P0 — DEFERRED (deliberate; documented):**
+- **Single-JSONB-row concurrency** — the family is one row loaded-mutated-saved per write with no version/lock, so two *exactly-simultaneous* co-op writes can clobber. Fix = a `store.transaction()` (in-process mutex for LocalStore + `updated_at` compare-and-swap with retry for SupabaseStore) and convert the ~13 routes to it. **Deferred** to its own focused pass with route/concurrency tests: it touches every route right after the auth pass, and the collision window is small for a 2-user family app. It is the one remaining P0.
+
+**P1 — DONE:** ✅ Cipher Office **audio playback** (the "Their voices" view — Manman can hear every dispatch/ticket/Di-li recording); ✅ **the world ticks forward** (`rolloverDay` — game-day advances with real days, SRS due arrives); ✅ **gate hardening** (`tsc --noEmit` in `check`).
 
 **P1 — remaining (felt + product depth):**
-- **Cipher Office audio playback** — Manman cannot hear a single recording, though the app tells the boys she "scores by ear" (her one job).
-- **The world ticks forward** — `state.day` never increments, so the SRS second-day queue is dead and day-3 is byte-identical to day-1 (no reason to return). Increment on session-complete + a "since yesterday" return strip.
-- **Vertical slice** — dispatch 404s on 7/8 chapters (one prompt in the game); seed an opening volley so the battle is reachable solo; build a **scene surface** so the narrative + the "enemy can't read the code" thesis render, and fire the **comic-enemy reaction** at the instant a dispatch is acted.
-- **Signature moments** — konbit "position held" as the peak (not a spreadsheet row); a **custom gold audio player** (not a raw `<audio>`); animate/seed the Kle-77 + Sak Mo counters; **hear-it-back-before-send** on recordings.
-- **Gate hardening** — add `tsc --noEmit` + `next lint` to the `check` script; add route/authz/concurrency tests.
+- **Vertical slice** — dispatch 404s on 7/8 chapters (one prompt in the game); seed an opening volley so the battle is reachable solo; a **scene surface** so the narrative + "enemy can't read the code" thesis render, and the **comic-enemy reaction** at the instant a dispatch is acted.
+- **Signature moments** — konbit "position held" as the peak (not a spreadsheet row); a **custom gold audio player**; animate/seed the Kle-77 + Sak Mo counters; **hear-it-back-before-send** on recordings.
+- Route/authz tests for the new guards.
 
 ## Definition of first playable
 
