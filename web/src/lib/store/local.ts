@@ -2,7 +2,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import type { AppState, Store } from "./adapter";
-import { freshState } from "./adapter";
+import { freshState, rolloverDay } from "./adapter";
 import { SupabaseStore } from "./supabase";
 
 /** DEV PLACEHOLDER STORE — JSON under web/.data (gitignored). Used only when
@@ -17,11 +17,11 @@ export { freshState };
 
 export class LocalStore implements Store {
   async load(): Promise<AppState> {
-    if (!existsSync(STATE_FILE)) return freshState();
+    if (!existsSync(STATE_FILE)) return rolloverDay(freshState());
     try {
-      return JSON.parse(await readFile(STATE_FILE, "utf8")) as AppState;
+      return rolloverDay(JSON.parse(await readFile(STATE_FILE, "utf8")) as AppState);
     } catch {
-      return freshState();
+      return rolloverDay(freshState());
     }
   }
 

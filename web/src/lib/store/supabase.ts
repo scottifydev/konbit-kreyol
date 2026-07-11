@@ -1,6 +1,6 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { AppState, Store } from "./adapter";
-import { freshState } from "./adapter";
+import { freshState, rolloverDay } from "./adapter";
 
 /** SUPABASE STORE — production persistence (06-engineering.md §1).
  *
@@ -42,11 +42,11 @@ export class SupabaseStore implements Store {
       .maybeSingle();
     if (error) throw error;
     if (!data) {
-      const fresh = freshState();
+      const fresh = rolloverDay(freshState());
       await this.save(fresh);
       return fresh;
     }
-    return data.data as AppState;
+    return rolloverDay(data.data as AppState);
   }
 
   async save(state: AppState): Promise<void> {

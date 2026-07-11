@@ -10,6 +10,9 @@ import type { Dispatch, KonbitState, Profile, UiString } from "../engine/types";
  *  dedicated methods that CANNOT touch profile ledgers. */
 export interface AppState {
   day: number;
+  /** the real calendar date (YYYY-MM-DD) the game-day was last advanced on;
+   *  lets `day` tick forward so SRS intervals (1/3/7/16 days) actually arrive */
+  lastRealDate?: string;
   unit: number;
   profiles: Record<string, Profile>;
   konbit: KonbitState;
@@ -62,6 +65,19 @@ function mkProfile(
     reactions: {},
     gotit: {},
   };
+}
+
+/** Advance the game-day when a new REAL day begins (09 §7 / felt-audit: the
+ *  world must tick forward or the SRS due-queue never arrives and day-3 is
+ *  identical to day-1). Idempotent per calendar day; the first ever load just
+ *  stamps today without advancing. Persisted by the next save. */
+export function rolloverDay(state: AppState): AppState {
+  const today = new Date().toISOString().slice(0, 10);
+  if (state.lastRealDate !== today) {
+    if (state.lastRealDate) state.day += 1;
+    state.lastRealDate = today;
+  }
+  return state;
 }
 
 export function freshState(): AppState {
