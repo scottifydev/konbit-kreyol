@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { resolveDispatch, requestRepeat } from "../src/lib/engine/dispatch";
+import { dealLeg, landVolley } from "../src/lib/engine/konbit";
 import { itemState } from "../src/lib/engine/srs";
-import type { Dispatch, Profile } from "../src/lib/engine/types";
+import type { Dispatch, KonbitState, Profile } from "../src/lib/engine/types";
 
 function mkProfile(id: string): Profile {
   return {
@@ -79,6 +80,35 @@ describe("the voice laws — resolveDispatch()", () => {
     expect(d.status).toBe("delivered");
     expect(resolveDispatch(d, leo, isaac, 0, 2)).toBe("acted");
     expect(itemState(isaac, "kòman ou ye").rec.hist).toHaveLength(1);
+  });
+
+  it("acting on a dispatch lands a listening-leg volley; a garble lands nothing (09 §4)", () => {
+    // Mirrors the /api/dispatches/[id]/outcome route composition: on "acted"
+    // the receiver's dealt leg gains a volley; on "garbled" it does not.
+    const leo = mkProfile("leo");
+    const isaac = mkProfile("isaac");
+    const konbit: KonbitState = {
+      streak: 0,
+      lastDay: 0,
+      stars: 0,
+      padon: 1,
+      mon: {
+        unit: 1,
+        legs: { isaac: { done: false, score: 0, budget: 0, tip: "" } },
+        taken: false,
+      },
+    };
+    dealLeg(konbit, "isaac", "Moderate", 3); // budget = min(8, 3) = 3
+
+    const d1 = mkDispatch();
+    if (resolveDispatch(d1, leo, isaac, 0, 1) === "acted")
+      landVolley(konbit, "isaac", true);
+    expect(konbit.mon.legs.isaac.score).toBe(1);
+
+    const d2 = mkDispatch();
+    if (resolveDispatch(d2, leo, isaac, 1, 1) === "acted") // garble
+      landVolley(konbit, "isaac", true);
+    expect(konbit.mon.legs.isaac.score).toBe(1); // unchanged
   });
 
   it("NO SELF-REPORT PATH: the only way to credit is the compared action", () => {

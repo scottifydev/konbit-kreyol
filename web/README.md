@@ -17,8 +17,8 @@ npm run check      # law lint + tests — every PR must pass
 - **Engine** (`src/lib/engine/`): the flip gate (`taught`, strict `unit > tw`), the native gate (`resolveChrome` — unreviewed Kreyòl never renders to a boy), two-ledger Leitner SRS with the Tier-A trap annotated and tested, Kle-77 early receptive seeding, idempotent reactions, konbit streak/padon/relay with persistent tips, and the voice-dispatch resolver (double ledger write exactly once; garbles write nothing; no self-report path).
 - **Data** (`src/data/`): scope (v6-4 items + the pending amendment batch), ui-strings (v7 copy rulings applied; every ht `needsReview:true`; retired coinages are `ht: null` open tickets), feed posts (p4/p5 review flags corrected), campaign chapters with binding history facts, missions.
 - **Lint** (`lint/`, `scripts/lint-laws.mjs`): language lint (diacritics, scope tokens, known-unlawful tokens; case-sensitive proper-noun whitelist, change-controlled), copy lint (plumbing/jargon/fear/third-person), scope-coverage lint. Seeded violations are tested.
-- **Screens**: profile doors (name + role only), the boy's front page (scoreboard header, 77-tick ruler, konbit strip, campaign strip), the dispatch composer/inbox (hold-to-record, pointer events, `touch-action:none`), and the **Cipher Office** (Manman's live review queue — certify/pull back).
-- **API**: dispatch send → deliver → act-on-it check (answer never leaves the server) → double ledger credit; repeat-free garble; GM certify endpoint that structurally cannot touch ledgers.
+- **Screens**: profile doors (name + role only), the boy's front page (scoreboard header, 77-tick ruler, konbit strip, campaign strip), the dispatch composer/inbox (hold-to-record, pointer events, `touch-action:none`), the **Mòn battle** (`/play/[boy]/mon`: muster the leg → run voice-volleys → pass the word with a tip → take-the-position/marronage reveal, driven by the `09` co-op formula), and the **Cipher Office** (Manman's live review queue — certify/pull back).
+- **API**: dispatch send → deliver → act-on-it check (answer never leaves the server) → double ledger credit + a listening-leg volley; repeat-free garble; the battle-resolve endpoint (`/api/mon`: deal/pass/marronage); GM certify endpoint that structurally cannot touch ledgers.
 
 ## Persistence
 
@@ -28,4 +28,4 @@ npm run check      # law lint + tests — every PR must pass
 
 - Kreyòl anywhere the boys can see: every ht string awaits the Cipher Office; scene Kreyòl is open tickets. This is the law working, not a gap.
 - ASR/any machine judgment of voice (voice law 3 — removed from the design).
-- Real auth (Supabase gate), Fokis/Mòn/Misyon screens, chapters 2–8 scenes (build-plan issues 4, 6–13).
+- Real auth (Supabase gate), the ticket/diagnostic, Fil la / Fokis / Misyon screens, chapters 2–8 scenes (build-plan issues 1, 4, 6–13). The Mòn battle's recognition-leg volley content (scope-bank reviews) awaits Manman's lexicon pass; the voice-volley leg (dispatches) works now.

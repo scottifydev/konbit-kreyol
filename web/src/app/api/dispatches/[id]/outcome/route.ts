@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getStore } from "@/lib/store/local";
 import { resolveDispatch, requestRepeat } from "@/lib/engine/dispatch";
-import { practiceToday } from "@/lib/engine/konbit";
+import { landVolley, practiceToday } from "@/lib/engine/konbit";
 
 /** POST { option } — the receiver acts on the dispatch. The server compares
  *  against the paired check and credits both ledgers exactly once on
@@ -33,6 +33,10 @@ export async function POST(
   const outcome = resolveDispatch(d, sender, receiver, option, state.day);
   if (outcome === "acted") {
     practiceToday(receiver, state.konbit, state.day);
+    // Acting on a dispatch IS a listening-leg voice-volley (09 §4): if the
+    // receiver has a dealt, unfinished leg, this correct act lands a volley.
+    // A garble lands nothing (handled by resolveDispatch returning "garbled").
+    landVolley(state.konbit, d.receiver, true);
   }
   await store.save(state);
   return NextResponse.json({ ok: true, outcome, status: d.status });

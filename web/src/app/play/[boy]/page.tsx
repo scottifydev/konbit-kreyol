@@ -105,7 +105,9 @@ export default async function FrontPage({
                 </>
               )}
             </div>
-            <div className="row"><Flip view={c("step_mon")} /></div>
+            <div className="row">
+              <Link href={`/play/${boy}/mon`}><Flip view={c("step_mon")} /></Link>
+            </div>
             <p style={{ marginBottom: 0 }}>
               <Link className="cta" href={`/play/${boy}/dispatch`}><Flip view={c("start")} /></Link>
             </p>
