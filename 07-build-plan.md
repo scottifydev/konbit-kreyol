@@ -76,15 +76,15 @@ Two ultracode audits — a code-robustness pass and a user-standpoint "why does 
 - ✅ **Fail CLOSED in production** (`authEnforced` — a prod deploy with no `AUTH_SECRET` locks rather than opens).
 - ✅ **Private audio family-gated** (`/api/audio` requires a session; strangers blocked).
 
-**P0 — DEFERRED (deliberate; documented):**
-- **Single-JSONB-row concurrency** — the family is one row loaded-mutated-saved per write with no version/lock, so two *exactly-simultaneous* co-op writes can clobber. Fix = a `store.transaction()` (in-process mutex for LocalStore + `updated_at` compare-and-swap with retry for SupabaseStore) and convert the ~13 routes to it. **Deferred** to its own focused pass with route/concurrency tests: it touches every route right after the auth pass, and the collision window is small for a 2-user family app. It is the one remaining P0.
+**P0 — DONE:**
+- ✅ **Single-JSONB-row concurrency** — `store.transaction()`: in-process mutex (LocalStore) + `updated_at` compare-and-swap with retry (SupabaseStore); all 11 write routes converted; `HttpError`/`txJson` helpers; audio uploads moved before the transaction; a concurrency test (15 concurrent writes all land). No more clobber.
 
-**P1 — DONE:** ✅ Cipher Office **audio playback** (the "Their voices" view — Manman can hear every dispatch/ticket/Di-li recording); ✅ **the world ticks forward** (`rolloverDay` — game-day advances with real days, SRS due arrives); ✅ **gate hardening** (`tsc --noEmit` in `check`).
+**P1 — DONE:** ✅ Cipher Office **audio playback** ("Their voices" view); ✅ **the world ticks forward** (`rolloverDay`); ✅ **gate hardening** (`tsc --noEmit`); ✅ **dispatch degrades** on chapters 2–8 instead of 404; ✅ the konbit **"position held" signature moment** (marks slide together, ignite, the motto); ✅ the **comic-enemy reaction** at the instant a dispatch is acted.
 
-**P1 — remaining (felt + product depth):**
-- **Vertical slice** — dispatch 404s on 7/8 chapters (one prompt in the game); seed an opening volley so the battle is reachable solo; a **scene surface** so the narrative + "enemy can't read the code" thesis render, and the **comic-enemy reaction** at the instant a dispatch is acted.
-- **Signature moments** — konbit "position held" as the peak (not a spreadsheet row); a **custom gold audio player**; animate/seed the Kle-77 + Sak Mo counters; **hear-it-back-before-send** on recordings.
-- Route/authz tests for the new guards.
+**P1 — remaining (deeper content/polish):**
+- Real **scene surface** rendering the chapter narrative (needs authored/gated scene content); seed an opening volley so the battle is winnable solo on run one.
+- A **custom gold audio player** (replacing the raw `<audio>` in the inbox / Cipher Office); animate/seed the Kle-77 + Sak Mo counters; **hear-it-back-before-send** on recordings.
+- Route/authz unit tests for the new session guards (guardBoy/guardAdult).
 
 ## Definition of first playable
 
