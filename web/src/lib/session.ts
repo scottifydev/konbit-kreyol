@@ -35,6 +35,15 @@ export async function guardAdult(): Promise<NextResponse | null> {
   return null;
 }
 
+/** Boolean form of guardBoy for use INSIDE a transaction mutator (where the
+ *  identity to check — e.g. a dispatch's receiver — is only known after
+ *  reading state). Throw HttpError(401) on false. */
+export async function sessionAllows(boy: string): Promise<boolean> {
+  if (!authEnforced()) return true;
+  const s = await currentSession();
+  return !!s && (s.sub === boy || s.role === "adult");
+}
+
 /** Any authenticated family member (used for private audio). */
 export async function guardFamily(): Promise<NextResponse | null> {
   if (!authEnforced()) return null;

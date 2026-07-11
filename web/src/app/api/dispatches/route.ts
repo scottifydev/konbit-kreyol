@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { getStore } from "@/lib/store/local";
 import { KANPAY, type DispatchPrompt } from "@/data/kanpay";
 import type { Dispatch } from "@/lib/engine/types";
+import { HttpError } from "@/lib/store/adapter";
 import { guardBoy } from "@/lib/session";
+import { txJson } from "@/lib/tx";
 
 function findPrompt(promptId: string): DispatchPrompt | null {
   for (const ch of KANPAY)
@@ -29,30 +31,31 @@ export async function POST(req: NextRequest) {
   if (!prompt) return NextResponse.json({ ok: false }, { status: 404 });
 
   const store = getStore();
-  const state = await store.load();
-  if (!state.profiles[sender] || !state.profiles[receiver]) {
-    return NextResponse.json({ ok: false }, { status: 400 });
-  }
+  // upload BEFORE the transaction so a write retry never re-uploads
   const id = `d${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   const bytes = new Uint8Array(await audio.arrayBuffer());
   const audioRef = await store.saveAudio(id, bytes, audio.type || "audio/webm");
 
-  const dispatch: Dispatch = {
-    id,
-    sender,
-    receiver,
-    promptId,
-    targetItems: prompt.targetItems,
-    audioRef,
-    status: "delivered",
-    credited: false,
-    createdDay: state.day,
-    check: prompt.check,
-    replies: [],
-  };
-  state.dispatches.push(dispatch);
-  await store.save(state);
-  return NextResponse.json({ ok: true, id });
+  return txJson(store, (state) => {
+    if (!state.profiles[sender] || !state.profiles[receiver]) {
+      throw new HttpError(400);
+    }
+    const dispatch: Dispatch = {
+      id,
+      sender,
+      receiver,
+      promptId,
+      targetItems: prompt.targetItems,
+      audioRef,
+      status: "delivered",
+      credited: false,
+      createdDay: state.day,
+      check: prompt.check,
+      replies: [],
+    };
+    state.dispatches.push(dispatch);
+    return { ok: true, id };
+  });
 }
 
 /** GET ?for=<profile> — inbox + sent, SANITIZED: the check's answer index

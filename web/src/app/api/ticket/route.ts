@@ -1,26 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getStore } from "@/lib/store/local";
+import { HttpError } from "@/lib/store/adapter";
 import { seedTiers } from "@/lib/engine/srs";
 import scopeData from "@/data/scope.json";
 import type { ScopeItem } from "@/lib/engine/types";
 import { guardBoy } from "@/lib/session";
+import { txJson } from "@/lib/tx";
 
 const SCOPE = (scopeData as { items: ScopeItem[] }).items;
 
-/** The ticket (build-plan issue 4). Two shapes:
- *
- *  - multipart { audio, slot }: store a production recording (read-aloud /
- *    describe-the-camp). Kept for the Cipher Office to score BY EAR — never
- *    machine-judged (voice law 3). Returns the ref.
- *  - JSON { action: "finish", boy }: close the intake. Until the reference
- *    audio exists and Manman scores the recordings, the track is provisional
- *    (Moderate ~450) and the Kle-77 core is seeded to Tier A (the register-
- *    independent words to link first). Sets diagDone; the Cipher Office
- *    refines the track later. No self-report ever sets mastery.
- */
+/** The ticket (build-plan issue 4).
+ *  - multipart { audio, slot }: store a production recording (kept for the
+ *    Cipher Office to score BY EAR — never machine-judged). Upload before the
+ *    transaction.
+ *  - JSON { action: "finish" }: close the intake — provisional track (Moderate
+ *    ~450) + Kle-77 → Tier A + diagDone. No self-report ever sets mastery. */
 export async function POST(req: NextRequest) {
   const store = getStore();
-  const state = await store.load();
   const ctype = req.headers.get("content-type") ?? "";
 
   if (ctype.includes("multipart/form-data")) {
@@ -30,33 +26,37 @@ export async function POST(req: NextRequest) {
     if (denied) return denied;
     const slot = String(form.get("slot") ?? "x");
     const file = form.get("audio");
-    const p = state.profiles[boy];
-    if (!p || p.kind !== "boy" || !(file instanceof Blob)) {
+    if (!(file instanceof Blob)) {
       return NextResponse.json({ ok: false }, { status: 400 });
     }
     const buf = new Uint8Array(await file.arrayBuffer());
     const ref = await store.saveAudio(
-      `ticket-${boy}-${slot}`,
+      `ticket-${boy}-${slot}-${Date.now()}`,
       buf,
       file.type || "audio/webm",
     );
-    p.diagAudio = [...(p.diagAudio ?? []), ref];
-    await store.save(state);
-    return NextResponse.json({ ok: true, ref });
+    return txJson(store, (state) => {
+      const p = state.profiles[boy];
+      if (!p || p.kind !== "boy") throw new HttpError(400);
+      p.diagAudio = [...(p.diagAudio ?? []), ref];
+      return { ok: true, ref };
+    });
   }
 
   const { action, boy } = await req.json().catch(() => ({}));
   const denied = await guardBoy(boy);
   if (denied) return denied;
-  const p = state.profiles[boy];
-  if (action !== "finish" || !p || p.kind !== "boy") {
+  if (action !== "finish") {
     return NextResponse.json({ ok: false }, { status: 400 });
   }
-  // Provisional track sizing until the Cipher Office scores the intake.
-  p.band = p.band ?? "Moderate";
-  for (const it of SCOPE) if (it.kle) p.tiers[it.id] = "A";
-  seedTiers(p, SCOPE, state.day);
-  p.diagDone = true;
-  await store.save(state);
-  return NextResponse.json({ ok: true, href: `/play/${boy}` });
+  return txJson(store, (state) => {
+    const p = state.profiles[boy];
+    if (!p || p.kind !== "boy") throw new HttpError(400);
+    // Provisional track sizing until the Cipher Office scores the intake.
+    p.band = p.band ?? "Moderate";
+    for (const it of SCOPE) if (it.kle) p.tiers[it.id] = "A";
+    seedTiers(p, SCOPE, state.day);
+    p.diagDone = true;
+    return { ok: true, href: `/play/${boy}` };
+  });
 }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getStore } from "@/lib/store/local";
 import { CERT_KEY } from "@/lib/certifyKeys";
 import { guardAdult } from "@/lib/session";
+import { txJson } from "@/lib/tx";
 
 /** Certify Kreyòl (Manman's pass). GM LAW 1 BY CONSTRUCTION: this endpoint
  *  writes ONLY the certification overlay — it has no access path to profiles,
@@ -22,9 +23,8 @@ export async function POST(req: NextRequest) {
   if (valid.length === 0) {
     return NextResponse.json({ ok: false }, { status: 400 });
   }
-  const store = getStore();
-  const state = await store.load();
-  for (const k of valid) state.certified[k] = certified;
-  await store.save(state);
-  return NextResponse.json({ ok: true, count: valid.length, certified });
+  return txJson(getStore(), (state) => {
+    for (const k of valid) state.certified[k] = certified;
+    return { ok: true, count: valid.length, certified };
+  });
 }

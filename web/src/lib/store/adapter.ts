@@ -26,9 +26,25 @@ export interface AppState {
 export interface Store {
   load(): Promise<AppState>;
   save(state: AppState): Promise<void>;
+  /** Atomic load → mutate → save (06 §1; the fix for the single-row clobber).
+   *  LocalStore serializes in-process; SupabaseStore uses an `updated_at`
+   *  compare-and-swap with retry, so two simultaneous co-op writes no longer
+   *  lose each other. The mutator MAY re-run on a write conflict, so it must
+   *  be free of external side effects — do audio uploads BEFORE the
+   *  transaction and only touch `state` inside it. Throw HttpError to abort
+   *  with a status (no retry, no save). */
+  transaction<T>(mutator: (state: AppState) => T | Promise<T>): Promise<T>;
   /** audio blobs: returns an opaque ref (path or bucket key) */
   saveAudio(id: string, data: Uint8Array, mime: string): Promise<string>;
   readAudio(ref: string): Promise<{ data: Uint8Array; mime: string } | null>;
+}
+
+/** Thrown inside a transaction mutator to abort with an HTTP status (a
+ *  validation failure), skipping the save and the retry loop. */
+export class HttpError extends Error {
+  constructor(public status: number) {
+    super(`HttpError ${status}`);
+  }
 }
 
 export function certifiedUiString(

@@ -15,7 +15,28 @@ const AUDIO_DIR = join(DATA_DIR, "audio");
 
 export { freshState };
 
+/** Process-wide serialization: every LocalStore transaction chains off the
+ *  previous, so no two load→mutate→save cycles interleave (dev has no DB CAS). */
+let localChain: Promise<unknown> = Promise.resolve();
+
 export class LocalStore implements Store {
+  async transaction<T>(
+    mutator: (state: AppState) => T | Promise<T>,
+  ): Promise<T> {
+    const run = localChain.then(async () => {
+      const state = await this.load();
+      const result = await mutator(state);
+      await this.save(state);
+      return result;
+    });
+    // keep the chain alive whether this run succeeded or threw
+    localChain = run.then(
+      () => undefined,
+      () => undefined,
+    );
+    return run as Promise<T>;
+  }
+
   async load(): Promise<AppState> {
     if (!existsSync(STATE_FILE)) return rolloverDay(freshState());
     try {

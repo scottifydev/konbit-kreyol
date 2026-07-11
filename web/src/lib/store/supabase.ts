@@ -49,6 +49,45 @@ export class SupabaseStore implements Store {
     return rolloverDay(data.data as AppState);
   }
 
+  /** Optimistic concurrency: read {data, updated_at}, run the mutator, then
+   *  write only if updated_at is unchanged (compare-and-swap). A concurrent
+   *  write bumps updated_at → 0 rows updated → retry on fresh state, so two
+   *  simultaneous co-op writes serialize instead of clobbering. */
+  async transaction<T>(
+    mutator: (state: AppState) => T | Promise<T>,
+  ): Promise<T> {
+    for (let attempt = 0; attempt < 6; attempt++) {
+      const { data, error } = await this.db
+        .from("app_state")
+        .select("data, updated_at")
+        .eq("id", STATE_ID)
+        .maybeSingle();
+      if (error) throw error;
+      const state = rolloverDay(
+        data ? (data.data as AppState) : freshState(),
+      );
+      const result = await mutator(state); // may throw HttpError → aborts, no write
+      const stamp = new Date().toISOString();
+      if (!data) {
+        const { error: ierr } = await this.db
+          .from("app_state")
+          .upsert({ id: STATE_ID, data: state, updated_at: stamp });
+        if (ierr) throw ierr;
+        return result;
+      }
+      const { data: upd, error: uerr } = await this.db
+        .from("app_state")
+        .update({ data: state, updated_at: stamp })
+        .eq("id", STATE_ID)
+        .eq("updated_at", data.updated_at as string)
+        .select("id");
+      if (uerr) throw uerr;
+      if (upd && upd.length > 0) return result; // CAS won
+      // else a concurrent write landed first — loop and re-apply on fresh state
+    }
+    throw new Error("app_state busy — concurrent write conflict after retries");
+  }
+
   async save(state: AppState): Promise<void> {
     const { error } = await this.db
       .from("app_state")
