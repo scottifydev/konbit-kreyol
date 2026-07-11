@@ -26,17 +26,27 @@ export default async function DispatchPage({
   if (!prompt) notFound();
 
   return (
-    <main className="page">
-      <header className="scoreboard">
+    <main className="stage">
+      <header className="head">
         <div>
-          <div className="label">
+          <div className="kicker">
             {chapter.n}. {chapter.nameEn} · {chapter.year}
           </div>
-          <h1 className="d1">
+          <h1 className="d1 gold">
             <Flip view={c("prod")} />
           </h1>
         </div>
+        <div className="meta">blow the signal · say the line</div>
       </header>
+      <section className="hero" style={{ aspectRatio: "16 / 5", minHeight: 150, marginBottom: 22 }}>
+        <img src="/art/lambi-conch.webp" alt="" style={{ objectPosition: "center 42%" }} />
+        <div className="veil" />
+        <div className="cap">
+          <div className="oral" style={{ borderLeft: "none", padding: 0 }}>
+            the wire the enemy cannot read
+          </div>
+        </div>
+      </section>
       <DispatchClient
         boy={boy}
         brother={brother}

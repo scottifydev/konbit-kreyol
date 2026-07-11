@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Flip from "@/components/Flip";
+import CampaignMap from "@/components/CampaignMap";
 import { chrome, chromeUnitTitle } from "@/lib/chrome";
 import { getStore } from "@/lib/store/local";
 import { KANPAY } from "@/data/kanpay";
@@ -10,12 +11,24 @@ import type { ScopeItem } from "@/lib/engine/types";
 
 const SCOPE = (scopeData as { items: ScopeItem[] }).items;
 
+/** Chapter → its painted moment (Nano Banana). Units without a scene fall
+ *  back to the painted land of Haiti. */
+const CH_ART: Record<number, string> = {
+  1: "/art/ch1-burning-plain.webp",
+  2: "/art/map-haiti.webp",
+  3: "/art/map-haiti.webp",
+  4: "/art/ch4-ravine.webp",
+  5: "/art/ch5-crete.webp",
+  6: "/art/ch6-arcahaie-flag.webp",
+  7: "/art/ch7-vertieres.webp",
+  8: "/art/ch8-citadelle.webp",
+};
+
 export const dynamic = "force-dynamic";
 
-/** The front page (dashboard) — one lead story, konbit strip, campaign
- *  strip, 77-tick ruler, small index (05 §5). No number here is comparable
- *  across brothers on a shared surface; this is HIS page (masthead stats
- *  are per-boy by law). */
+/** The front page — Drapo Ginen. The chapter's painted moment leads; the
+ *  real geography of Saint-Domingue below; today's session in fer-découpé
+ *  panels. No number is comparable across brothers on a shared surface. */
 export default async function FrontPage({
   params,
 }: {
@@ -36,122 +49,119 @@ export default async function FrontPage({
   ).length;
 
   return (
-    <main className="page">
-      <header className="scoreboard">
+    <main className="stage">
+      <header className="head">
         <div>
-          <div className="label">
+          <div className="kicker">
             <Flip view={c("unit_label")} /> {unit} ·{" "}
             <Flip view={chromeUnitTitle(unit, unit, certified)} />
           </div>
-          <h1 className="d1">
+          <h1 className="d1 gold">
             <Flip view={c("dash")} />
           </h1>
         </div>
-        <div className="stat">
-          <span className="label">
+        <div style={{ textAlign: "right" }}>
+          <div className="label">
             <Flip view={c("streak")} />
-          </span>{" "}
-          {p.streak}
+          </div>
+          <div className="d2">{p.streak}</div>
         </div>
       </header>
 
-      {/* lead story — today's session (~60% of the visual weight) */}
-      <section>
-        <h2 className="d2">
-          <Flip view={c("today")} />
-        </h2>
-        <div className="hairline-row">
-          <Flip view={c("fil")} /> — {due} <Flip view={c("words_back")} />
-        </div>
-        <div className="hairline-row">
-          <Flip view={c("step_fokis")} />
-        </div>
-        <div className="hairline-row">
-          <Flip view={c("prod")} /> ·{" "}
-          <Link href={`/play/${boy}/dispatch`}>
-            <Flip view={c("dispatch_new")} />
-          </Link>
-          {pending > 0 && (
-            <>
-              {" "}
-              · <Flip view={c("dispatch_inbox")} />: {pending}
-            </>
-          )}
-        </div>
-        <div className="hairline-row">
-          <Flip view={c("step_mon")} />
-        </div>
-        <p>
-          <Link className="cta" href={`/play/${boy}/dispatch`}>
-            <Flip view={c("start")} />
-          </Link>
-        </p>
-      </section>
-
-      {/* Kle 77 — the honest individual goal */}
-      <section>
-        <div className="label">
-          <Flip view={c("kle77")} /> · {kle} / 77
-        </div>
-        <div className="ruler" aria-label={`${kle} of 77`}>
-          {Array.from({ length: 77 }, (_, i) => (
-            <i key={i} className={i < kle ? "solid" : undefined} />
-          ))}
+      {/* the chapter's painted moment */}
+      <section className="hero" style={{ aspectRatio: "16 / 6", minHeight: 190, marginBottom: 26 }}>
+        <img src={CH_ART[unit] ?? "/art/map-haiti.webp"} alt="" />
+        <div className="veil" />
+        <div className="cap">
+          <div className="meta" style={{ color: "var(--gold-bright)" }}>
+            {chapter.year} · chapit {chapter.n}
+          </div>
+          <h2 className="d2">{chapter.nameEn}</h2>
         </div>
       </section>
 
-      {/* konbit strip — fixed row order (leg order), never sorted; the only
-          numbers are each climber's own Kle 77 and the one shared bar */}
-      <section>
-        <div className="goldband">
-          <Flip view={c("standings")} /> · {konbit.streak}{" "}
-          <Flip view={c("days")} />
-        </div>
-        <table className="plain">
-          <tbody>
-            {/* row order fixed to leg order — never sorted (copy law 3) */}
-            {(["leo", "isaac"] as const).map((id) => (
-              <tr key={id}>
-                <td>
-                  <span className={`liy ${id}`}>
-                    {state.profiles[id].name[0]}
+      <div className="two">
+        <div>
+          {/* today's session — the lead */}
+          <div className="panel">
+            <div className="meta" style={{ color: "var(--gold-bright)" }}>
+              <Flip view={c("today")} />
+            </div>
+            <div className="row">
+              <span className="sundot" />
+              <div>
+                <Flip view={c("fil")} /> — {due} <Flip view={c("words_back")} />
+              </div>
+            </div>
+            <div className="row"><Flip view={c("step_fokis")} /></div>
+            <div className="row">
+              <Flip view={c("prod")} /> ·{" "}
+              <Link href={`/play/${boy}/dispatch`}><Flip view={c("dispatch_new")} /></Link>
+              {pending > 0 && (
+                <>
+                  {" "}· <span className="label" style={{ color: "var(--scarlet)" }}>
+                    <Flip view={c("dispatch_inbox")} /> {pending}
                   </span>
-                </td>
-                <td>{state.profiles[id].name}</td>
-                <td>
-                  <Flip view={c("kle77")} /> {kleSolid(state.profiles[id], SCOPE)}
-                  /77
-                </td>
-                <td>★ {konbit.stars}/10</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
+                </>
+              )}
+            </div>
+            <div className="row"><Flip view={c("step_mon")} /></div>
+            <p style={{ marginBottom: 0 }}>
+              <Link className="cta" href={`/play/${boy}/dispatch`}><Flip view={c("start")} /></Link>
+            </p>
+          </div>
 
-      {/* campaign strip — 8 milestones, current one live */}
-      <section>
-        <div className="label">{chapter.year}</div>
-        <div className="d3">
-          {chapter.n}. {chapter.nameEn}
+          {/* the real geography */}
+          <div style={{ marginTop: 26 }}>
+            <div className="label" style={{ marginBottom: 8 }}>
+              Saint-Domingue · where the battles happened
+            </div>
+            <div className="panel" style={{ padding: 8 }}>
+              <CampaignMap currentUnit={unit} />
+            </div>
+          </div>
         </div>
-        <p>{chapter.milestoneFactEn}</p>
-        <div className="ruler">
-          {KANPAY.map((ch) => (
-            <i
-              key={ch.n}
-              className={ch.n <= chapter.n ? "solid" : undefined}
-              style={{ width: 12 }}
-            />
-          ))}
-        </div>
-      </section>
+
+        <aside>
+          {/* Kle 77 — the honest individual goal */}
+          <div className="panel">
+            <div className="label"><Flip view={c("kle77")} /> · {kle} / 77</div>
+            <div className="ruler" aria-label={`${kle} of 77`}>
+              {Array.from({ length: 77 }, (_, i) => (
+                <i key={i} className={i < kle ? "solid" : undefined} />
+              ))}
+            </div>
+          </div>
+
+          {/* konbit — one rope, two climbers */}
+          <div className="goldband" style={{ marginTop: 18 }}>
+            <Flip view={c("standings")} /> · {konbit.streak} <Flip view={c("days")} />
+          </div>
+          <div className="panel" style={{ marginTop: 0 }}>
+            <table className="plain">
+              <tbody>
+                {(["leo", "isaac"] as const).map((id) => (
+                  <tr key={id}>
+                    <td><span className={`liy ${id}`}>{state.profiles[id].name[0]}</span></td>
+                    <td>{state.profiles[id].name}</td>
+                    <td className="meta">{kleSolid(state.profiles[id], SCOPE)}/77</td>
+                    <td className="meta">★ {konbit.stars}/10</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="scrim" style={{ marginTop: 18 }}>
+            <p style={{ margin: 0, color: "#e7dcc2" }}>{chapter.milestoneFactEn}</p>
+          </div>
+        </aside>
+      </div>
 
       <nav className="index label">
-        <Link href={`/play/${boy}/dispatch`}>
-          <Flip view={c("prod")} />
-        </Link>{" "}
-        · <Flip view={c("misyon")} /> · <Flip view={c("ladder")} /> ·{" "}
+        <Link href={`/play/${boy}/dispatch`}><Flip view={c("prod")} /></Link>
+        <Flip view={c("misyon")} />
+        <Flip view={c("ladder")} />
         <Flip view={c("settings")} />
       </nav>
     </main>

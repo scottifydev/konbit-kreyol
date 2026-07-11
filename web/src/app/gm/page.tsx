@@ -9,12 +9,15 @@ import GmClient from "./GmClient";
  *  that project exists this surface is local-dev only. */
 export default function GmPage() {
   return (
-    <main className="page">
-      <header className="scoreboard">
+    <main className="stage">
+      <header className="head">
         <div>
-          <div className="label">adult surface — the boys do not see this</div>
-          <h1 className="d1">Cipher Office</h1>
+          <div className="kicker">adult surface — the boys do not see this</div>
+          <h1 className="d1 gold" style={{ fontFamily: "var(--f-mono)", letterSpacing: "-.01em", textTransform: "none" }}>
+            Cipher Office
+          </h1>
         </div>
+        <div className="meta">nothing Kreyòl reaches the boys until it passes here</div>
       </header>
       <GmClient />
     </main>
