@@ -52,6 +52,8 @@ Owner decisions, in force. A build must not quietly contradict any row.
 | 2026-07-10 | **Chapter anthems:** one modern Haitian track per chapter — linked never hosted, boys nominate, family vets, chorus vocabulary pre-taught via song keys. |
 | 2026-07-10 | **GM layer:** Scott = command + enemy intelligence channel; Manman = Cipher Office; code names family-coined at kickoff; async-only GM agency; GM never touches mastery math; adults are never the enemy mechanically. |
 | 2026-07-10 | **Stack: Vercel + Supabase.** Phone + PC hybrid: the 30-min daily loop lives on the shared PC; each boy's phone carries the voice surface. Privacy copy: "stays in the family." |
+| 2026-07-11 | **Supabase backend provisioned** — project `konbit-kreyol` (ref `gqwiqwabyamvqrtejzwi`, Vercel-linked org, us-east-1). `supabase/migrations/0001_init.sql` applied: 16 tables, RLS on all, 21 policies, private Storage buckets `dispatches` + `family-audio`. GM-law-1 verified in-DB (no `gm_queue`→ledger FK). Supabase CLI installed; secrets (access token, DB password, service_role key, anon key, URL) live in `~/.supabase/.env`, never in the repo. |
+| 2026-07-11 | **Campaign map = real geography** (owner: "show the geography, not a generic mountain"). The Duffaut vertical-"Climb" metaphor retired; the map is the true coastline of Saint-Domingue with the 8 battles at their real coordinates, painted in the Drapo Ginen palette. Geography is authored (not generated); Nano Banana (Gemini 2.5 Flash Image) proven for illustration surfaces only. |
 | 2026-07-10 | **Working title: KÒD LA** ("the rope / the code" — attested material, no coinage). Pending Manman like every Kreyòl string; the boys' build shows "THE ROPE" until she passes it. "Konbit Kreyòl" stays as the program/repo name. `kòd` added to the pending U2 scope batch (`04` §1.1). |
 | 2026-07-10 | **Build started** — `web/` (Next.js): engine port, law lint + tests, voice-dispatch pipeline, Cipher Office queue; Supabase schema staged in `supabase/migrations/`, `LocalStore` as the dev placeholder until the Supabase gate clears. |
 | 2026-07-10 | **The Period Cut** (owner): the design shows 18th-century Haiti — campaign map, battle plans, militia document forms, geography. Ruled and recorded in `05` §12a after a judged element pass (teen/Manman/cohesion lenses): seven elements admitted, kills recorded, period through structure never distress. Mockups v2 (`mockups/`, artifact link) demonstrate. *(The FLAT execution of this was superseded the same day — see the Drapo Ginen row; the map/battle/geography intent carries forward, rendered warm and painterly.)* |
@@ -92,7 +94,7 @@ Anything in `archive/` asserting the following is superseded:
 - Bwa Kayiman chapter-name default: opt-in naming vs fallback "Soulèvman 1791" (sensitivity ruling 2 in `04-laws.md`).
 - DUE-badge amendment sign-off (quiet sun dot replaces text badge) and ratification of the scope amendments.
 - Family error-response one-pager sign-off before Unit 1 (the single most critical safeguard).
-- Anthem shortlist vetting with the boys; code-name kickoff; Supabase project + billing setup.
+- Anthem shortlist vetting with the boys; code-name kickoff. *(Supabase project provisioned 2026-07-11.)*
 
 **Family:**
 - Code names coined at kickoff; anthem nominations; reference-audio session (90-min floor). Until recorded, every audio slot says "coming" — honestly.

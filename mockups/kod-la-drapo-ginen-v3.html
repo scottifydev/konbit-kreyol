@@ -140,9 +140,8 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
 <!-- ========== 2 · CAMPAIGN MAP — Duffaut sacred vertical ========== -->
 <section class="screen" id="s-map">
   <div class="head">
-    <div><div class="kicker">Ayiti · 1791 – 1804</div><h1 class="d1">The Climb</h1></div>
-    <div style="text-align:right"><span class="station st-uprising">station · uprising</span>
-      <div class="meta" style="margin-top:8px;color:#c9bfa6">position 4 / 8</div></div>
+    <div><div class="kicker">Saint-Domingue · 1791 – 1804</div><h1 class="d1">The Campaign</h1></div>
+    <div style="text-align:right"><span class="meta" style="color:#c9bfa6">8 battles · where they happened</span></div>
   </div>
   <div class="two">
     <div class="frame" id="map-art" style="background:var(--deepsea)"></div>
@@ -152,10 +151,10 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
         <h2 class="d2" style="margin:4px 0 8px;color:var(--bone)">Ravin Koulèv</h2>
         <p style="margin:0;color:#e7dcc2">Toussaint's outnumbered soldiers make a fierce stand in a narrow wooded gorge against Napoleon's veterans. <span class="oral" style="color:var(--cornmeal)">Dèyè mòn gen mòn.</span></p>
       </div>
-      <div class="mp"><span class="n">1</span><div><b class="cere" style="color:var(--bone)">Bwa Kayiman</b> · 1791 — the base, the night the plain rose</div></div>
+      <div class="mp"><span class="n">1</span><div><b class="cere" style="color:var(--bone)">Bwa Kayiman</b> · 1791 — the Northern Plain rises</div></div>
       <div class="mp"><span class="n" style="color:var(--gold-hi)">4</span><div><b class="cere" style="color:var(--bone)">Ravin Koulèv</b> · 1802 — you are here</div></div>
-      <div class="mp"><span class="n" style="color:#7a6a52">8</span><div style="color:#a99e84"><b class="cere">Gonayiv</b> · 1804 — the summit: independans</div></div>
-      <p class="credit">Nodes are fer-découpé medallions (secular craft), never drapo. Upward is forward — Duffaut's sacred vertical.</p>
+      <div class="mp"><span class="n" style="color:#7a6a52">8</span><div style="color:#a99e84"><b class="cere">Gonayiv</b> · 1804 — the coast: independans</div></div>
+      <p class="credit">The real ground — the northern plain, the Artibonite, the coast. Fer-découpé pins where the battles actually happened.</p>
     </div>
   </div>
 </section>
@@ -301,48 +300,57 @@ function drawGate(){
       el.animate([{strokeDashoffset:len},{strokeDashoffset:0}],{duration:900,delay:120+i*70,fill:"forwards",easing:"ease-out"});}catch(e){}});}
 }
 
-/* ---------- 2 · DUFFAUT STACKED-MOUNTAIN MAP ---------- */
+/* ---------- 2 · SAINT-DOMINGUE — the real geography, painted ---------- */
+const SEA=[[19.60,-71.74],[19.67,-71.83],[19.70,-72.02],[19.77,-72.19],[19.85,-72.53],[19.95,-72.83],[19.90,-73.10],[19.83,-73.42],[19.68,-73.32],[19.65,-73.21],[19.63,-73.04],[19.45,-72.69],[19.25,-72.80],[19.10,-72.70],[18.95,-72.70],[18.77,-72.51],[18.73,-72.42],[18.57,-72.34],[18.51,-72.63],[18.43,-72.77],[18.45,-73.09],[18.53,-73.51],[18.48,-73.64],[18.57,-73.88],[18.65,-74.12],[18.40,-74.45],[18.06,-73.92],[18.19,-73.74],[18.15,-73.10],[18.18,-72.75],[18.22,-72.53],[18.23,-72.06],[18.03,-71.75]];
+const BORDER=[[18.03,-71.75],[18.30,-71.76],[18.60,-71.72],[19.00,-71.78],[19.30,-71.70],[19.60,-71.74]];
+const GONAVE=[[18.90,-73.28],[18.85,-72.93],[18.78,-72.99],[18.79,-73.20],[18.85,-73.38]];
+const TORTUE=[[20.07,-72.98],[20.05,-72.65],[20.00,-72.68],[20.02,-72.95]];
+const MSITES=[{n:1,lat:19.66,lng:-72.28},{n:2,lat:19.77,lng:-72.19},{n:3,lat:19.83,lng:-73.40},{n:4,lat:19.52,lng:-72.56},{n:5,lat:19.13,lng:-72.48},{n:6,lat:18.77,lng:-72.51},{n:7,lat:19.74,lng:-72.23},{n:8,lat:19.45,lng:-72.69}];
+const MRANGES=[[19.55,-72.95,19.40,-71.95,9],[19.28,-72.52,19.08,-72.05,5],[18.92,-72.78,18.62,-72.30,6],[18.34,-72.55,18.29,-71.98,6],[18.40,-74.25,18.33,-73.68,5]];
+const NPLAIN=[[19.72,-72.42],[19.80,-72.10],[19.62,-71.98],[19.50,-72.20],[19.55,-72.42]];
 function drawMap(){
-  const W=470,H=720,seaY=H-78,n=7;
-  const s=svg(document.getElementById("map-art"),`0 0 ${W} ${H}`);defs(s);
-  E("rect",{x:0,y:0,width:W,height:H,fill:T("deepsea")},s);
-  const fills=["emerald","ochre","oxblood","indigo","seateal","ochre","emerald"];
-  const step=(seaY-120)/n;
-  // far (top) to near (bottom): draw farthest first so nearer terraces overlap
-  for(let i=n-1;i>=0;i--){
-    const yTop=seaY-30-i*step, amp=14+(i%3)*7;
-    let d=`M0,${yTop}`;
-    for(let x=0;x<=W;x+=W/6){const wob=Math.sin((x/W+i*1.3)*3.1)*amp;d+=` L${x.toFixed(0)},${(yTop+wob).toFixed(0)}`;}
-    d+=` L${W},${H} L0,${H} Z`;
-    E("path",{d,fill:T(fills[i])},s);
-    let e=`M0,${yTop}`;
-    for(let x=0;x<=W;x+=W/6){const wob=Math.sin((x/W+i*1.3)*3.1)*amp;e+=` L${x.toFixed(0)},${(yTop+wob).toFixed(0)}`;}
-    E("path",{d:e,fill:"none",stroke:"rgba(18,14,11,.55)","stroke-width":2},s);
-    // a couple of cubic houses per ledge (Duffaut horror-vacui, thinned)
-    for(let k=0;k<3;k++){const hx=50+((i*140+k*150)%(W-90)),hy=yTop+14+(k%2)*10;
-      E("rect",{x:hx,y:hy,width:9,height:9,fill:T("kanvas"),stroke:T("umber"),"stroke-width":1},s);
-      E("path",{d:`M${hx-1},${hy} L${hx+4.5},${hy-6} L${hx+10},${hy} Z`,fill:T("oxblood")},s);}
-  }
-  // sea band + sailboats (Agwe) on top of the mountain feet
-  E("rect",{x:0,y:seaY,width:W,height:H-seaY,fill:T("seateal")},s);
-  E("line",{x1:0,y1:seaY,x2:W,y2:seaY,stroke:T("deepsea"),"stroke-width":2},s);
-  for(let i=0;i<3;i++){const bx=80+i*150,by=seaY+30;
-    E("path",{d:`M${bx-14},${by} L${bx+14},${by} L${bx+8},${by+9} L${bx-8},${by+9} Z`,fill:T("bone")},s);
-    E("path",{d:`M${bx},${by} L${bx},${by-20} L${bx+12},${by} Z`,fill:T("kanvas")},s);}
-  // serpentine bone-white road — the tappable spine
-  const nodes=[[80,seaY-6],[150,seaY-88],[300,seaY-150],[205,seaY-212],[330,seaY-272],[175,seaY-338],[300,seaY-398],[240,seaY-462]];
-  let road=`M${nodes[0][0]},${nodes[0][1]}`;
-  for(let i=1;i<nodes.length;i++){const [x0,y0]=nodes[i-1],[x1,y1]=nodes[i];
-    road+=` C${x0},${(y0+y1)/2} ${x1},${(y0+y1)/2} ${x1},${y1}`;}
-  E("path",{d:road,fill:"none",stroke:"rgba(18,14,11,.5)","stroke-width":9,"stroke-linecap":"round"},s);
-  E("path",{d:road,fill:"none",stroke:T("bone"),"stroke-width":5,"stroke-linecap":"round"},s);
-  nodes.forEach(([x,y],i)=>{const nn=i+1,cur=nn===4,past=nn<4;
-    if(cur)E("circle",{cx:x,cy:y,r:20,fill:"none",stroke:"url(#gold)","stroke-width":1.5,opacity:.7},s);
-    E("circle",{cx:x,cy:y,r:cur?15:11,fill:T("iron"),stroke:cur?"url(#gold)":T("umber"),"stroke-width":cur?3:1.5},s);
-    E("text",{x,y:y+4,"text-anchor":"middle","font-family":"Anton","font-size":cur?15:12,fill:past?"#7a6a52":T("cornmeal")},s).textContent=nn;});
-  // Citadelle crown at the summit (fer silhouette prow, epilogue)
-  const cy0=nodes[7][1]-40;
-  E("path",{d:`M215,${cy0} l40,-10 l0,18 l16,7 l0,11 l-72,0 l0,-11 l16,-7 z`,fill:T("iron"),stroke:"url(#gold)","stroke-width":1.5},s);
+  const W=900,H=640,PAD=30,LNG0=-74.7,LNG1=-71.5,LAT0=20.15,LAT1=17.9;
+  const X=lo=>PAD+(lo-LNG0)/(LNG1-LNG0)*(W-2*PAD), Y=la=>PAD+(LAT0-la)/(LAT0-LAT1)*(H-2*PAD);
+  const P=a=>a.map(([la,lo])=>X(lo).toFixed(1)+","+Y(la).toFixed(1)).join(" ");
+  const s=svg(document.getElementById("map-art"),"0 0 "+W+" "+H);const d=defs(s);
+  const sea=E("linearGradient",{id:"sea",x1:0,y1:0,x2:0,y2:1},d);
+  E("stop",{offset:0,"stop-color":T("deep-sea")},sea);E("stop",{offset:1,"stop-color":T("sea-teal")},sea);
+  E("rect",{x:0,y:0,width:W,height:H,fill:"url(#sea)"},s);
+  for(let i=0;i<7;i++){const yy=90+i*80;E("path",{d:"M0,"+yy+" q120,"+(8-(i%2)*16)+" 240,0 t240,0 t240,0 t240,0",fill:"none",stroke:T("deep-sea"),"stroke-width":2,opacity:.35},s);}
+  const land=SEA.concat(BORDER.slice(1,-1));
+  E("polygon",{points:P(land),fill:"none",stroke:T("bone"),"stroke-width":7,opacity:.14,"stroke-linejoin":"round"},s);
+  const cp=E("clipPath",{id:"land"},d);E("polygon",{points:P(land)},cp);
+  E("polygon",{points:P(land),fill:T("emerald"),stroke:T("umber"),"stroke-width":2,"stroke-linejoin":"round"},s);
+  const g=E("g",{"clip-path":"url(#land)"},s);
+  E("rect",{x:0,y:Y(19.0),width:W,height:H,fill:T("deep-sea"),opacity:.10},g);
+  E("polygon",{points:P(NPLAIN),fill:T("plain-ochre"),opacity:.92},g);
+  E("polygon",{points:P(NPLAIN),fill:"none",stroke:T("gold-shadow"),"stroke-width":1,opacity:.5},g);
+  function mtn(x,y,r){const dark=T("deep-sea"),face=T("emerald");
+    E("path",{d:"M"+(x-r)+","+y+" Q"+(x-r*0.5)+","+(y-r*1.5)+" "+x+","+(y-r*1.7)+" Q"+(x+r*0.5)+","+(y-r*1.5)+" "+(x+r)+","+y+" Z",fill:dark,stroke:T("umber"),"stroke-width":1.2},g);
+    E("path",{d:"M"+(x-r)+","+y+" Q"+(x-r*0.5)+","+(y-r*1.5)+" "+x+","+(y-r*1.7)+" L"+x+","+y+" Z",fill:face,opacity:.55},g);
+    E("path",{d:"M"+(x-r*0.35)+","+(y-r*1.15)+" l"+(r*0.35)+","+(-r*0.4)+" l"+(r*0.35)+","+(r*0.4),fill:"none",stroke:T("bone"),"stroke-width":1.4,opacity:.7},g);}
+  for(const rg of MRANGES){const ax=X(rg[1]),ay=Y(rg[0]),bx=X(rg[3]),by=Y(rg[2]),cnt=rg[4];
+    for(let i=0;i<=cnt;i++){const t=i/cnt,x=ax+(bx-ax)*t,y=ay+(by-ay)*t,r=8+((i*7)%4);mtn(x,y+((i%2)?3:0),r);}}
+  [GONAVE,TORTUE].forEach(is=>{E("polygon",{points:P(is),fill:T("emerald"),stroke:T("umber"),"stroke-width":1.6},s);});
+  [[19.35,-72.95],[18.62,-72.9],[19.55,-73.6]].forEach(bt=>{const x=X(bt[1]),y=Y(bt[0]);
+    E("path",{d:"M"+(x-9)+","+y+" L"+(x+9)+","+y+" L"+(x+5)+","+(y+6)+" L"+(x-5)+","+(y+6)+" Z",fill:T("bone")},s);
+    E("path",{d:"M"+x+","+y+" L"+x+","+(y-15)+" L"+(x+9)+","+y+" Z",fill:T("kanvas")},s);});
+  let rd="M"+X(MSITES[0].lng)+","+Y(MSITES[0].lat);
+  for(let i=1;i<MSITES.length;i++)rd+=" L"+X(MSITES[i].lng)+","+Y(MSITES[i].lat);
+  E("path",{d:rd,fill:"none",stroke:T("night"),"stroke-width":4,opacity:.35,"stroke-linejoin":"round"},s);
+  E("path",{d:rd,fill:"none",stroke:"url(#gold)","stroke-width":2.4,"stroke-dasharray":"7 6","stroke-linejoin":"round"},s);
+  MSITES.forEach(m=>{const x=X(m.lng),y=Y(m.lat),cur=m.n===4,past=m.n<4;
+    if(cur)E("circle",{cx:x,cy:y,r:16,fill:"none",stroke:"url(#gold)","stroke-width":2,opacity:.8},s);
+    E("circle",{cx:x,cy:y,r:cur?12:9,fill:T("iron"),stroke:cur?"url(#gold)":T("umber"),"stroke-width":cur?2.5:1.5},s);
+    E("text",{x,y:y+4,"text-anchor":"middle","font-family":"Anton","font-size":cur?14:11,fill:past?"#8a7a5a":T("cornmeal")},s).textContent=m.n;});
+  function lbl(la,lo,txt,dx,dy){const x=X(lo)+dx,y=Y(la)+dy,w=txt.length*7+10;
+    E("rect",{x:x-4,y:y-11,width:w,height:16,fill:"rgba(9,7,5,.66)"},s);
+    E("text",{x:x+2,y:y+1,"font-family":"IBM Plex Mono","font-size":11,fill:T("cornmeal"),"letter-spacing":".04em"},s).textContent=txt;}
+  lbl(19.77,-72.19,"LE CAP",14,-6);lbl(19.83,-73.40,"MÔLE",-52,-4);lbl(19.45,-72.69,"GONAÏVES",-80,4);lbl(18.57,-72.34,"PORT-AU-PRINCE",-4,22);
+  const cx=W-58,cy=64;E("line",{x1:cx,y1:cy-18,x2:cx,y2:cy+18,stroke:T("cornmeal"),"stroke-width":1},s);
+  E("line",{x1:cx-18,y1:cy,x2:cx+18,y2:cy,stroke:T("cornmeal"),"stroke-width":1},s);
+  E("polygon",{points:cx+","+(cy-22)+" "+(cx+4)+","+cy+" "+cx+","+(cy+5)+" "+(cx-4)+","+cy,fill:"url(#gold)"},s);
+  E("text",{x:cx,y:cy-26,"text-anchor":"middle","font-family":"Anton","font-size":12,fill:T("cornmeal")},s).textContent="N";
 }
 
 /* ---------- 3 · LAMBI CONCH + signal waves ---------- */
@@ -466,7 +474,7 @@ function drawMemwa(){
 }
 
 /* ---------- nav + boot ---------- */
-const SCREENS=[["s-gate","Gate"],["s-map","The Climb"],["s-wire","The Wire"],["s-battle","Battle"],["s-ch1","Bwa Kayiman"],["s-memwa","Memwa"]];
+const SCREENS=[["s-gate","Gate"],["s-map","Campaign"],["s-wire","The Wire"],["s-battle","Battle"],["s-ch1","Bwa Kayiman"],["s-memwa","Memwa"]];
 const DRAW={ "s-gate":drawGate,"s-map":drawMap,"s-wire":drawWire,"s-battle":drawBattle,"s-ch1":drawCh1,"s-memwa":drawMemwa };
 const drawn={};
 const nav=document.getElementById("nav");
