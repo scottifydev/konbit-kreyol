@@ -71,8 +71,18 @@ export default function MonClient({
   if (bothDone && taken) {
     return (
       <div className="panel">
-        <div className="goldband">{labels.held}</div>
-        <p style={{ marginBottom: 0 }}>{labels.heldBody}</p>
+        {/* the peak — the two of you, one load. The marks slide together. */}
+        <div className="hold-together" aria-hidden style={{ display: "flex", justifyContent: "center", gap: 6, marginBottom: 12 }}>
+          <span className="liy leo mark-l">L</span>
+          <span className="liy isaac mark-r">I</span>
+        </div>
+        <div className="goldband ignite" style={{ textAlign: "center", fontSize: 22 }}>
+          {labels.held} <span className="checkin">✓</span>
+        </div>
+        <p style={{ textAlign: "center", marginBottom: 8 }}>{labels.heldBody}</p>
+        <div className="oral" style={{ borderLeft: "none", padding: 0, textAlign: "center", display: "block" }}>
+          « Men anpil, chay pa lou »
+        </div>
       </div>
     );
   }

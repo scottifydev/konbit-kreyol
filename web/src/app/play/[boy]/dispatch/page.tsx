@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import Flip from "@/components/Flip";
 import { chrome } from "@/lib/chrome";
@@ -23,7 +24,28 @@ export default async function DispatchPage({
   const brother = boy === "leo" ? "isaac" : "leo";
   const chapter = KANPAY.find((ch) => ch.unit === unit) ?? KANPAY[0];
   const prompt = chapter.scenes[0]?.dispatchPrompt;
-  if (!prompt) notFound();
+  // Chapters whose orders aren't written yet degrade to an honest "coming"
+  // state with a way onward — never a 404 on the game's main mechanic.
+  if (!prompt) {
+    return (
+      <main className="stage">
+        <header className="head">
+          <div>
+            <div className="kicker">{chapter.n}. {chapter.nameEn} · {chapter.year}</div>
+            <h1 className="d1 gold"><Flip view={c("prod")} /></h1>
+          </div>
+        </header>
+        <div className="scrim" style={{ marginTop: 20 }}>
+          <p style={{ marginTop: 0, color: "#e7dcc2" }}>
+            High command is still writing this chapter&apos;s orders. Stock your words while you wait — you&apos;ll need them on the wire.
+          </p>
+          <p style={{ marginBottom: 0 }}>
+            <Link className="cta" href={`/play/${boy}/vok`}><Flip view={c("vok_step")} /></Link>
+          </p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="stage">
@@ -63,6 +85,7 @@ export default async function DispatchPage({
           garbled: c("dispatch_garbled").text,
           repeat: c("dispatch_repeat").text,
           acted: c("dispatch_acted").text,
+          enemyFoiled: c("enemy_foiled").text,
         }}
       />
     </main>

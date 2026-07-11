@@ -20,6 +20,7 @@ interface Labels {
   garbled: string;
   repeat: string;
   acted: string;
+  enemyFoiled: string;
 }
 
 /** The dispatch composer + inbox (phone surface). All chrome labels are
@@ -122,10 +123,16 @@ export default function DispatchClient({
           <div key={d.id} className="hairline-row">
             <audio controls src={`/api/audio/${d.audioRef}`} />
             {d.status === "acted" || outcomes[d.id] === "acted" ? (
-              <p className="goldband">
-                {labels.acted}
-                {d.commendation ? ` · ★ ${d.commendation}` : ""}
-              </p>
+              <>
+                <p className="goldband ignite">
+                  {labels.acted}
+                  {d.commendation ? ` · ★ ${d.commendation}` : ""}
+                </p>
+                {/* the thesis at the moment of triumph: they can't read it */}
+                <p className="label" style={{ color: "var(--gold-bright)", fontStyle: "italic" }}>
+                  {labels.enemyFoiled}
+                </p>
+              </>
             ) : outcomes[d.id] === "garbled" || d.status === "garbled" ? (
               <p>
                 {labels.garbled}{" "}
