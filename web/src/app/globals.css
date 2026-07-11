@@ -11,6 +11,7 @@
   --scarlet: #c42021; --oxblood: #6e1414; --gede: #4b2361;
   --iron: #2a2622;
   --gold-shadow: #6b4a12; --gold-mid: #9a6e1c; --gold-bright: #d9a521; --gold-hi: #f4d66a;
+  --gold: #d9a521; --hair: rgba(233,217,160,.16);
   --ember: #d93a16; --ember-core: #ff7a2d;
   --flag-blue: #00209f; --flag-red: #d21034;
 
@@ -64,6 +65,9 @@ main, .stage { position: relative; z-index: 2; }
    TEXTURE fill — rich without the misspelling risk of generated lettering */
 .gold { background: url(/art/gold-leaf.webp) center / cover, var(--gold-ramp); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 2px 2px rgba(0,0,0,.55)); }
 .kreyol { font-family: var(--f-body); font-size: 21px; line-height: 1.5; }
+/* Kreyòl reading surface — Literata on a scrim, never on raw texture (visual
+   law, 05 §). The dark inset scrim keeps the code legible over painted panels. */
+.kreyol-body { font-family: var(--f-body); font-size: 20px; line-height: 1.55; color: var(--kanvas); background: rgba(9,7,5,.5); border-left: 3px solid var(--gold-mid); padding: 12px 15px; border-radius: 2px; }
 .oral { font-family: var(--f-cere); font-style: italic; font-weight: 400; font-size: 22px; color: var(--cornmeal); border-left: 3px solid var(--gold-mid); padding-left: 14px; }
 .french { font-family: var(--f-french); }
 .label { font-family: var(--f-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #a99e84; }
@@ -122,6 +126,11 @@ a { color: var(--gold-bright); text-decoration: none; }
 .cta.scar { background: var(--scarlet); color: var(--bone); box-shadow: 0 3px 0 var(--oxblood), 0 7px 16px rgba(0,0,0,.45); }
 .cta.iron { background: var(--iron-tooth), linear-gradient(180deg,#332e28,#241f1b); color: var(--cornmeal); box-shadow: inset 0 1px 0 rgba(233,217,160,.2), 0 3px 8px rgba(0,0,0,.5); }
 .cta.ghost { background: transparent; color: var(--cornmeal); border: 1px solid rgba(233,217,160,.28); box-shadow: none; }
+/* .sun — the PRIMARY action: brighter gold + a warm sun-glow so the one thing
+   to do next reads above secondary .cta buttons and toggles show a lit state. */
+.cta.sun { background: linear-gradient(180deg, var(--gold-hi), var(--gold-bright) 60%, var(--gold-mid)); box-shadow: 0 3px 0 var(--gold-shadow), 0 0 18px rgba(244,214,106,.45), 0 7px 18px rgba(0,0,0,.45); }
+.cta.sun:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--gold-shadow), 0 0 12px rgba(244,214,106,.4); }
+.cta:disabled { opacity: .5; cursor: default; filter: saturate(.6); box-shadow: none; transform: none; }
 
 /* ---------- identity marks ---------- */
 .liy { display: inline-flex; width: 36px; height: 36px; align-items: center; justify-content: center; flex: none; font-family: var(--f-display); font-size: 18px; color: var(--kanvas); box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 2px 6px rgba(0,0,0,.4); }
@@ -143,6 +152,9 @@ a { color: var(--gold-bright); text-decoration: none; }
 /* ---------- hold-to-record (phone voice bar) ---------- */
 .hold-bar { touch-action: none; user-select: none; -webkit-user-select: none; width: 100%; padding: 16px; font-family: var(--f-display); text-transform: uppercase; letter-spacing: .05em; border: 2px solid var(--iron); background: var(--iron-tooth), linear-gradient(180deg,#322c26,#221e1a); color: var(--cornmeal); cursor: pointer; text-align: center; box-shadow: inset 0 1px 0 rgba(233,217,160,.2); }
 .hold-bar.recording { background: var(--scarlet); color: var(--bone); border-color: var(--oxblood); }
+/* mic-denied panel — numbered steps on the slate, never an apology (05 §9) */
+.slate { background: rgba(9,7,5,.6); border: 1px solid var(--hair); padding: 14px 18px; color: var(--cornmeal); }
+.slate ol { margin: 0; padding-left: 1.3em; } .slate li { padding: 3px 0; }
 
 /* ---------- hero art wrapper (rich even before images load) ---------- */
 .hero { position: relative; overflow: hidden; border: 1px solid rgba(233,217,160,.12); box-shadow: 0 12px 40px rgba(0,0,0,.55); background: radial-gradient(120% 120% at 50% 120%, rgba(217,58,22,.22), transparent 60%), linear-gradient(180deg, #17110d, var(--night)); }
