@@ -47,6 +47,17 @@
 
 14. **TTS bench (optional, last)** — local eval of jsbeaudry/haitian_creole_tts_11K, sesame-creole-tts-11k, facebook/mms-tts-hat as a labeled "vwa robo" fallback; report to Scott before wiring anything. **ASR is out of the design entirely — do not bench, do not wire.**
 
+## Progress & critical path (2026-07-11)
+
+**Shipped:** the engine (gate helpers, two-ledger SRS + gentle demotion, the `09` co-op battle formula — `positionState`/`dealLeg`/`landVolley`/`passTheWord`, marronage), the law lint + 49 tests, the voice-dispatch pipeline (record → Storage → act-on-it → double-ledger credit → garble/retry), the **Mòn battle screen** (voice-volley leg → pass the word → take-the-position/marronage), the Cipher Office, the campaign map, GM certify. Supabase backend provisioned; SupabaseStore active when env is set. `npm run check` + `npm run build` green.
+
+**The critical path to first-playable is now mostly human gates, not code:**
+1. **Manman's item-bank lexicon pass** (`08` §4) — THE blocker. Until the scope bank is native-reviewed, no recognition-leg review content (Fil la, Fokis, the battle's recognition leg, the full daily loop) can render Kreyòl to the boys. The voice-volley path works today because dispatch content is separately gated. *Everything downstream waits on this.*
+2. **Family reference-audio session** (`08` §5, 90-min floor) — unblocks the ticket's aural probe and all listening content. Until it happens, audio slots honestly say "coming."
+3. **Scott decisions:** the boy sign-in mechanism (issue 1 — must not be a friction wall, must not be shared-password theater) + a Supabase email provider, both needed before family-only auth can ship; battle-constant calibration (`09` §11.4); the Chapter-1 name; the error-response one-pager sign-off.
+
+**Buildable now without a gate (English-chrome scaffolding that lights up when the gates clear):** the ticket flow shell (bands provisional until scored), Fil la / Fokis screen frames, family-only auth scaffolding (behind a flag until Scott's email + mechanism decision). These render gated content behind the Cipher Office, so they are safe to build ahead.
+
 ## Definition of first playable
 
 Issues 1–7 merged with all checklists green: a fresh profile can punch the ticket, play a full Chapter-1 day including **one real voice dispatch phone-to-phone**, lose a battle to the mountains, and come back tomorrow — with zero unreviewed Kreyòl rendered, zero scary word on screen, and zero machine judgment of anyone's voice.
