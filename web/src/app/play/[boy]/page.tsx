@@ -122,9 +122,9 @@ export default async function FrontPage({
                 <Flip view={c("words_back")} />
               </div>
             </div>
-            <div className="row" style={{ opacity: 0.45 }}>
-              <span className="sundot" style={{ background: "var(--iron)" }} />
-              <Flip view={c("step_fokis")} /> · soon
+            <div className="row">
+              <span className="sundot" />
+              <Link href={`/play/${boy}/grammar`}><Flip view={c("step_fokis")} /></Link>
             </div>
             <div className="row">
               <Flip view={c("prod")} /> ·{" "}
