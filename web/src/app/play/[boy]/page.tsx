@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Flip from "@/components/Flip";
 import CampaignMap from "@/components/CampaignMap";
 import { chrome, chromeUnitTitle } from "@/lib/chrome";
@@ -38,6 +38,8 @@ export default async function FrontPage({
   const state = await getStore().load();
   const p = state.profiles[boy];
   if (!p || p.kind !== "boy") notFound();
+  // First run: punch the ticket before the front page (onboarding, 09 §9).
+  if (!p.diagDone) redirect(`/play/${boy}/ticket`);
 
   const { unit, certified, day, konbit } = state;
   const c = (key: string) => chrome(key, unit, certified);

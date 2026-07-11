@@ -43,6 +43,9 @@ export interface Profile {
   pwoMode: boolean;
   reactions: Record<string, number>; // postId -> day reacted (idempotency guard)
   gotit: Record<string, number>; // postId -> day acknowledged (idempotency guard)
+  /** ticket production recordings (read-aloud / describe-the-camp), kept for
+   *  the Cipher Office to score by ear — never machine-judged (voice law) */
+  diagAudio?: string[];
 }
 
 export interface RelayLeg {
