@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint:laws": "node scripts/lint-laws.mjs",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "check": "npm run lint:laws && npm run test"
+    "check": "npm run lint:laws && npm run typecheck && npm run test"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.2",

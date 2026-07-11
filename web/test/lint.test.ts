@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-// @ts-expect-error — plain mjs module, no types
 import {
   extractStrings,
   lintChromeString,
