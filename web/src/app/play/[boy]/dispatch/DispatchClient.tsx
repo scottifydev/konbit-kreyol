@@ -38,6 +38,8 @@ export default function DispatchClient({
 }) {
   const [inbox, setInbox] = useState<WireDispatch[]>([]);
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState(false);
   const [outcomes, setOutcomes] = useState<Record<string, string>>({});
 
   const refresh = useCallback(async () => {
@@ -58,8 +60,16 @@ export default function DispatchClient({
     form.append("sender", boy);
     form.append("receiver", brother);
     form.append("promptId", promptId);
-    await fetch("/api/dispatches", { method: "POST", body: form });
-    setSent(true);
+    setSending(true);
+    setSendError(false);
+    try {
+      const res = await fetch("/api/dispatches", { method: "POST", body: form });
+      if (res.ok) setSent(true);
+      else setSendError(true); // the wire dropped it — never fake a ✓
+    } catch {
+      setSendError(true);
+    }
+    setSending(false);
   };
 
   const act = async (id: string, option: number) => {
@@ -88,12 +98,21 @@ export default function DispatchClient({
       <section>
         <p className="kreyol-body">{labels.promptEn}</p>
         {sent ? (
-          <p className="goldband">→ {brother}</p>
+          <p className="goldband ignite">→ {brother} <span className="checkin">✓</span></p>
+        ) : sending ? (
+          <div className="hold-bar pending" aria-live="polite">SENDING…</div>
         ) : (
-          <HoldToRecord
-            labels={{ idle: labels.hold, denied: labels.denied }}
-            onRecorded={send}
-          />
+          <>
+            <HoldToRecord
+              labels={{ idle: labels.hold, denied: labels.denied }}
+              onRecorded={send}
+            />
+            {sendError && (
+              <p className="label" style={{ color: "var(--scarlet)", marginTop: 8 }}>
+                didn&apos;t reach the wire — hold to send again
+              </p>
+            )}
+          </>
         )}
       </section>
 

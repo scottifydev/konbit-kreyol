@@ -41,6 +41,15 @@ export default function VokClient({ boy, labels }: { boy: string; labels: Labels
   const [result, setResult] = useState<null | "correct" | "close" | "miss">(null);
   const [said, setSaid] = useState(false);
   const [recording, setRecording] = useState(false);
+  const [shakeKey, setShakeKey] = useState(0);
+
+  const buzz = (ms: number) => {
+    try {
+      navigator.vibrate?.(ms);
+    } catch {
+      /* not supported — no-op */
+    }
+  };
 
   useEffect(() => {
     fetch(`/api/vok/session?for=${boy}`)
@@ -64,22 +73,31 @@ export default function VokClient({ boy, labels }: { boy: string; labels: Labels
 
   const rec = async (ok: boolean) => {
     const card = cards![i];
-    await fetch("/api/vok/rec", {
+    if (ok) buzz(16);
+    fetch("/api/vok/rec", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ boy, id: card.id, ok }),
-    });
+    }).catch(() => {});
     next();
   };
 
   const submitType = async () => {
     const card = cards![i];
-    const res = await fetch("/api/vok/type", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ boy, id: card.id, answer: typed, rung: hinted ? "hint" : "cold" }),
-    });
-    const d = await res.json();
+    let d: { correct?: boolean; close?: boolean } = {};
+    try {
+      const res = await fetch("/api/vok/type", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ boy, id: card.id, answer: typed, rung: hinted ? "hint" : "cold" }),
+      });
+      if (res.ok) d = await res.json();
+    } catch {
+      /* dropped — treat as a retryable near-miss, never a false credit */
+      d = { close: true };
+    }
+    if (d.correct) buzz(22);
+    else setShakeKey((k) => k + 1);
     setResult(d.correct ? "correct" : d.close ? "close" : "miss");
   };
 
@@ -126,7 +144,7 @@ export default function VokClient({ boy, labels }: { boy: string; labels: Labels
   );
 
   return (
-    <div className="panel">
+    <div className="panel cardin" key={i}>
       <div className="label">{i + 1} / {cards.length}</div>
 
       {card.kind === "entwodiksyon" && (
@@ -165,7 +183,7 @@ export default function VokClient({ boy, labels }: { boy: string; labels: Labels
           <p style={{ fontSize: 22, margin: "8px 0" }}>{card.en}</p>
           {result === "correct" ? (
             <>
-              <div className="goldband">{card.id} ✓</div>
+              <div className="goldband ignite">{card.id} <span className="checkin">✓</span></div>
               {diLi}
               <p style={{ marginTop: 16, marginBottom: 0 }}>
                 <button className="cta sun" onPointerUp={next}>{labels.next}</button>
@@ -181,14 +199,16 @@ export default function VokClient({ boy, labels }: { boy: string; labels: Labels
             </>
           ) : (
             <>
-              <input
-                value={typed}
-                autoFocus
-                onChange={(e) => setTyped(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && typed.trim() && submitType()}
-                placeholder={hinted ? card.id[0] + "…" : undefined}
-                style={{ width: "100%", boxSizing: "border-box", fontSize: 20 }}
-              />
+              <div key={shakeKey} className={result === "close" ? "softshake" : undefined}>
+                <input
+                  value={typed}
+                  autoFocus
+                  onChange={(e) => setTyped(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && typed.trim() && submitType()}
+                  placeholder={hinted ? card.id[0] + "…" : undefined}
+                  style={{ width: "100%", boxSizing: "border-box", fontSize: 20 }}
+                />
+              </div>
               {result === "close" && (
                 <div className="label" style={{ color: "var(--scarlet)", marginTop: 6 }}>
                   {labels.close} — {card.id}
