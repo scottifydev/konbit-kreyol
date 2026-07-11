@@ -6,7 +6,7 @@ import { chrome, chromeUnitTitle } from "@/lib/chrome";
 import { getStore } from "@/lib/store/local";
 import { KANPAY } from "@/data/kanpay";
 import scopeData from "@/data/scope.json";
-import { kleSolid, dueItems } from "@/lib/engine/srs";
+import { kleSolid, dueItems, mastery } from "@/lib/engine/srs";
 import type { ScopeItem } from "@/lib/engine/types";
 
 const SCOPE = (scopeData as { items: ScopeItem[] }).items;
@@ -45,6 +45,11 @@ export default async function FrontPage({
   const c = (key: string) => chrome(key, unit, certified);
   const kle = kleSolid(p, SCOPE);
   const due = dueItems(p, SCOPE, unit, day).length;
+  // Sak mo — the armory: words collected (recognition-solid) vs battle-ready
+  // (production-solid). The rec/prod lag reads as a kit filling, not a deficit.
+  const inScope = SCOPE.filter((i) => i.u <= unit || i.kle);
+  const collected = inScope.filter((i) => mastery(p, i.id, "rec") === "solid").length;
+  const ready = inScope.filter((i) => mastery(p, i.id, "prod") === "solid").length;
   const chapter = KANPAY.find((ch) => ch.unit === unit) ?? KANPAY[0];
   const pending = state.dispatches.filter(
     (d) => d.receiver === boy && d.status !== "acted",
@@ -91,6 +96,10 @@ export default async function FrontPage({
             </div>
             <div className="row">
               <span className="sundot" />
+              <Link href={`/play/${boy}/vok`}><Flip view={c("vok_step")} /></Link>
+            </div>
+            <div className="row">
+              <span className="sundot" />
               <div>
                 <Link href={`/play/${boy}/feed`}><Flip view={c("fil")} /></Link> — {due}{" "}
                 <Flip view={c("words_back")} />
@@ -112,7 +121,7 @@ export default async function FrontPage({
               <Link href={`/play/${boy}/mon`}><Flip view={c("step_mon")} /></Link>
             </div>
             <p style={{ marginBottom: 0 }}>
-              <Link className="cta" href={`/play/${boy}/dispatch`}><Flip view={c("start")} /></Link>
+              <Link className="cta" href={`/play/${boy}/vok`}><Flip view={c("start")} /></Link>
             </p>
           </div>
 
@@ -135,6 +144,15 @@ export default async function FrontPage({
               {Array.from({ length: 77 }, (_, i) => (
                 <i key={i} className={i < kle ? "solid" : undefined} />
               ))}
+            </div>
+          </div>
+
+          {/* Sak mo — the armory: collected vs battle-ready */}
+          <div className="panel" style={{ marginTop: 18 }}>
+            <div className="label"><Flip view={c("sak_mo")} /></div>
+            <div className="row" style={{ justifyContent: "space-between", marginTop: 6 }}>
+              <span><span className="d3">{collected}</span> <span className="meta"><Flip view={c("sak_collected")} /></span></span>
+              <span><span className="d3" style={{ color: "var(--gold-bright)" }}>{ready}</span> <span className="meta"><Flip view={c("sak_ready")} /></span></span>
             </div>
           </div>
 

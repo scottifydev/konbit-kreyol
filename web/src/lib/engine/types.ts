@@ -49,6 +49,9 @@ export interface Profile {
   /** ticket production recordings (read-aloud / describe-the-camp), kept for
    *  the Cipher Office to score by ear — never machine-judged (voice law) */
   diagAudio?: string[];
+  /** Di li verbal-practice recordings (09 §13.2): the boy saying vocab words
+   *  aloud, kept for family feedback — self-compared by ear, never machine-judged */
+  vocAudio?: string[];
 }
 
 export interface RelayLeg {
