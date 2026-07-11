@@ -1,6 +1,13 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { SESSION_COOKIE, authEnforced, verifySession, type Session } from "./auth";
+import {
+  SESSION_COOKIE,
+  authEnforced,
+  sessionCanActAs,
+  sessionIsAdult,
+  verifySession,
+  type Session,
+} from "./auth";
 
 /** Server-side session guards for route handlers (build-plan issue 1). The
  *  middleware only proves a valid session EXISTS; these bind the identity to
@@ -18,9 +25,7 @@ export async function currentSession(): Promise<Session | null> {
 /** Returns a 401/403 response if the guard fails, or null to proceed. */
 export async function guardBoy(boy: string): Promise<NextResponse | null> {
   if (!authEnforced()) return null;
-  const s = await currentSession();
-  // a boy acts only as himself; an adult may act on a boy's behalf (feedback)
-  if (!s || (s.sub !== boy && s.role !== "adult")) {
+  if (!sessionCanActAs(await currentSession(), boy)) {
     return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
   }
   return null;
@@ -28,8 +33,7 @@ export async function guardBoy(boy: string): Promise<NextResponse | null> {
 
 export async function guardAdult(): Promise<NextResponse | null> {
   if (!authEnforced()) return null;
-  const s = await currentSession();
-  if (!s || s.role !== "adult") {
+  if (!sessionIsAdult(await currentSession())) {
     return NextResponse.json({ ok: false, error: "forbidden" }, { status: 403 });
   }
   return null;
@@ -40,8 +44,7 @@ export async function guardAdult(): Promise<NextResponse | null> {
  *  reading state). Throw HttpError(401) on false. */
 export async function sessionAllows(boy: string): Promise<boolean> {
   if (!authEnforced()) return true;
-  const s = await currentSession();
-  return !!s && (s.sub === boy || s.role === "adult");
+  return sessionCanActAs(await currentSession(), boy);
 }
 
 /** Any authenticated family member (used for private audio). */

@@ -3,6 +3,8 @@ import {
   authConfigured,
   authEnforced,
   checkPassphrase,
+  sessionCanActAs,
+  sessionIsAdult,
   signSession,
   timingSafeEqual,
   verifySession,
@@ -57,6 +59,26 @@ describe("passphrase check", () => {
   it("an unknown door fails, and a door with no configured passphrase fails", () => {
     expect(checkPassphrase("nobody", "x")).toBeNull();
     expect(checkPassphrase("isaac", "anything")).toBeNull(); // AUTH_PASS_ISAAC unset here
+  });
+});
+
+describe("authorization predicates (the guard logic)", () => {
+  const leo = { sub: "leo", role: "boy" as const, iat: 0 };
+  const isaac = { sub: "isaac", role: "boy" as const, iat: 0 };
+  const mom = { sub: "manman", role: "adult" as const, iat: 0 };
+  it("a boy acts only as himself", () => {
+    expect(sessionCanActAs(leo, "leo")).toBe(true);
+    expect(sessionCanActAs(leo, "isaac")).toBe(false); // Leo cannot act as Isaac
+    expect(sessionCanActAs(isaac, "isaac")).toBe(true);
+  });
+  it("an adult may act on any boy's behalf, and is the only one who passes guardAdult", () => {
+    expect(sessionCanActAs(mom, "leo")).toBe(true);
+    expect(sessionIsAdult(mom)).toBe(true);
+    expect(sessionIsAdult(leo)).toBe(false); // a boy cannot drive an adult surface
+  });
+  it("no session is never authorized", () => {
+    expect(sessionCanActAs(null, "leo")).toBe(false);
+    expect(sessionIsAdult(null)).toBe(false);
   });
 });
 

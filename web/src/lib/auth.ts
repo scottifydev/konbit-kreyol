@@ -112,6 +112,15 @@ export async function verifySession(token: string | undefined): Promise<Session 
   }
 }
 
+/** Pure authorization predicates (testable without a request context). A boy
+ *  acts only as himself; an adult may act on a boy's behalf. */
+export function sessionCanActAs(s: Session | null, boy: string): boolean {
+  return !!s && (s.sub === boy || s.role === "adult");
+}
+export function sessionIsAdult(s: Session | null): boolean {
+  return !!s && s.role === "adult";
+}
+
 /** Verify a submitted passphrase for a door against its env var. Returns the
  *  door (with role + home) on success, null otherwise. Constant-time. */
 export function checkPassphrase(
