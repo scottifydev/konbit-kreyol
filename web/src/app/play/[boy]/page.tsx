@@ -167,7 +167,7 @@ export default async function FrontPage({
         <Link href={`/play/${boy}/dispatch`}><Flip view={c("prod")} /></Link>
         <span><Flip view={c("misyon")} /></span>
         <span><Flip view={c("ladder")} /></span>
-        <span><Flip view={c("settings")} /></span>
+        <Link href={`/play/${boy}/settings`}><Flip view={c("settings")} /></Link>
       </nav>
     </main>
   );
