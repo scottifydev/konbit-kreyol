@@ -41,9 +41,20 @@ export function review(
 ): void {
   const st = itemState(p, id)[mode];
   st.hist.push({ d: day, ok });
-  if (ok) st.box = Math.min(3, st.box + 1);
-  else st.box = Math.max(0, st.box - 1);
-  st.due = day + INTERVALS[st.box];
+  if (ok) {
+    st.box = Math.min(3, st.box + 1);
+    st.due = day + INTERVALS[st.box];
+    return;
+  }
+  // GENTLE DEMOTION (09 §11.2, non-punitive law): a single slip does not
+  // demote — the box drops only on TWO consecutive misses. Either way a
+  // missed item resurfaces tomorrow (due = day + 1) rather than waiting out
+  // its old interval, so a lapse gets re-practiced soon without being punished.
+  const h = st.hist;
+  const twoConsecutiveMisses =
+    h.length >= 2 && !h[h.length - 1].ok && !h[h.length - 2].ok;
+  if (twoConsecutiveMisses) st.box = Math.max(0, st.box - 1);
+  st.due = day + 1;
 }
 
 export type Mastery = "solid" | "aktive" | "pa";

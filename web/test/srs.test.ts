@@ -53,14 +53,31 @@ describe("tier seeding — THE TRAP (do not 'fix')", () => {
 });
 
 describe("Leitner review", () => {
-  it("promotes to max box 3, demotes to min 0, redates due", () => {
+  it("promotes to max box 3, redates due by the new box interval", () => {
     const p = mkProfile();
     review(p, "kay", "rec", true, 1);
     expect(itemState(p, "kay").rec.box).toBe(1);
     expect(itemState(p, "kay").rec.due).toBe(1 + 3);
-    review(p, "kay", "rec", false, 4);
-    expect(itemState(p, "kay").rec.box).toBe(0);
+  });
+  it("GENTLE demotion: a single slip does not demote; the box drops only on two consecutive misses", () => {
+    const p = mkProfile();
+    review(p, "kay", "rec", true, 1); // box 0 → 1
+    expect(itemState(p, "kay").rec.box).toBe(1);
+    review(p, "kay", "rec", false, 4); // single miss — box HELD, resurfaces tomorrow
+    expect(itemState(p, "kay").rec.box).toBe(1);
     expect(itemState(p, "kay").rec.due).toBe(4 + 1);
+    review(p, "kay", "rec", false, 6); // second consecutive miss — now demote
+    expect(itemState(p, "kay").rec.box).toBe(0);
+    expect(itemState(p, "kay").rec.due).toBe(6 + 1);
+  });
+  it("a correct review between misses breaks the streak — no demotion", () => {
+    const p = mkProfile();
+    review(p, "kay", "rec", true, 1); // box 1
+    review(p, "kay", "rec", true, 4); // box 2
+    review(p, "kay", "rec", false, 11); // miss
+    review(p, "kay", "rec", true, 12); // recover → box 3
+    review(p, "kay", "rec", false, 28); // lone miss again — box held
+    expect(itemState(p, "kay").rec.box).toBe(3);
   });
 });
 

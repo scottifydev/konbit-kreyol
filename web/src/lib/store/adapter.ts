@@ -72,12 +72,11 @@ export function freshState(): AppState {
     padon: 1,
     mon: {
       unit: 1,
-      threshold: 14,
       legs: {
-        leo: { done: false, score: 0, tip: "" },
-        isaac: { done: false, score: 0, tip: "" },
+        leo: { done: false, score: 0, budget: 0, tip: "" },
+        isaac: { done: false, score: 0, budget: 0, tip: "" },
       },
-      summited: false,
+      taken: false,
     },
   };
   return {

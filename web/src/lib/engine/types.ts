@@ -47,10 +47,19 @@ export interface Profile {
 
 export interface RelayLeg {
   done: boolean;
+  /** h_i — volleys LANDED this leg (correct retrievals from his own due queue) */
   score: number;
+  /** b_i — volley budget dealt from his band (09 §4.2: Emerging 6 / Moderate 8
+   *  / Strong 10, min(band, availableVolleys) on a light day) */
+  budget: number;
   tip: string;
 }
 
+/** The chapter battle = HOLD/TAKE THE POSITION (09-game-mechanics.md §4).
+ *  Take iff L_A + L_B ≥ T AND min(L_A,L_B) ≥ m AND allLegsDone, where
+ *  L_i = score_i / budget_i. Constants live in konbit.ts BATTLE (tunable —
+ *  09 §11.4 gate). The old raw-sum `threshold` is retired: the take-condition
+ *  is fractional accuracy, so it can never inflate with an overdue backlog. */
 export interface KonbitState {
   streak: number;
   lastDay: number;
@@ -58,9 +67,8 @@ export interface KonbitState {
   padon: number;
   mon: {
     unit: number;
-    threshold: number;
     legs: Record<string, RelayLeg>;
-    summited: boolean;
+    taken: boolean;
   };
 }
 
