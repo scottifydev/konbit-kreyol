@@ -28,7 +28,7 @@ export async function GET() {
     for (const ref of p.diagAudio ?? [])
       recordings.push({ boy: p.id, kind: "ticket", ref, label: "the camp" });
     for (const ref of p.vocAudio ?? [])
-      recordings.push({ boy: p.id, kind: "di li", ref, label: "said aloud" });
+      recordings.push({ boy: p.id, kind: "voice note", ref, label: "said aloud" });
   }
 
   return NextResponse.json({ recordings });
