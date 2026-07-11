@@ -112,11 +112,21 @@ export default function VokClient({ boy, labels }: { boy: string; labels: Labels
     setRecording(false);
   };
 
-  if (cards === null) return <div className="panel"><p style={{ margin: 0 }}>…</p></div>;
+  if (cards === null)
+    return (
+      <div className="panel" aria-busy="true">
+        <div className="skel" style={{ height: 12, width: "28%", marginBottom: 18 }} />
+        <div className="skel" style={{ height: 34, width: "62%", marginBottom: 14 }} />
+        <div className="skel" style={{ height: 18, width: "84%" }} />
+      </div>
+    );
   if (cards.length === 0)
     return (
       <div className="scrim">
-        <p style={{ margin: 0, color: "#e7dcc2" }}>{labels.empty}</p>
+        <p style={{ marginTop: 0, color: "#e7dcc2" }}>{labels.empty}</p>
+        <p style={{ marginBottom: 0 }}>
+          <a className="cta" href={`/play/${boy}/feed`}>Read the wire →</a>
+        </p>
       </div>
     );
   if (i >= cards.length)

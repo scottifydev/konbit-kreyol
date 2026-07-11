@@ -59,8 +59,13 @@ export default async function FeedPage({
 
       {visible.length === 0 && reviews.length === 0 ? (
         <div className="scrim">
-          <p style={{ margin: 0, color: "#e7dcc2" }}>
+          <p style={{ marginTop: 0, color: "#e7dcc2" }}>
             <Flip view={c("feed_warming")} />
+          </p>
+          <p style={{ marginBottom: 0 }}>
+            <Link className="cta" href={`/play/${boy}/vok`}>
+              <Flip view={c("vok_step")} />
+            </Link>
           </p>
         </div>
       ) : (
