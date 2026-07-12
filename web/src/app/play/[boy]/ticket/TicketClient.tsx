@@ -108,7 +108,7 @@ export default function TicketClient({
       </div>
 
       <p style={{ marginTop: 16 }}>
-        <button className={busy ? "cta sun pending" : "cta sun"} disabled={busy} onPointerUp={finish}>
+        <button className={busy ? "cta sun pending" : "cta sun"} disabled={busy} onClick={finish}>
           {labels.finish}
         </button>
       </p>

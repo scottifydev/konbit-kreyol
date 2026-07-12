@@ -41,14 +41,14 @@ export default function SceneClient({
       ))}
 
       {!narrationDone ? (
-        <button className="cta sun" onPointerUp={() => setLine((n) => n + 1)}>
+        <button className="cta sun" onClick={() => setLine((n) => n + 1)}>
           Go on →
         </button>
       ) : !chose ? (
         <div>
           {choices.map((label, i) => (
             <p key={i} style={{ marginBottom: 8 }}>
-              <button className="cta" onPointerUp={() => setChose(true)}>{label}</button>
+              <button className="cta" onClick={() => setChose(true)}>{label}</button>
             </p>
           ))}
         </div>
@@ -57,7 +57,7 @@ export default function SceneClient({
           <p style={{ marginTop: 0 }}>{history.question}</p>
           {history.options.map((o, i) => (
             <p key={i} style={{ marginBottom: 8 }}>
-              <button className="cta" onPointerUp={() => setHist(i === history.answer)}>{o}</button>
+              <button className="cta" onClick={() => setHist(i === history.answer)}>{o}</button>
             </p>
           ))}
         </div>

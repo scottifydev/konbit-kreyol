@@ -36,8 +36,8 @@ export default function FokisClient({
 
       {judged === null ? (
         <p style={{ marginBottom: 0, display: "flex", gap: 10 }}>
-          <button className="cta sun" onPointerUp={() => setJudged(true)}>{labels.right}</button>
-          <button className="cta" onPointerUp={() => setJudged(false)}>{labels.off}</button>
+          <button className="cta sun" onClick={() => setJudged(true)}>{labels.right}</button>
+          <button className="cta" onClick={() => setJudged(false)}>{labels.off}</button>
         </p>
       ) : (
         <>
@@ -50,7 +50,7 @@ export default function FokisClient({
             )}
           </div>
           <p style={{ marginTop: 16, marginBottom: 0 }}>
-            <button className="cta sun" onPointerUp={() => { setJudged(null); setI((n) => n + 1); }}>
+            <button className="cta sun" onClick={() => { setJudged(null); setI((n) => n + 1); }}>
               Next →
             </button>
           </p>

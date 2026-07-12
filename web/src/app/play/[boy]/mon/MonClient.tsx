@@ -93,7 +93,7 @@ export default function MonClient({
         <button
           className="cta"
           disabled={busy}
-          onPointerUp={() => post("marronage")}
+          onClick={() => post("marronage")}
         >
           {labels.fallBack}
         </button>
@@ -113,7 +113,7 @@ export default function MonClient({
           <button
             className={busy ? "cta sun pending" : "cta sun"}
             disabled={busy}
-            onPointerUp={() => post("deal")}
+            onClick={() => post("deal")}
           >
             {labels.muster}
           </button>
@@ -153,7 +153,7 @@ export default function MonClient({
             <button
               className="cta sun"
               disabled={busy || !tip.trim()}
-              onPointerUp={() => post("pass", { tip })}
+              onClick={() => post("pass", { tip })}
             >
               {labels.pass}
             </button>

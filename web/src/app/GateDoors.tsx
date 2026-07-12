@@ -54,7 +54,7 @@ export default function GateDoors({
         <div key={d.id} className="panel" style={{ color: "var(--kanvas)" }}>
           <button
             type="button"
-            onPointerUp={() => {
+            onClick={() => {
               setOpen(open === d.id ? null : d.id);
               setWord("");
               setError(false);
@@ -88,7 +88,7 @@ export default function GateDoors({
               <button
                 className="cta sun"
                 disabled={busy || !word.trim()}
-                onPointerUp={() => submit(d.id)}
+                onClick={() => submit(d.id)}
                 style={{ marginTop: 8 }}
               >
                 {labels.enter}

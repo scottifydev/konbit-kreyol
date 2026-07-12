@@ -44,7 +44,7 @@ export default function AudioPlayer({ src }: { src: string }) {
           setProgress(0);
         }}
       />
-      <button className="aplay" onPointerUp={toggle} aria-label={playing ? "pause" : "play"}>
+      <button className="aplay" onClick={toggle} aria-label={playing ? "pause" : "play"}>
         <span className={playing ? "aicon pause" : "aicon play"} aria-hidden />
       </button>
       <div className="atrack" onPointerUp={scrub}>

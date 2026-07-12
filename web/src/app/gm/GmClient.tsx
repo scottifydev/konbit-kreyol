@@ -105,10 +105,10 @@ export default function GmClient() {
   return (
     <div>
       <div className="row" style={{ gap: 8, borderTop: "none", paddingTop: 0 }}>
-        <button className={view === "queue" ? "cta sun" : "cta"} onPointerUp={() => setView("queue")} style={{ fontSize: 13 }}>
+        <button className={view === "queue" ? "cta sun" : "cta"} onClick={() => setView("queue")} style={{ fontSize: 13 }}>
           Review queue
         </button>
-        <button className={view === "recordings" ? "cta sun" : "cta"} onPointerUp={loadRecordings} style={{ fontSize: 13 }}>
+        <button className={view === "recordings" ? "cta sun" : "cta"} onClick={loadRecordings} style={{ fontSize: 13 }}>
           Their voices
         </button>
       </div>
@@ -162,7 +162,7 @@ export default function GmClient() {
           <button
             key={k}
             className={kind === k ? "cta sun" : "cta"}
-            onPointerUp={() => setKind(k)}
+            onClick={() => setKind(k)}
             style={{ fontSize: 13 }}
           >
             {k}
@@ -191,7 +191,7 @@ export default function GmClient() {
 
       {batchKeys.length > 0 && (
         <p>
-          <button className="cta sun" disabled={busy} onPointerUp={() => certify(batchKeys, true)}>
+          <button className="cta sun" disabled={busy} onClick={() => certify(batchKeys, true)}>
             Clear all {batchKeys.length} shown
           </button>{" "}
           <span className="label">— only what you've reviewed</span>
@@ -212,12 +212,12 @@ export default function GmClient() {
           <div className="kreyol-body">{i.ht ?? "— no draft — needs your words —"}</div>
           <div style={{ color: "#c9bfa6" }}>{i.en}</div>
           {i.ht !== null && !i.certified && (
-            <button className="cta sun" disabled={busy} onPointerUp={() => certify([i.key], true)}>
+            <button className="cta sun" disabled={busy} onClick={() => certify([i.key], true)}>
               Good — send it
             </button>
           )}
           {i.certified && (
-            <button className="cta" disabled={busy} onPointerUp={() => certify([i.key], false)}>
+            <button className="cta" disabled={busy} onClick={() => certify([i.key], false)}>
               Pull it back
             </button>
           )}

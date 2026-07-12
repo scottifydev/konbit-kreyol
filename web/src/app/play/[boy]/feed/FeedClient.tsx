@@ -95,7 +95,7 @@ export default function FeedClient({
                 <button
                   key={r.id}
                   className="cta"
-                  onPointerUp={() => {
+                  onClick={() => {
                     if (openGloss.has(r.id)) doReview(r.id);
                     else setOpenGloss((g) => new Set(g).add(r.id));
                   }}
@@ -121,7 +121,7 @@ export default function FeedClient({
               className="label"
               style={{ background: "none", border: "1px solid var(--gold)", borderRadius: 4, padding: "2px 8px", cursor: "pointer", color: "var(--gold-bright)" }}
               onPointerDown={() => setShowEn(post.id)}
-              onPointerUp={() => setShowEn(null)}
+              onClick={() => setShowEn(null)}
               onPointerLeave={() => setShowEn((s) => (s === post.id ? null : s))}
             >
               EN
@@ -139,7 +139,7 @@ export default function FeedClient({
                   return (
                     <button
                       key={i}
-                      onPointerUp={() => toggleGloss(key)}
+                      onClick={() => toggleGloss(key)}
                       style={{ all: "unset", cursor: "pointer", borderBottom: "1px dotted var(--gold)" }}
                     >
                       {text}
@@ -157,7 +157,7 @@ export default function FeedClient({
             {reacted.has(post.id) ? (
               <span className="goldband">✓</span>
             ) : (
-              <button className="cta sun" onPointerUp={() => react(post)}>
+              <button className="cta sun" onClick={() => react(post)}>
                 {labels.gotit}
               </button>
             )}

@@ -146,7 +146,7 @@ export default function VokClient({ boy, labels }: { boy: string; labels: Labels
       ) : recording ? (
         <HoldToRecord labels={{ idle: labels.hold, denied: labels.denied }} onRecorded={say} review />
       ) : (
-        <button className="cta" onPointerUp={() => setRecording(true)}>
+        <button className="cta" onClick={() => setRecording(true)}>
           {labels.say}
         </button>
       )}
@@ -164,7 +164,7 @@ export default function VokClient({ boy, labels }: { boy: string; labels: Labels
           <p style={{ color: "#c9bfa6", marginTop: 0 }}>{card.en}</p>
           {diLi}
           <p style={{ marginTop: 16, marginBottom: 0 }}>
-            <button className="cta sun" onPointerUp={() => rec(true)}>{labels.next}</button>
+            <button className="cta sun" onClick={() => rec(true)}>{labels.next}</button>
           </p>
         </>
       )}
@@ -173,14 +173,14 @@ export default function VokClient({ boy, labels }: { boy: string; labels: Labels
         <>
           <p className="kreyol-body" style={{ fontSize: 30, margin: "10px 0" }}>{card.id}</p>
           {!revealed ? (
-            <button className="cta" onPointerUp={() => setRevealed(true)}>{labels.reveal}</button>
+            <button className="cta" onClick={() => setRevealed(true)}>{labels.reveal}</button>
           ) : (
             <>
               <p style={{ color: "#c9bfa6" }}>{card.en}</p>
               {diLi}
               <p style={{ marginTop: 16, marginBottom: 0, display: "flex", gap: 10 }}>
-                <button className="cta sun" onPointerUp={() => rec(true)}>{labels.knew}</button>
-                <button className="cta" onPointerUp={() => rec(false)}>{labels.missed}</button>
+                <button className="cta sun" onClick={() => rec(true)}>{labels.knew}</button>
+                <button className="cta" onClick={() => rec(false)}>{labels.missed}</button>
               </p>
             </>
           )}
@@ -196,7 +196,7 @@ export default function VokClient({ boy, labels }: { boy: string; labels: Labels
               <div className="goldband ignite">{card.id} <span className="checkin">✓</span></div>
               {diLi}
               <p style={{ marginTop: 16, marginBottom: 0 }}>
-                <button className="cta sun" onPointerUp={next}>{labels.next}</button>
+                <button className="cta sun" onClick={next}>{labels.next}</button>
               </p>
             </>
           ) : result === "miss" ? (
@@ -204,7 +204,7 @@ export default function VokClient({ boy, labels }: { boy: string; labels: Labels
               <p className="kreyol-body">{card.id}</p>
               {diLi}
               <p style={{ marginTop: 16, marginBottom: 0 }}>
-                <button className="cta sun" onPointerUp={next}>{labels.next}</button>
+                <button className="cta sun" onClick={next}>{labels.next}</button>
               </p>
             </>
           ) : (
@@ -225,11 +225,11 @@ export default function VokClient({ boy, labels }: { boy: string; labels: Labels
                 </div>
               )}
               <p style={{ marginTop: 12, marginBottom: 0, display: "flex", gap: 10 }}>
-                <button className="cta sun" disabled={!typed.trim()} onPointerUp={submitType}>
+                <button className="cta sun" disabled={!typed.trim()} onClick={submitType}>
                   {labels.check}
                 </button>
                 {!hinted && (
-                  <button className="cta" onPointerUp={() => setHinted(true)}>{labels.hint}</button>
+                  <button className="cta" onClick={() => setHinted(true)}>{labels.hint}</button>
                 )}
               </p>
             </>
@@ -243,7 +243,7 @@ export default function VokClient({ boy, labels }: { boy: string; labels: Labels
           <p style={{ color: "#c9bfa6" }}>{card.en}</p>
           {diLi}
           <p style={{ marginTop: 16, marginBottom: 0 }}>
-            <button className="cta sun" onPointerUp={() => rec(true)}>{labels.next}</button>
+            <button className="cta sun" onClick={() => rec(true)}>{labels.next}</button>
           </p>
         </>
       )}

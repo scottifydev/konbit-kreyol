@@ -138,7 +138,7 @@ export default function DispatchClient({
             ) : outcomes[d.id] === "garbled" || d.status === "garbled" ? (
               <p>
                 {labels.garbled}{" "}
-                <button className="cta sun" onPointerUp={() => repeat(d.id)}>
+                <button className="cta sun" onClick={() => repeat(d.id)}>
                   {labels.repeat}
                 </button>
               </p>
@@ -147,7 +147,7 @@ export default function DispatchClient({
                 <p>{d.check.question}</p>
                 {d.check.options.map((opt, i) => (
                   <p key={i}>
-                    <button className="cta" onPointerUp={() => act(d.id, i)}>
+                    <button className="cta" onClick={() => act(d.id, i)}>
                       {opt}
                     </button>
                   </p>

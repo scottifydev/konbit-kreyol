@@ -57,7 +57,7 @@ export default function SettingsClient({
           </div>
           <button
             className={pwo ? "cta sun" : "cta"}
-            onPointerUp={togglePwo}
+            onClick={togglePwo}
             aria-pressed={pwo}
           >
             {pwo ? labels.on : labels.off}
@@ -74,7 +74,7 @@ export default function SettingsClient({
       </div>
 
       <p style={{ marginTop: 24 }}>
-        <button className="cta" disabled={busy} onPointerUp={leave}>
+        <button className="cta" disabled={busy} onClick={leave}>
           {labels.leave}
         </button>
       </p>
