@@ -45,13 +45,30 @@ body::after {
     radial-gradient(140% 120% at 50% -10%, rgba(27,111,179,.10), transparent 55%),
     radial-gradient(100% 100% at 50% 50%, transparent 55%, rgba(6,4,3,.55) 100%);
 }
-/* the ONE grain tile — baked feTurbulence, multiply, over everything */
+/* the ONE grain tile — baked feTurbulence, multiply, OVER everything so the
+   one texture unifies every surface (Design-Review S8: it was at z-index 1,
+   under .stage, so it only showed in the gutters). */
 body::before {
-  content: ""; position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .12;
+  content: ""; position: fixed; inset: 0; z-index: 40; pointer-events: none; opacity: .09;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 main, .stage { position: relative; z-index: 2; }
+
+/* form controls — the scrim field (SPEC Inputs; Design-Review S3). The raw OS
+   inputs (passphrase, vok type-answer, Mon tip, GM search) were the least-
+   designed pixels on the most-touched surfaces. */
+input:not([type="checkbox"]):not([type="radio"]), textarea, select {
+  font-family: var(--f-body); font-size: 18px; line-height: 1.4; color: var(--kanvas);
+  background: rgba(9,7,5,.65); border: 1px solid rgba(233,217,160,.22);
+  border-bottom: 2px solid var(--gold-bright); border-radius: 2px;
+  padding: 10px 12px; caret-color: var(--gold-bright); outline: none;
+}
+input:focus-visible, textarea:focus-visible, select:focus-visible {
+  border-color: var(--gold-bright); box-shadow: 0 0 0 2px rgba(217,165,33,.35);
+}
+input::placeholder, textarea::placeholder { color: rgba(233,217,160,.42); }
+select { appearance: none; -webkit-appearance: none; }
 
 /* ---------- type roles ---------- */
 .d1, .d2, .d3, .kicker { font-family: var(--f-display); text-transform: uppercase; line-height: .98; margin: 0; font-weight: 400; letter-spacing: .01em; }
