@@ -79,6 +79,12 @@ export default async function FrontPage({
       <section className="hero banner" style={{ marginBottom: 26 }}>
         <img src={CH_ART[unit] ?? "/art/map-haiti.webp"} alt="" />
         <div className="veil" />
+        {/* ambient embers drifting over the chapter painting (S7) */}
+        <div className="ember-field" aria-hidden>
+          {[[12, 0], [28, 1.4], [44, 3], [61, 0.8], [77, 2.2], [90, 4]].map(([l, d], i) => (
+            <span key={i} className="ember" style={{ left: `${l}%`, animationDelay: `${d}s` }} />
+          ))}
+        </div>
         <div className="cap">
           <div className="meta" style={{ color: "var(--gold-bright)" }}>
             {chapter.year} · chapit {chapter.n}

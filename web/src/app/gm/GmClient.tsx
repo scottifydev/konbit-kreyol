@@ -105,11 +105,11 @@ export default function GmClient() {
   return (
     <div>
       <div className="row" style={{ gap: 8, borderTop: "none", paddingTop: 0 }}>
-        <button className={view === "queue" ? "cta sun" : "cta"} onClick={() => setView("queue")} style={{ fontSize: 13 }}>
-          Review queue
+        <button className={view === "queue" ? "chip on" : "chip"} onClick={() => setView("queue")}>
+          review queue
         </button>
-        <button className={view === "recordings" ? "cta sun" : "cta"} onClick={loadRecordings} style={{ fontSize: 13 }}>
-          Their voices
+        <button className={view === "recordings" ? "chip on" : "chip"} onClick={loadRecordings}>
+          their voices
         </button>
       </div>
 
@@ -161,9 +161,8 @@ export default function GmClient() {
         {KINDS.map((k) => (
           <button
             key={k}
-            className={kind === k ? "cta sun" : "cta"}
+            className={kind === k ? "chip on" : "chip"}
             onClick={() => setKind(k)}
-            style={{ fontSize: 13 }}
           >
             {k}
           </button>
