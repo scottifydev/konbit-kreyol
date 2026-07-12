@@ -4,5 +4,5 @@ files.zip
 supabase/.temp/
 supabase/.branches/
 
-# CC-BY-SA map references (reference-only; see art-sources/SOURCES.md)
-art-sources/maps/
+# large map reference (5MB topo); the smaller map sources are committed
+art-sources/maps/haiti-topo.svg

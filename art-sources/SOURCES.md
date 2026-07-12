@@ -19,14 +19,16 @@ Authentic **source SVGs** used as *image inputs* to the art pipeline (`06`/Drapo
 
 *Not on Commons as SVG:* Ezili/Erzulie (only a JPG — `Vevé Ezili Dantor.jpg`), Agwe, Simbi, Marassa, Gran Bwa. Trace from a documented reference + Manman's gate if/when a ceremony needs them.
 
-## Maps — **reference only** (CC-BY-SA — attribution + share-alike; do NOT trace into shipped art)
-Kept for **accuracy checking / loose composition**, not as a foundation to derive from — a raster traced from these could inherit share-alike. **Shipped map raster is grounded on the app's own `web/src/components/CampaignMap.tsx` geometry** (drawn from real coordinates = public-domain geographic facts), which is also the source of truth for the war-table map.
+## Maps — usable directly (**personal, non-monetized use** — owner ruling 2026-07-12)
+These are CC-BY-SA (attribution + share-alike). Because Kòd La is a **private, personal, non-public, non-monetized family app**, they may be **used directly** — as the war-table map foundation and as Nano Banana inputs. Attribution below is kept as courtesy/provenance. (Should the project ever go public, revisit: prefer the app's own coordinate-drawn `CampaignMap.tsx` geometry, which is public-domain geographic facts, or PD sources.)
 
-| file | source | license / credit |
+| file | source | credit (courtesy) |
 |---|---|---|
-| `maps/saint-domingue.svg` | `File:Map_of_Saint_Domingue_English.svg` | CC-BY-SA 4.0 — © Cheposo (Wikimedia) |
-| `maps/haiti-blank.svg` | `File:Haiti_blank_map.svg` | CC-BY-SA (all versions) + GFDL — © Rémi Kaupp (User:Korrigan) |
-| `maps/haiti-topo.svg` | `File:Haiti_blank_map_with_topography.svg` | CC-BY-SA |
+| `maps/saint-domingue.svg` | `File:Map_of_Saint_Domingue_English.svg` | © Cheposo (Wikimedia), CC-BY-SA 4.0 — the historical colonial map, best war-table reference |
+| `maps/haiti-blank.svg` | `File:Haiti_blank_map.svg` | © Rémi Kaupp (User:Korrigan), CC-BY-SA + GFDL |
+| `maps/haiti-topo.svg` | `File:Haiti_blank_map_with_topography.svg` | CC-BY-SA — kept local only (5 MB, gitignored) |
+
+The **war-table map source of truth** remains `web/src/components/CampaignMap.tsx` (real coordinates, correct projection); the Saint-Domingue SVG grounds the *painted* raster foundation.
 
 ## Accuracy note (Design-Review A2)
 The war-table map corrects the **Citadelle** pin from Gonaïves' coordinates to **Milot (19.573 N, −72.244 W)** → projected (674.7, 178.7) in the 900×640 / PAD 30 projection.
