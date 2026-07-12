@@ -3,3 +3,6 @@ files.zip
 # Supabase CLI local state
 supabase/.temp/
 supabase/.branches/
+
+# CC-BY-SA map references (reference-only; see art-sources/SOURCES.md)
+art-sources/maps/
