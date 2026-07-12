@@ -102,28 +102,26 @@ a { color: var(--gold-bright); text-decoration: none; }
 @media (max-width: 820px) { .two { grid-template-columns: minmax(0, 1fr); } }
 .hero, .panel, .goldband, .scrim { max-width: 100%; }
 
-/* ---------- fer-découpé panel: rich even empty ---------- */
+/* ---------- CUT-IRON PLATE (Design-Review edge vocabulary) ----------
+   clip-path clips borders/box-shadows, so the 2px gold rim is a two-layer
+   trick: the element is the gold-ramp rim; ::before (inset 2px, same cut) is
+   the dark iron interior; the 2px gap reads as a forged rim. No two corners
+   alike. Depth via drop-shadow (box-shadow would be clipped away). */
 .panel {
-  position: relative; min-width: 0;
-  background:
-    linear-gradient(180deg, rgba(24,18,13,.72), rgba(15,11,8,.88)),
-    url(/art/panel-iron.webp) center / cover;
-  border: 1px solid rgba(233,217,160,.12);
-  box-shadow: inset 0 1px 0 rgba(233,217,160,.14), 0 10px 30px rgba(0,0,0,.55);
-  padding: 20px;
+  --plate: polygon(15px 0, calc(100% - 24px) 0, 100% 16px, 100% calc(100% - 11px), calc(100% - 16px) 100%, 18px 100%, 0 calc(100% - 19px), 0 12px);
+  position: relative; min-width: 0; padding: 22px;
+  background: linear-gradient(150deg, var(--gold-hi), var(--gold-mid) 55%, var(--gold-shadow));
+  clip-path: var(--plate);
+  filter: drop-shadow(0 10px 22px rgba(0,0,0,.5));
 }
-.panel::before { /* thin lifted gold keyline inset — signwriter's pinstripe */
-  content: ""; position: absolute; inset: 7px; border: 1px solid rgba(154,110,28,.30); pointer-events: none;
+.panel::before { /* the dark iron interior */
+  content: ""; position: absolute; inset: 2px; z-index: 0; pointer-events: none;
+  clip-path: var(--plate);
+  background: linear-gradient(180deg, rgba(26,20,14,.95), rgba(15,11,8,.99)), url(/art/panel-iron.webp) center / cover;
 }
-/* forged corner rivets — cheap craft, kills the generic-div feel */
-.panel::after {
-  content: ""; position: absolute; inset: 7px; pointer-events: none;
-  background:
-    radial-gradient(circle at 0 0, var(--gold-mid) 1.5px, transparent 2.5px),
-    radial-gradient(circle at 100% 0, var(--gold-mid) 1.5px, transparent 2.5px),
-    radial-gradient(circle at 0 100%, var(--gold-mid) 1.5px, transparent 2.5px),
-    radial-gradient(circle at 100% 100%, var(--gold-mid) 1.5px, transparent 2.5px);
-  background-repeat: no-repeat; opacity: .8;
+.panel::after { /* stitched inner keyline */
+  content: ""; position: absolute; inset: 10px; z-index: 0; pointer-events: none;
+  border: 1px dotted rgba(217,165,33,.32);
 }
 .panel > * { position: relative; z-index: 1; }
 /* Kreyòl legibility law: always on a solid/scrimmed panel, never on texture */
@@ -138,16 +136,25 @@ a { color: var(--gold-bright); text-decoration: none; }
 .hairline-row audio { width: 100%; margin: 8px 0; filter: sepia(.3) saturate(1.2) hue-rotate(-10deg); }
 
 /* ---------- CTAs ---------- */
-.cta { display: inline-block; border: none; cursor: pointer; font-family: var(--f-display); text-transform: uppercase; letter-spacing: .05em; font-size: 15px; padding: 13px 22px; color: var(--night); background: var(--gold-ramp); box-shadow: 0 3px 0 var(--gold-shadow), 0 7px 16px rgba(0,0,0,.45); }
-.cta:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--gold-shadow); }
-.cta.scar { background: var(--scarlet); color: var(--bone); box-shadow: 0 3px 0 var(--oxblood), 0 7px 16px rgba(0,0,0,.45); }
-.cta.iron { background: var(--iron-tooth), linear-gradient(180deg,#332e28,#241f1b); color: var(--cornmeal); box-shadow: inset 0 1px 0 rgba(233,217,160,.2), 0 3px 8px rgba(0,0,0,.5); }
-.cta.ghost { background: transparent; color: var(--cornmeal); border: 1px solid rgba(233,217,160,.28); box-shadow: none; }
+/* STAMPED CTA (edge vocabulary): opposite-diagonal corner cuts; depth via a
+   drop-shadow var (box-shadow is clipped by clip-path). */
+.cta {
+  --cta-depth: drop-shadow(0 2px 0 var(--gold-shadow)) drop-shadow(0 5px 9px rgba(0,0,0,.42));
+  display: inline-block; border: none; cursor: pointer; font-family: var(--f-display);
+  text-transform: uppercase; letter-spacing: .05em; font-size: 15px; padding: 13px 22px;
+  color: var(--night); background: var(--gold-ramp);
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  filter: var(--cta-depth);
+}
+.cta:active { transform: translateY(2px); filter: var(--cta-depth); }
+.cta.scar { background: var(--scarlet); color: var(--bone); }
+.cta.iron { background: var(--iron-tooth), linear-gradient(180deg,#332e28,#241f1b); color: var(--cornmeal); }
+.cta.ghost { background: transparent; color: var(--cornmeal); border: 1px solid rgba(233,217,160,.28); clip-path: none; filter: none; --cta-depth: none; }
 /* .sun — the PRIMARY action: brighter gold + a warm sun-glow so the one thing
    to do next reads above secondary .cta buttons and toggles show a lit state. */
-.cta.sun { background: linear-gradient(180deg, var(--gold-hi), var(--gold-bright) 60%, var(--gold-mid)); box-shadow: 0 3px 0 var(--gold-shadow), 0 0 18px rgba(244,214,106,.45), 0 7px 18px rgba(0,0,0,.45); }
-.cta.sun:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--gold-shadow), 0 0 12px rgba(244,214,106,.4); }
-.cta:disabled { opacity: .5; cursor: default; filter: saturate(.6); box-shadow: none; transform: none; }
+.cta.sun { background: linear-gradient(180deg, var(--gold-hi), var(--gold-bright) 60%, var(--gold-mid));
+  --cta-depth: drop-shadow(0 2px 0 var(--gold-shadow)) drop-shadow(0 0 13px rgba(244,214,106,.5)) drop-shadow(0 6px 11px rgba(0,0,0,.42)); }
+.cta:disabled { opacity: .5; cursor: default; --cta-depth: none; filter: grayscale(.2) saturate(.6); transform: none; }
 
 /* ---------- identity marks ---------- */
 .liy { display: inline-flex; width: 36px; height: 36px; align-items: center; justify-content: center; flex: none; font-family: var(--f-display); font-size: 18px; color: var(--kanvas); box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 2px 6px rgba(0,0,0,.4); }
@@ -214,8 +221,8 @@ table.plain td { padding: 9px 8px; border-top: 1px solid rgba(233,217,160,.12); 
     background-color .14s ease-out, color .14s ease-out, opacity .14s ease-out,
     border-color .14s ease-out, filter .14s ease-out;
 }
-.cta:hover { filter: brightness(1.07); }
-.cta.sun:hover { filter: brightness(1.1); }
+.cta:hover { filter: var(--cta-depth) brightness(1.08); }
+.cta.ghost:hover { filter: brightness(1.12); }
 .hold-bar:hover { border-color: var(--gold-mid); }
 .hold-bar:active { transform: translateY(1px); }
 a:hover { color: var(--gold-hi); }
