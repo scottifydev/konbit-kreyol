@@ -72,6 +72,27 @@ Next.js 16 (App Router, React server components + client islands), TypeScript. F
 | `components/AudioPlayer.tsx` | audio playback control |
 | `components/CampaignMap.tsx` | the map of Saint-Domingue (real geography, drawn) |
 
+## Assets & fonts
+
+**Images** — all in `web/public/art/` (referenced in the code as `/art/*.webp`). These are hand-directed paintings + CSS-fed textures (~2 MB total):
+
+| File | It is |
+|---|---|
+| `gate-ground.webp` | the gate's painted night-earth ground |
+| `ch1-burning-plain.webp` | Chapter 1 — the northern rising |
+| `ch4-ravine.webp`, `ch5-crete.webp`, `ch6-arcahaie-flag.webp`, `ch7-vertieres.webp`, `ch8-citadelle.webp` | chapter battle moments (Ravine · Crête-à-Pierrot · the Flag at Arcahaie · Vertières · the Citadelle) |
+| `map-haiti.webp` | painted land / campaign-map fallback |
+| `lambi-conch.webp` | the lambi (conch) — the dispatch/record hero |
+| `ogou-forge.webp` | Ogou's forge |
+| `prologue-passage.webp` | the ticket / prologue scene |
+| `gold-leaf.webp`, `panel-iron.webp`, `parchment.webp`, `canvas-texture.webp` | textures used by the CSS (gold fills, panel iron, scrims, grain) |
+
+The `CampaignMap` (Saint-Domingue) is **drawn in code** (SVG), not an image — see `components/CampaignMap.tsx`.
+
+**Fonts** — loaded from Google Fonts in `layout.tsx` (not local files): Archivo Black (display), Literata (body / the Kreyòl reading face), Fraunces, IBM Plex Mono, Libre Caslon Display.
+
+*(These assets and typefaces are the current implementation — included so you can see the real product. They are not a mandate; the visual direction is yours.)*
+
 ---
 
 ## How to run the pass
